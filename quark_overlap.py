@@ -68,6 +68,20 @@ def append_combination(input_concept: str, added_concept: str) -> None:
         fh.write(f"{input_concept};{added_concept}\n")
 
 
+def load_combinations() -> dict[str, list[str]]:
+    """Return {concept: [quark, ...]} from combinations.csv."""
+    result: dict[str, list[str]] = {}
+    if not COMBINATIONS_CSV.exists():
+        return result
+    for line in COMBINATIONS_CSV.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or ";" not in line:
+            continue
+        concept, _, quark = line.partition(";")
+        result.setdefault(concept.strip(), []).append(quark.strip())
+    return result
+
+
 def score_and_suggest(client: OpenAI, concept: str,
                       quarks: list[tuple[int, str]]) -> dict:
     """Single LLM call: score all quarks 0-100 + suggest new primitives."""
@@ -100,8 +114,15 @@ def score_and_suggest(client: OpenAI, concept: str,
     return json.loads(resp.choices[0].message.content)
 
 
-def analyze(client: OpenAI, concept: str,
-            quarks: list[tuple[int, str]]) -> None:
+def analyze(client: OpenAI, concept: str, quarks: list[tuple[int, str]],
+            combinations: dict[str, list[str]]) -> None:
+    cached = combinations.get(concept)
+    if cached:
+        print(f"\nConcept: '{concept}' (cached)")
+        for quark in cached:
+            print(f"  {quark}")
+        return
+
     result = score_and_suggest(client, concept, quarks)
 
     raw_scores: dict = result.get("scores", {})
@@ -138,6 +159,7 @@ def analyze(client: OpenAI, concept: str,
 
     for _, _, name in scored[:2]:
         append_combination(concept, name)
+        combinations.setdefault(concept, []).append(name)
 
     print(f"\nTop {TOP_N} closest quarks:")
     for score, num, name in scored[:TOP_N]:
@@ -190,13 +212,15 @@ def main() -> None:
         if added:
             print(f"Loaded {len(added)} extra concepts from '{COMPLEMENT_CSV.name}'.")
 
+    combinations = load_combinations()
     client = OpenAI()
-    print(f"Loaded {len(quarks)} quarks. Model: {CHAT_MODEL}")
+    print(f"Loaded {len(quarks)} quarks, {len(combinations)} cached concepts. "
+          f"Model: {CHAT_MODEL}")
 
     args = [a for a in sys.argv[1:] if a.strip()]
     if args:
         for concept in args:
-            analyze(client, concept.strip(), quarks)
+            analyze(client, concept.strip(), quarks, combinations)
         return
 
     print("Enter a concept to map. Type 'quit' to exit.")
@@ -208,8 +232,10 @@ def main() -> None:
             break
         if not concept or concept.lower() in QUIT_WORDS:
             break
-        analyze(client, concept, quarks)
-        prompt_add(concept, quarks)
+        cached = concept in combinations
+        analyze(client, concept, quarks, combinations)
+        if not cached:
+            prompt_add(concept, quarks)
 
 
 if __name__ == "__main__":
