@@ -176,9 +176,7 @@ def analyze(client: OpenAI, concept: str, quarks: list[tuple[int, str]],
 
 def prompt_add(input_concept: str, quarks: list[tuple[int, str]]) -> None:
     try:
-        word = input(
-            "\nAdd a concept to the complement file? (word, or blank to skip)> "
-        ).strip()
+        word = input("\nAdd a grounding primitive? (word, or blank to skip)> ").strip()
     except (EOFError, KeyboardInterrupt):
         print()
         return
@@ -186,7 +184,9 @@ def prompt_add(input_concept: str, quarks: list[tuple[int, str]]) -> None:
         return
 
     if word.lower() in {name.lower() for _, name in quarks}:
-        print(f"  '{word}' is already a quark -- not added.")
+        append_combination(input_concept, word)
+        print(f"  '{word}' is already a primitive -- recorded '{input_concept};{word}' "
+              f"in '{COMBINATIONS_CSV.name}'.")
         return
 
     num = next_number(quarks)
