@@ -1,0 +1,30 @@
+               tree climbing robot fails
+              /             |              \
+        grip            navigation         energy
+        fails             fails           depleted
+       /  |  \          /   |   \         /     \
+    slip bark wrong   lost  dead wrong  battery  motor
+    foot wet  grip   pos  end  branch  empty  overload
+         |         |        |            |
+       wet       no      branch       steep
+      bark      map      too thin     incline
+               loaded     breaks
+                          under
+                         weight
+
+node 0:  tree climbing robot fails
+node 1:  grip fails
+node 2:  navigation fails
+node 3:  energy depleted
+node 4:  foot slips
+node 5:  bark is wet
+node 6:  wrong grip applied
+node 7:  lost position on tree
+node 8:  reached dead end
+node 9:  chose wrong branch
+node 10: battery empty
+node 11: motor overloads
+node 12: bark surface too wet to grip
+node 13: no map of tree loaded
+node 14: branch too thin and breaks under weight
+node 15: incline too steep for leg actuators
