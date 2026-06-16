@@ -25,3 +25,20 @@ User types free text (`"tighten grip on trunk"`), it gets mapped to quarks via `
 ---
 
 The most coherent with the existing system would be **B + A together**: quark-state values as the simulation engine, log.csv as the output record. Option C is the right architecture if you want to eventually run this on a real robot. Option D is the most experimental.
+
+---
+
+## Motor control via double triangle
+
+A double triangle fits well for controlling the robot's motors. The quarks already mapped in combinations.csv give us the sensor and actuator sides directly — `grasper→force/animate`, `leg→support/animate/force`, `servo→drive/force`, `arm→support/force`.
+
+Natural wiring for a tree climbing robot:
+
+- `force → animate` — grip force on bark drives leg movement
+- `loc → drive` — position on the tree drives the servo
+- `stat → sequence` — surface condition (wet bark) drives the movement sequence
+- `energy → waitfor` — battery level gates whether to continue climbing
+
+The sensor side already has candidates: `battery`, `servo`, `grasper` all have transducer quarks. The actuator side: `leg`, `arm`, `servo` all have drive/animate quarks. The double triangle ties these into a control skeleton — sensor → control → actuator → nav → plan — bridging from "quarks mapped" to "robot controlled."
+
+**One triangle or three?** The problem tree has three failure branches: grip, navigation, energy. These map cleanly to three separate triangles coordinated by an orchestrator, rather than one triangle for the whole robot. Each subsystem gets its own sensor/actuator loop, and the orchestrator decides which triangle's diagnosis is active.
