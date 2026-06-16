@@ -1,6 +1,6 @@
 # Orange
 
-## Tree climbing robot simulator — options
+## Tree climbing robot simulator — options *(ptd: this is an example of emergent intelligence of the LLM)*
 
 Four options for a CLI-based simulator, using the ideas from this directory.
 
