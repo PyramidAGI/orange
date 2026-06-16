@@ -1,6 +1,6 @@
 # Orange
 
-## Tree climbing robot simulator — options *(ptd: this is an example of emergent intelligence of the LLM)*
+## Tree climbing robot simulator — options
 
 Four options for a CLI-based simulator, using the ideas from this directory.
 
@@ -28,7 +28,7 @@ The most coherent with the existing system would be **B + A together**: quark-st
 
 ---
 
-## Motor control via double triangle
+## Motor control via double triangle *(ptd: this is an example of emergent intelligence of the LLM)*
 
 A double triangle fits well for controlling the robot's motors. The quarks already mapped in combinations.csv give us the sensor and actuator sides directly — `grasper→force/animate`, `leg→support/animate/force`, `servo→drive/force`, `arm→support/force`.
 
