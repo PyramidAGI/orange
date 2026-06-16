@@ -37,7 +37,7 @@ Natural wiring for a tree climbing robot:
 - `force → animate` — grip force on bark drives leg movement
 - `loc → drive` — position on the tree drives the servo
 - `stat → sequence` — surface condition (wet bark) drives the movement sequence
-- `energy → waitfor` — battery level gates whether to continue climbing
+- `energy → waitfor` — battery level gates whether to continue climbing ("gates" means it acts as a condition that blocks or allows the next action: when battery drops below a threshold, the robot stops and waits rather than continuing — like a traffic light that permits or blocks movement)
 
 The sensor side already has candidates: `battery`, `servo`, `grasper` all have transducer quarks. The actuator side: `leg`, `arm`, `servo` all have drive/animate quarks. The double triangle ties these into a control skeleton — sensor → control → actuator → nav → plan — bridging from "quarks mapped" to "robot controlled."
 
