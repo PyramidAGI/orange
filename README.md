@@ -111,3 +111,23 @@ The 39 quarks describe a climbing robot, a factory floor, and a hospital ward wi
 Most domain-specific models fail to transfer because their primitives are too concrete: a "grip strength" variable means nothing outside robotics. Quarks sit one level higher. `force` is grip strength in a robot, workload pressure in a factory, and dosage intensity in a hospital. The word changes; the quark stays the same. This is what makes the same grid template, the same scaffolder, and the same double triangle wiring reusable across every domain.
 
 The test is always: can you describe what went wrong using only the 39 names? If a nurse says "the patient waited too long and the ward ran out of capacity" — that is `waitfor`, `compress`, `problem`. If a factory worker says "the bonus system stopped working and conflicts went up" — that is `reward`, `conflict`, `val`. The quarks do not need to be extended for new domains; they need to be *mapped* to new domains, which is exactly what `quark_overlap.py` and `combinations.csv` do.
+
+---
+
+## A universal Darwin-like machine
+
+The quark system is structured like a Darwin machine — something that can adapt to any environment using a fixed set of primitives.
+
+- **Quarks are the genome** — 39 fixed bases that combine differently for every environment. Just as DNA uses 4 bases to describe every organism, quarks use 39 primitives to describe a robot, a factory, a hospital, without changing the alphabet.
+
+- **The double triangle is the cell** — the same sensor/actuator/control/plan/nav machinery runs on any quark mapping. The "hardware" is universal; only the wiring changes.
+
+- **The scaffolder is development** — it reads the genome (quark mapping from the interview) and grows an organism (Python skeleton) from it.
+
+- **The eval loop is selection pressure** — `outcomes.log` and `weights.json` in the green repo reinforce what worked and penalize what didn't. Wires that solved problems get higher scores; abandoned triangles fade.
+
+- **The random mask is mutation** — a random subset of the model exposed each run, structurally similar to how genetic expression works: not all genes are active at once.
+
+The one missing piece for it to be fully Darwinian is **autonomous variation** — the system generating new quark mappings on its own and testing them, rather than waiting for a human to provide the interview answers. That is the step the green readme calls "the first conversion the machine does without the human."
+
+The architecture is right. It is a Darwin machine with one hand still held by a human.
