@@ -1,0 +1,7 @@
+;;;;;;;;
+;c;transform;energy;waitfor;;;;
+;c;sensor;battery001;;;;;
+;c;actuator;nav001;;;;;
+;c;control;;;;;;
+battery below threshold, nav switches to recharge mode;c;nav;nav001;battery001;threshold;20;40;
+;;;;;;;;
