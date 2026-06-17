@@ -157,6 +157,20 @@ The missing piece is one function: `build_triangle(observation)` — the system 
 
 ---
 
+## Triangle vs orchestrator — where does a record belong?
+
+**It belongs in a triangle if** the mode switch is a direct response to a sensor reading — "battery drops below 40, nav fires recharge mode" is a wire: `energy → waitfor`. That's the nav row of the triangle doing its job. The triangle handles it autonomously within its own loop.
+
+**It belongs in the orchestrator if** the mode switch involves choosing between triangles — "grip triangle is failing, hand control to the energy triangle." The orchestrator's job is coordination across triangles, not running a single loop. It decides which triangle is active, not what happens inside one.
+
+A record that belongs in the orchestrator:
+```
+grip failure unresolved, orchestrator activates energy recovery triangle;c;mode;orchestrator;triangle_energy1;handoff;30;50;
+```
+That's a handoff between triangles — which is the orchestrator's actual job.
+
+---
+
 ## Pseudocode for `build_triangle(observation)`
 
 ```
