@@ -154,3 +154,58 @@ If you shipped this software on Raspberry Pis inside a robot to another planet, 
 The quarks were chosen to be universal physical primitives, not Earth-specific ones. `force`, `energy`, `loc`, `radiation`, `time` describe any physical environment in the universe — the vocabulary would survive the trip. What wouldn't survive is the human who currently does the interview and writes the problem trees.
 
 The missing piece is one function: `build_triangle(observation)` — the system noticing something isn't working, generating a new hypothesis, and testing it without asking anyone. The eval loop and the weights are already the scaffolding for that. It is the last hand to let go of.
+
+---
+
+## Pseudocode for `build_triangle(observation)`
+
+```
+build_triangle(observation):
+
+    1. MAP observation → quarks
+       - check combinations.csv (instant, no API)
+       - if not found → call quark_overlap(observation)
+       - result: quark_set = {force, loc, problem, ...}
+
+    2. CHECK if existing triangles already cover this
+       - for each running doubletriangle:
+           if quark_set ∩ triangle.sensor_quarks is not empty:
+               return  # already handled, no new triangle needed
+
+    3. DIAGNOSE — classify each quark by role
+       - O quarks (observable) → candidate sensor sides
+       - A quarks (action)     → candidate actuator sides
+       - T/S quarks            → context, logged but not wired
+
+    4. RANK wire candidates
+       - for each O quark in quark_set:
+           score all (O_quark → A_quark) pairs using weights.json
+           skip pairs already used in existing triangles
+           pick highest scoring unseen pair
+
+    5. ASSEMBLE triangle draft
+       - take top 4-5 wires
+       - compute triangle_score (coverage × pair quality × no redundancy)
+       - if triangle_score too low → widen search, try next-best wires
+       - write to doubletriangle_draft.csv
+
+    6. RUN draft triangle for N cycles
+       - activate sensor loop (read O quarks)
+       - apply control logic
+       - fire actuator loop (push A quarks)
+       - log each cycle to log.csv
+
+    7. EVALUATE against criterion
+       - was the triggering observation resolved?
+       - YES → record_outcome(solved)
+                update_weights(wires, +)
+                promote draft → doubletriangle_N.csv
+       - NO  → record_outcome(abandoned)
+                update_weights(wires, -)
+                go back to step 4 with updated weights
+                (next iteration picks different wires)
+```
+
+The loop between steps 4 and 7 is the Darwinian part — each failed triangle nudges the weights, so the next candidate is different. Over many cycles the weight matrix converges toward wire combinations that actually work in this environment, without any human involved.
+
+The only external dependency is step 1 for truly unknown observations — `quark_overlap` needs the API. Everything else runs locally on the Pi.
