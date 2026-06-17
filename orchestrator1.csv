@@ -1,3 +1,5 @@
 ;;;;;;;;
 grip failure unresolved, orchestrator activates energy recovery triangle;c;mode;orchestrator;triangle_energy1;handoff;30;50;
 ;;;;;;;;
+navigation dead end detected, orchestrator activates grip triangle to backtrack;c;mode;orchestrator;triangle_grip1;handoff;60;70;
+;;;;;;;;
