@@ -6,6 +6,7 @@ Pyramid shape: row 0 = apex (top of tree, narrow), row 9 = base (wide).
 Cells outside the pyramid are blank. Quarks are sparsely placed within it.
 """
 
+import random
 import pandas as pd
 
 # 10x10 empty grid
@@ -49,5 +50,18 @@ pd.set_option("display.max_columns", 10)
 pd.set_option("display.width", 120)
 pd.set_option("display.max_colwidth", 12)
 
+# Column widths derived from the first pyramid so both grids align
+col_widths = {c: max(len(str(c)), df[c].map(len).max()) + 2 for c in df.columns}
+
 print("Tree climbing robot — quark grid (10x10, pyramid)\n")
-print(df.to_string())
+print(df.to_string(col_space=col_widths))
+
+# Second pyramid: random mask over the first — changes every run
+mask = pd.DataFrame("", index=range(10), columns=range(10))
+populated = [(r, c) for r, c, _ in placements if in_pyramid(r, c)]
+chosen = random.sample(populated, k=max(1, len(populated) // 3))
+for row, col in chosen:
+    mask.at[row, col] = df.at[row, col]
+
+print("\n\nRandom mask (changes every run)\n")
+print(mask.to_string(col_space=col_widths))
