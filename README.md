@@ -131,3 +131,26 @@ The quark system is structured like a Darwin machine — something that can adap
 The one missing piece for it to be fully Darwinian is **autonomous variation** — the system generating new quark mappings on its own and testing them, rather than waiting for a human to provide the interview answers. That is the step the green readme calls "the first conversion the machine does without the human."
 
 The architecture is right. It is a Darwin machine with one hand still held by a human.
+
+---
+
+## What if you sent this to another planet?
+
+If you shipped this software on Raspberry Pis inside a robot to another planet, it could partially build itself up — and the breakdown is interesting.
+
+**What it could do without you:**
+- Run existing double triangles — the sensor/actuator loop works autonomously on the Pi
+- Log what worked and what didn't, update `weights.json`, and gradually shift its wiring preferences toward what the new environment rewards
+- Map new sensor readings to quarks via `combinations.csv` if they match known concepts
+- Adapt *within* the quark vocabulary — if the planet has force, energy, location, and time (every physical environment does), the 39 quarks still apply
+
+**What it cannot do yet:**
+- Generate new double triangles without a human running the scaffolder interview
+- Write new Python code for genuinely new situations
+- Understand phenomena that don't map to any of the 39 quarks — if the planet has something truly alien, the vocabulary has no slot for it
+- Physically repair itself if hardware breaks
+
+**The deep point:**
+The quarks were chosen to be universal physical primitives, not Earth-specific ones. `force`, `energy`, `loc`, `radiation`, `time` describe any physical environment in the universe — the vocabulary would survive the trip. What wouldn't survive is the human who currently does the interview and writes the problem trees.
+
+The missing piece is one function: `build_triangle(observation)` — the system noticing something isn't working, generating a new hypothesis, and testing it without asking anyone. The eval loop and the weights are already the scaffolding for that. It is the last hand to let go of.
