@@ -80,3 +80,26 @@ The sorted quarks map directly to a Python skeleton:
 - The control loop skeleton is always the same five rows: sensor, actuator, control, plan, nav
 
 The quarks are the intermediate representation — they decouple "what the project is about" from "what code to generate." The same code generator works for any project because the quark roles (O/A/T/S) always map to the same code shapes.
+
+---
+
+## Quark grid examples
+
+Two grids have been built so far (`robot_grid.py`, `factory_happiness.py`). A third suggestion:
+
+### Hospital patient flow
+
+Tracking how patients move through a hospital from arrival to discharge.
+
+- **Row 0**: `loc` — where the patient is right now (the single most critical fact)
+- **Row 1**: `problem` ↔ `normal` — is something wrong or is the patient stable
+- **Row 2**: `stat`, `time`, `event` — vitals, wait time, trigger events
+- **Row 3**: `tool`, `data`, `support` — equipment, records, care support
+- **Row 4**: `activity`, `sequence`, `transport` — procedures, treatment order, moving between wards
+- **Row 5**: `contract`, `organization`, `group` — staff assignments, protocols, teams
+- **Row 6**: `solve`, `waitfor`, `fix` — interventions and bottlenecks
+- **Row 7**: `energy`, `food`, `shield` — patient condition basics
+- **Row 8**: `channel`, `transducer`, `pattern` — monitoring signals
+- **Row 9**: `animate`, `increase`, `compress` — discharge pressure, capacity
+
+The same `solve`/`fix`/`waitfor` quarks that handle a robot's failure modes also handle a hospital bottleneck — a bed waiting for a patient is `waitfor`, a ward at capacity is `compress`.
