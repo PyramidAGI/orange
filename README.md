@@ -42,3 +42,41 @@ Natural wiring for a tree climbing robot:
 The sensor side already has candidates: `battery`, `servo`, `grasper` all have transducer quarks. The actuator side: `leg`, `arm`, `servo` all have drive/animate quarks. The double triangle ties these into a control skeleton — sensor → control → actuator → nav → plan — bridging from "quarks mapped" to "robot controlled."
 
 **One triangle or three?** The problem tree has three failure branches: grip, navigation, energy. These map cleanly to three separate triangles coordinated by an orchestrator, rather than one triangle for the whole robot. Each subsystem gets its own sensor/actuator loop, and the orchestrator decides which triangle's diagnosis is active.
+
+---
+
+## CLI project scaffolder — concept
+
+A general-purpose CLI tool that interviews you about any project, maps it to quarks, and generates a Python skeleton. Quarks make this project-agnostic: the same tool works for a tree climbing robot, a repair café, or a greenhouse.
+
+### Stage 1: Interview
+
+The CLI asks a fixed set of structured questions:
+
+- *What is the goal?* — one sentence
+- *What are the entities?* — the ontology (things that exist in the project)
+- *What can be sensed/measured?* — inputs
+- *What actions does it take?* — outputs
+- *What are the failure modes?* — problems to handle
+
+Each answer is a comma-separated list of words, saved as a project file (e.g. `project.csv`).
+
+### Stage 2: Quark mapping
+
+Each word from the interview gets matched to quarks — first checking combinations.csv (instant), then calling `quark_overlap.py` for unknowns. The quarks are then sorted by role:
+
+- **O quarks** (observable: `force`, `loc`, `energy`) → sensor variables
+- **A quarks** (action: `animate`, `drive`, `waitfor`) → actuator functions
+- **T quarks** (thing: `container`, `support`, `tool`) → data structures
+- **S quarks** (state: `conflict`, `val`, `organization`) → state variables
+
+### Stage 3: Model → code
+
+The sorted quarks map directly to a Python skeleton:
+
+- One double triangle per failure mode from the problem tree
+- Sensor quarks → `read_*()` functions
+- Actuator quarks → `act_*()` functions
+- The control loop skeleton is always the same five rows: sensor, actuator, control, plan, nav
+
+The quarks are the intermediate representation — they decouple "what the project is about" from "what code to generate." The same code generator works for any project because the quark roles (O/A/T/S) always map to the same code shapes.
