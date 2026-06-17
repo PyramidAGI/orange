@@ -30,7 +30,7 @@ def in_pyramid(row, col):
 
 placements = [
     (0, 4, "loc"),
-    (1, 3, "fork"),       (1, 5, "trunk"),
+    (1, 3, "fork"),       (1, 5, "mode"),
     (2, 2, "animate"),    (2, 4, "grasper"),   (2, 6, "support"),
     (3, 1, "drive"),      (3, 4, "force"),      (3, 7, "sequence"),
     (4, 0, "transducer"), (4, 3, "stat"),       (4, 6, "pattern"),  (4, 8, "energy"),
