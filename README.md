@@ -103,3 +103,11 @@ Tracking how patients move through a hospital from arrival to discharge.
 - **Row 9**: `animate`, `increase`, `compress` — discharge pressure, capacity
 
 The same `solve`/`fix`/`waitfor` quarks that handle a robot's failure modes also handle a hospital bottleneck — a bed waiting for a patient is `waitfor`, a ward at capacity is `compress`.
+
+### Why quarks fit any problem
+
+The 39 quarks describe a climbing robot, a factory floor, and a hospital ward without any changes to the vocabulary. That is not a coincidence — it is the point.
+
+Most domain-specific models fail to transfer because their primitives are too concrete: a "grip strength" variable means nothing outside robotics. Quarks sit one level higher. `force` is grip strength in a robot, workload pressure in a factory, and dosage intensity in a hospital. The word changes; the quark stays the same. This is what makes the same grid template, the same scaffolder, and the same double triangle wiring reusable across every domain.
+
+The test is always: can you describe what went wrong using only the 39 names? If a nurse says "the patient waited too long and the ward ran out of capacity" — that is `waitfor`, `compress`, `problem`. If a factory worker says "the bonus system stopped working and conflicts went up" — that is `reward`, `conflict`, `val`. The quarks do not need to be extended for new domains; they need to be *mapped* to new domains, which is exactly what `quark_overlap.py` and `combinations.csv` do.
