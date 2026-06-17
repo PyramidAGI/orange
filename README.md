@@ -169,6 +169,18 @@ grip failure unresolved, orchestrator activates energy recovery triangle;c;mode;
 ```
 That's a handoff between triangles — which is the orchestrator's actual job.
 
+### orchestrator1.csv
+
+```
+;;;;;;;;
+grip failure unresolved, orchestrator activates energy recovery triangle;c;mode;orchestrator;triangle_energy1;handoff;30;50;
+;;;;;;;;
+navigation dead end detected, orchestrator activates grip triangle to backtrack;c;mode;orchestrator;triangle_grip1;handoff;60;70;
+;;;;;;;;
+```
+
+Two cross-triangle handoffs: energy failure hands off to `triangle_energy1`, navigation dead end hands off to `triangle_grip1` to backtrack. Each record is wrapped in `;;;;;;;;` separators matching the log format.
+
 ---
 
 ## Pseudocode for `build_triangle(observation)`
