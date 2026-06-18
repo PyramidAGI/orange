@@ -194,3 +194,20 @@ flower;nature
 soil;nature
 soil;plant
 soil;support
+procedure;sequence
+procedure;time
+state;stat
+state;loc
+low;stat low
+high;stat high
+fast;stat fast
+slow;stat slow
+full;stat full
+empty;stat empty
+broken;stat broken
+broken;problem
+hot;stat hot
+hot;energy
+dry;stat dry
+heavy;stat heavy
+heavy;force

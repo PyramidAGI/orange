@@ -14,3 +14,13 @@
 53;stat rough
 54;plant
 55;machine
+56;stat low
+57;stat high
+58;stat fast
+59;stat slow
+60;stat full
+61;stat empty
+62;stat broken
+63;stat hot
+64;stat dry
+65;stat heavy
