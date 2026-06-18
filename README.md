@@ -237,3 +237,37 @@ build_triangle(observation):
 The loop between steps 4 and 7 is the Darwinian part — each failed triangle nudges the weights, so the next candidate is different. Over many cycles the weight matrix converges toward wire combinations that actually work in this environment, without any human involved.
 
 The only external dependency is step 1 for truly unknown observations — `quark_overlap` needs the API. Everything else runs locally on the Pi.
+
+---
+
+## Airplane expressed in triangles
+
+An airplane decomposes naturally into four triangles coordinated by one orchestrator.
+
+**triangle_flight1** — keeps the plane in the air
+- sensor: `force` (lift), `stat` (airspeed, altitude)
+- wires: `force → animate` (lift drives control surfaces), `energy → drive` (thrust drives engines)
+- nav: switch to glide mode if engine fails
+
+**triangle_nav1** — gets the plane to its destination
+- sensor: `loc` (GPS position), `pattern` (flight path)
+- wires: `loc → sequence` (position drives waypoint progression), `pattern → transport` (path drives heading)
+- nav: switch between climb / cruise / descent modes
+
+**triangle_fuel1** — manages energy
+- sensor: `energy` (fuel level), `stat` (burn rate)
+- wires: `energy → waitfor` (low fuel gates further climb), `stat → normal` (burn rate checked against baseline)
+- nav: switch to reserve mode below threshold
+
+**triangle_safety1** — detects and handles failures
+- sensor: `event` (alarm), `problem` (fault signal)
+- wires: `problem → solve` (fault drives resolution sequence), `event → shield` (alarm activates protection)
+- nav: switch between normal / emergency / mayday modes
+
+**orchestrator_airplane1** — coordinates between triangles
+```
+fuel critical, orchestrator activates safety triangle;c;mode;orchestrator;triangle_safety1;handoff;10;20;
+nav dead end (no runway reachable), orchestrator activates flight triangle for holding pattern;c;mode;orchestrator;triangle_flight1;handoff;40;60;
+```
+
+The same quark vocabulary covers the physics (`force`, `energy`, `loc`) and the failure handling (`problem`, `solve`, `shield`) without any extensions. `ctrl / plan / nav` runs identically in a Raspberry Pi robot and a Boeing flight computer — only the driver catalog changes.
