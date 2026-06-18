@@ -365,3 +365,21 @@ nav dead end (no runway reachable), orchestrator activates flight triangle for h
 ```
 
 The same quark vocabulary covers the physics (`force`, `energy`, `loc`) and the failure handling (`problem`, `solve`, `shield`) without any extensions. `ctrl / plan / nav` runs identically in a Raspberry Pi robot and a Boeing flight computer — only the driver catalog changes.
+
+---
+
+## Why quarks beat traditional IT architectures
+
+Traditional IT systems are **designed for a known problem**. You define the schema, the API, the business logic, the data model — all upfront, all in the language of one specific domain. When the domain shifts, you redesign. When two domains need to talk, you write an adapter. The system is brittle because its meaning is locked inside the code.
+
+The quark system inverts this. The 39 quarks are **domain-neutral**. A `battery is low` and a `budget is low` and a `fuel tank is low` all map to `{energy, stat low}` — the same cluster, regardless of domain. The triangle doesn't know it's an airplane or a robot or a hospital. It just knows its goal cluster and runs its sensor→ctrl→actuator loop until the cluster is satisfied.
+
+This gives you three things traditional architectures can't easily offer:
+
+**1. Transfer learning without retraining.** Concepts learned in one domain (`combinations.csv`) are immediately available in another. The robot that learned `grasper → {tool, force}` gives that knowledge to the factory for free.
+
+**2. Goals are first-class citizens.** In traditional IT, the goal is implicit — buried in stored procedures, workflows, state machines. Here the goal is literally written at the apex of the triangle as a quark cluster. You can read, change, and compose goals directly.
+
+**3. The system can describe itself.** Because everything maps to the same 39 primitives, the orchestrator, the triangles, the sensors, and the actuators all speak the same language. There is no translation layer. That's what makes the Darwin-like machine possible — it can bootstrap in an unknown environment because its genome (the quarks) is universal.
+
+Old-fashioned IT is a **map of a specific territory**. The quarks are the **coordinate system** — valid for any territory.
