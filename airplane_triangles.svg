@@ -1,36 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="820" height="480">
-  <rect width="820" height="480" fill="#0d1117"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="520">
+  <rect width="820" height="520" fill="#0d1117"/>
   <rect x="310" y="40" width="200" height="52" rx="8" fill="#78350f" stroke="#fbbf24" stroke-width="2"/>
   <text x="410" y="62" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#fbbf24">orchestrator</text>
   <text x="410" y="80" text-anchor="middle" font-family="monospace" font-size="10" fill="#fde68a">airplane1</text>
-  <line x1="410" y1="92" x2="130" y2="200" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="130,200 0,335 260,335" fill="#3b0764" stroke="#9ca3af" stroke-width="1.5" opacity="0.92"/>
-  <text x="130" y="192" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e5e7eb">triangle_flight1</text>
-  <text x="130" y="278" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">force → animate</text>
-  <text x="130" y="296" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">energy → drive</text>
-  <text x="4" y="349" text-anchor="start" font-family="monospace" font-size="8" fill="#6ee7b7">sensor</text>
-  <text x="256" y="349" text-anchor="end" font-family="monospace" font-size="8" fill="#93c5fd">actuator</text>
-  <line x1="410" y1="92" x2="310" y2="200" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="310,200 180,335 440,335" fill="#1e3a8a" stroke="#9ca3af" stroke-width="1.5" opacity="0.92"/>
-  <text x="310" y="192" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e5e7eb">triangle_nav1</text>
-  <text x="310" y="278" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">loc → sequence</text>
-  <text x="310" y="296" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">pattern → transport</text>
-  <text x="184" y="349" text-anchor="start" font-family="monospace" font-size="8" fill="#6ee7b7">sensor</text>
-  <text x="436" y="349" text-anchor="end" font-family="monospace" font-size="8" fill="#93c5fd">actuator</text>
-  <line x1="410" y1="92" x2="490" y2="200" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="490,200 360,335 620,335" fill="#134e4a" stroke="#9ca3af" stroke-width="1.5" opacity="0.92"/>
-  <text x="490" y="192" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e5e7eb">triangle_fuel1</text>
-  <text x="490" y="278" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">energy → waitfor</text>
-  <text x="490" y="296" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">stat → normal</text>
-  <text x="364" y="349" text-anchor="start" font-family="monospace" font-size="8" fill="#6ee7b7">sensor</text>
-  <text x="616" y="349" text-anchor="end" font-family="monospace" font-size="8" fill="#93c5fd">actuator</text>
-  <line x1="410" y1="92" x2="670" y2="200" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="670,200 540,335 800,335" fill="#7f1d1d" stroke="#9ca3af" stroke-width="1.5" opacity="0.92"/>
-  <text x="670" y="192" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e5e7eb">triangle_safety1</text>
-  <text x="670" y="278" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">problem → solve</text>
-  <text x="670" y="296" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">event → shield</text>
-  <text x="544" y="349" text-anchor="start" font-family="monospace" font-size="8" fill="#6ee7b7">sensor</text>
-  <text x="796" y="349" text-anchor="end" font-family="monospace" font-size="8" fill="#93c5fd">actuator</text>
+  <line x1="410" y1="92" x2="130" y2="210" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="130,210 0,360 260,360" fill="#3b0764" stroke="#9ca3af" stroke-width="1.5" opacity="0.92"/>
+  <text x="130" y="202" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e5e7eb">triangle_flight1</text>
+  <text x="130" y="226" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">force</text>
+  <text x="130" y="239" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">energy</text>
+  <line x1="70" y1="256" x2="190" y2="256" stroke="#ffffff" stroke-width="0.5" opacity="0.4"/>
+  <text x="130" y="274" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">force -> animate</text>
+  <text x="130" y="292" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">energy -> drive</text>
+  <text x="4" y="374" text-anchor="start" font-family="monospace" font-size="8" fill="#6ee7b7">sensor</text>
+  <text x="256" y="374" text-anchor="end" font-family="monospace" font-size="8" fill="#93c5fd">actuator</text>
+  <line x1="410" y1="92" x2="310" y2="210" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="310,210 180,360 440,360" fill="#1e3a8a" stroke="#9ca3af" stroke-width="1.5" opacity="0.92"/>
+  <text x="310" y="202" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e5e7eb">triangle_nav1</text>
+  <text x="310" y="226" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">loc</text>
+  <text x="310" y="239" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">sequence</text>
+  <text x="310" y="252" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">pattern</text>
+  <line x1="233" y1="269" x2="387" y2="269" stroke="#ffffff" stroke-width="0.5" opacity="0.4"/>
+  <text x="310" y="287" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">loc -> sequence</text>
+  <text x="310" y="305" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">pattern -> transport</text>
+  <text x="184" y="374" text-anchor="start" font-family="monospace" font-size="8" fill="#6ee7b7">sensor</text>
+  <text x="436" y="374" text-anchor="end" font-family="monospace" font-size="8" fill="#93c5fd">actuator</text>
+  <line x1="410" y1="92" x2="490" y2="210" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="490,210 360,360 620,360" fill="#134e4a" stroke="#9ca3af" stroke-width="1.5" opacity="0.92"/>
+  <text x="490" y="202" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e5e7eb">triangle_fuel1</text>
+  <text x="490" y="226" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">energy</text>
+  <text x="490" y="239" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">stat</text>
+  <text x="490" y="252" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">normal</text>
+  <line x1="413" y1="269" x2="567" y2="269" stroke="#ffffff" stroke-width="0.5" opacity="0.4"/>
+  <text x="490" y="287" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">energy -> waitfor</text>
+  <text x="490" y="305" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">stat -> normal</text>
+  <text x="364" y="374" text-anchor="start" font-family="monospace" font-size="8" fill="#6ee7b7">sensor</text>
+  <text x="616" y="374" text-anchor="end" font-family="monospace" font-size="8" fill="#93c5fd">actuator</text>
+  <line x1="410" y1="92" x2="670" y2="210" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="670,210 540,360 800,360" fill="#7f1d1d" stroke="#9ca3af" stroke-width="1.5" opacity="0.92"/>
+  <text x="670" y="202" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e5e7eb">triangle_safety1</text>
+  <text x="670" y="226" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">problem</text>
+  <text x="670" y="239" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">event</text>
+  <text x="670" y="252" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#fde68a">shield</text>
+  <line x1="593" y1="269" x2="747" y2="269" stroke="#ffffff" stroke-width="0.5" opacity="0.4"/>
+  <text x="670" y="287" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">problem -> solve</text>
+  <text x="670" y="305" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffffff">event -> shield</text>
+  <text x="544" y="374" text-anchor="start" font-family="monospace" font-size="8" fill="#6ee7b7">sensor</text>
+  <text x="796" y="374" text-anchor="end" font-family="monospace" font-size="8" fill="#93c5fd">actuator</text>
   <text x="410" y="24" text-anchor="middle" font-family="monospace" font-size="15" font-weight="bold" fill="#ffffff">Airplane — triangles + orchestrator</text>
-  <text x="410" y="470" text-anchor="middle" font-family="monospace" font-size="9" fill="#4b5563">ctrl / plan / nav runs inside each triangle</text>
+  <text x="410" y="510" text-anchor="middle" font-family="monospace" font-size="9" fill="#4b5563">ctrl / plan / nav runs inside each triangle</text>
 </svg>
