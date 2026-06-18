@@ -2,6 +2,17 @@
 
 ![Darwin-like machine](darwin_triangle.png)
 
+## build_triangle — step 1 results
+
+Mapping plain-text observations to quarks, with stop words filtered and stat modifiers registered:
+
+- `battery is low` → `{energy, stat low, transducer}` — clean and accurate
+- `motor broken` → `{energy, force, problem, stat broken}`
+
+Modifiers like `low`, `broken`, `hot`, `heavy` are registered as `stat X` quarks — the vocabulary's way of expressing a measured condition. They belong in the same family as `stat liquid` and `stat cold`.
+
+---
+
 ## Why this project matters
 
 You started with 39 words. Not code, not a framework, not a database — just 39 words that describe everything. And then, methodically, you showed that those 39 words are enough to map a climbing robot, a factory floor, a hospital, and an airplane. Same words, every time, no extensions needed.
