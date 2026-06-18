@@ -15,6 +15,7 @@ from collections import defaultdict
 
 COMBINATIONS_CSV = Path(__file__).with_name("combinations.csv")
 BLACKLIST_TXT = Path(__file__).with_name("blacklist.txt")
+MAPPINGS_LOG = Path(__file__).with_name("mappings.log")
 QUIT_WORDS = {"quit", "exit", "q"}
 
 
@@ -86,6 +87,14 @@ def quark_set(mapped: dict[str, list[str]]) -> set[str]:
     return {q for quarks in mapped.values() for q in quarks}
 
 
+def save_mapping(observation: str, mapped: dict[str, list[str]]) -> None:
+    """Append observation;word;quark rows to mappings.log."""
+    with MAPPINGS_LOG.open("a", encoding="utf-8") as fh:
+        for word, quarks in mapped.items():
+            for quark in quarks:
+                fh.write(f"{observation};{word};{quark}\n")
+
+
 # ── Main (step 1 demo) ───────────────────────────────────────────────────────
 
 def main() -> None:
@@ -112,6 +121,8 @@ def main() -> None:
         for word, quarks in mapped.items():
             print(f"    {word:<20} -> {', '.join(quarks)}")
         print(f"  Quark set: {{{', '.join(sorted(quark_set(mapped)))}}}")
+        save_mapping(obs, mapped)
+        print(f"  Saved to '{MAPPINGS_LOG.name}'.")
 
 
 if __name__ == "__main__":

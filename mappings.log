@@ -1,0 +1,7 @@
+battery is low;battery;energy
+battery is low;battery;transducer
+battery is low;low;stat low
+motor is broken;motor;energy
+motor is broken;motor;force
+motor is broken;broken;stat broken
+motor is broken;broken;problem
