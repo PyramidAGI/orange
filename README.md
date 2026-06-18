@@ -9,6 +9,9 @@ What code lives in each layer of the darwin triangle. Each layer only talks to t
 **Layer 0 — Goal** (`loc`, or whatever the apex quark is)
 ```
 goal = read_target()           # what does the system need to achieve?
+                               # goal can be a single quark (loc, val)
+                               # or a cluster of quarks (loc + force + energy)
+                               #   e.g. "reach branch AND maintain grip AND stay charged"
 if current_state == goal:
     hold()                     # already there, maintain
 else:
