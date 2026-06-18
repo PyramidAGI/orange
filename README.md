@@ -1,5 +1,7 @@
 # Orange
 
+![Darwin-like machine](darwin_triangle.png)
+
 ## Tree climbing robot simulator — options
 
 Four options for a CLI-based simulator, using the ideas from this directory.
