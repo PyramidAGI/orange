@@ -14,10 +14,18 @@ from pathlib import Path
 from collections import defaultdict
 
 COMBINATIONS_CSV = Path(__file__).with_name("combinations.csv")
+BLACKLIST_TXT = Path(__file__).with_name("blacklist.txt")
 QUIT_WORDS = {"quit", "exit", "q"}
 
 
 # ── Step 1: MAP observation -> quarks ────────────────────────────────────────
+
+def load_blacklist() -> set[str]:
+    if not BLACKLIST_TXT.exists():
+        return set()
+    return {w.strip().lower() for w in BLACKLIST_TXT.read_text(encoding="utf-8").splitlines()
+            if w.strip() and not w.startswith("#")}
+
 
 def load_combinations() -> dict[str, list[str]]:
     data: dict[str, list[str]] = defaultdict(list)
@@ -34,13 +42,15 @@ def load_combinations() -> dict[str, list[str]]:
 
 def map_to_quarks(observation: str,
                   combinations: dict[str, list[str]],
+                  blacklist: set[str] | None = None,
                   use_api: bool = True) -> dict[str, list[str]]:
     """
     Split observation into words, look each up in combinations.csv.
     For words not found, optionally call quark_overlap via the OpenAI API.
     Returns {word: [quarks]} for every word that matched something.
     """
-    words = [w.strip(".,!?;:").lower() for w in observation.split()]
+    words = [w.strip(".,!?;:").lower() for w in observation.split()
+             if w.strip(".,!?;:").lower() not in (blacklist or set())]
     result: dict[str, list[str]] = {}
     unknown: list[str] = []
 
@@ -80,7 +90,8 @@ def quark_set(mapped: dict[str, list[str]]) -> set[str]:
 
 def main() -> None:
     combinations = load_combinations()
-    print(f"Loaded {len(combinations)} concepts from combinations.csv.")
+    blacklist = load_blacklist()
+    print(f"Loaded {len(combinations)} concepts, {len(blacklist)} blacklisted words.")
     print("Enter an observation to map to quarks. Type 'quit' to exit.\n")
 
     while True:
@@ -92,7 +103,7 @@ def main() -> None:
         if not obs or obs.lower() in QUIT_WORDS:
             break
 
-        mapped = map_to_quarks(obs, combinations)
+        mapped = map_to_quarks(obs, combinations, blacklist)
         if not mapped:
             print("  No quarks found.")
             continue
