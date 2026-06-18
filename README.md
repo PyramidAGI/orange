@@ -242,6 +242,8 @@ The only external dependency is step 1 for truly unknown observations — `quark
 
 ## Airplane expressed in triangles
 
+![Airplane triangles + orchestrator](airplane_triangles.svg)
+
 An airplane decomposes naturally into four triangles coordinated by one orchestrator.
 
 **triangle_flight1** — keeps the plane in the air
