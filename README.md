@@ -2,6 +2,68 @@
 
 ![Darwin-like machine](darwin_triangle.png)
 
+## Software in each triangle layer
+
+What code lives in each layer of the darwin triangle. Each layer only talks to the layer directly above and below it — no layer skips. That's what makes it robust and each layer independently testable.
+
+**Layer 0 — Goal** (`loc`, or whatever the apex quark is)
+```
+goal = read_target()           # what does the system need to achieve?
+if current_state == goal:
+    hold()                     # already there, maintain
+else:
+    activate_nav()             # hand off to layer 1
+```
+
+**Layer 1 — Nav/Mode** (`fork`, `mode`)
+```
+mode = decide_mode(goal, sensor_readings)
+# e.g. climb_mode, recharge_mode, retreat_mode
+if mode != current_mode:
+    switch_triangle(mode)      # orchestrator call
+    log(mode_change)
+```
+
+**Layer 2 — Actuator coordination** (`animate`, `grasper`, `support`)
+```
+for each active_wire in triangle:
+    left = read_sensor(wire.left_quark)   # e.g. force
+    right = compute_output(left)          # e.g. animate
+    send_to_actuator(wire.right_quark, right)
+```
+
+**Layer 3 — Drive / sequencing** (`drive`, `force`, `sequence`)
+```
+sequence = load_plan()
+for step in sequence:
+    apply_force(step.target, step.value)
+    wait_until(step.criterion_met)
+    log(step)
+```
+
+**Layer 4 — Sensors** (`transducer`, `stat`, `pattern`, `energy`)
+```
+readings = {}
+for quark in sensor_quarks:
+    readings[quark] = driver_catalog[quark].read()
+    if readings[quark] crosses threshold[quark]:
+        fire_event(quark, readings[quark])
+```
+
+**Layer 5 — State / foundation** (`problem`, `solve`, `waitfor`, `normal`, `data`)
+```
+state[quark] = current_reading
+if state[quark] deviates from normal[quark]:
+    problem = diagnose(quark, state)
+    solution = lookup_solution(problem)    # weights.json
+    if solution:
+        trigger(solution)
+    else:
+        waitfor(new_triangle)              # build_triangle(observation)
+```
+
+---
+
 ## build_triangle — step 1 results
 
 Mapping plain-text observations to quarks, with stop words filtered and stat modifiers registered:
