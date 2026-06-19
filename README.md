@@ -651,3 +651,5 @@ Small improvements in order of impact:
 **5. Unknown quark fallback** — if a quark has no rule and no triangle claims it, call `quark_overlap.py` to map it on the fly and add it to `combinations.csv`. This closes the learning loop.
 
 Step 5 is the most interesting — it turns the runner into a self-extending system. Each unknown quark teaches the system something new.
+
+![runner.py improvement steps](runner_steps.svg)
