@@ -485,3 +485,20 @@ loop:
 ```
 
 The same 39 quarks that describe a greenhouse describe a meeting room. `stat hot` is rising temperature in one case and rising voices in the other. The triangle doesn't know the difference — and it doesn't need to.
+
+---
+
+## Transparency instead of a black box
+
+With a black-box LLM you can observe the input and the output but not the reasoning. With this system every decision is traceable:
+
+- `mappings.log` tells you which words mapped to which quarks
+- `combinations.csv` tells you the full grounding vocabulary
+- the goal cluster at the triangle apex tells you what the system is trying to achieve
+- the `actuate()` call tells you exactly why an action was taken — `stat broken` triggered `ACKNOWLEDGE_HARM`
+
+A regulator, a doctor, an engineer, or a judge can audit the full chain. You can even challenge it: "why did the system call a break?" — "because it sensed `stat heavy` and the goal cluster requires `stat soft`."
+
+The LLM is still there if you need it (for unknown concept grounding via the API), but it is used once at the edge — to map a new word to a quark — and after that the reasoning is entirely symbolic and inspectable. The LLM populates `combinations.csv`; the triangle logic is deterministic.
+
+That's the best of both worlds: LLM flexibility at the boundary, transparent rule-based control at the core.
