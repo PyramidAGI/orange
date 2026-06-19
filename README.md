@@ -623,3 +623,13 @@ The goal quarks (`stat full`, `stat soft`, `bond`) have no rules because they re
 The entire intelligence of the system lives in `log.csv`. `runner.py` itself contains no domain knowledge — it does not know what a jazz band is, what `stat cold` means, or what `nod_to_soloist` does. All of that is encoded in the log as quark pairs. Add a new triangle to the log and the runner picks it up automatically on the next run.
 
 This is the transparency property in action: every decision the system makes can be traced back to a specific row in the log file.
+
+---
+
+## What does 'bond' mean in the jazz band example?
+
+In the jazz band context `bond` means the musicians are **locked in together** — they're listening to each other, feeling the same pulse, responding in real time. It's the state where the band functions as one organism rather than five individuals playing simultaneously.
+
+It's the hardest of the three goal quarks to achieve and the last to arrive. You can have `stat full` (rich sound) and `stat soft` (relaxed feel) but still not have `bond` — the band sounds good but isn't truly connected. When `bond` arrives the music has a different quality that every musician and listener recognises immediately.
+
+The quark captures it without needing a music theory concept. `bond` in a family is the same primitive — two or more things that have become more than their sum. The jazz band, the family dinner, the climbing robot gripping a branch — all three use `bond` for the same underlying reason: something that was separate has become joined.
