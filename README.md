@@ -653,3 +653,13 @@ Small improvements in order of impact:
 Step 5 is the most interesting — it turns the runner into a self-extending system. Each unknown quark teaches the system something new.
 
 ![runner.py improvement steps](runner_steps.svg)
+
+---
+
+## The minimal triangle
+
+Three quarks are enough to describe any corrective system:
+
+![minimal triangle](minimal_triangle.svg)
+
+`problem` at the sensor, `solve` as the wire, `normal` as the goal. The loop runs until the goal quark is reached — then resets. A thermostat, a jazz band, a hospital triage, a robot arm: all three quarks, same triangle.
