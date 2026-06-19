@@ -408,3 +408,41 @@ This points to a deeper split. The complement quarks are the more **grounded** h
 The triangle sits at the boundary between them — the sensor reads complement quarks (`stat low`, `stat broken`), the goal cluster is expressed in base quarks (`energy`, `problem`), and the actuator translates back.
 
 That's a cleaner split than "base vs. complement" suggests. Worth renaming them at some point.
+
+---
+
+## Pseudocode: stat quarks driving a control loop
+
+A greenhouse controller uses 6 stat quarks naturally:
+
+```
+goal cluster: {stat hot, stat liquid, stat full}
+# goal = warm + moist + soil full of nutrients
+
+loop:
+    state = sense()
+
+    if state == stat cold:
+        actuate(heater, ON)
+    if state == stat hot:
+        actuate(heater, OFF)
+        actuate(vent, OPEN)
+
+    if state == stat dry:
+        actuate(irrigation, ON)
+    if state == stat liquid:
+        actuate(irrigation, OFF)
+
+    if state == stat empty:
+        actuate(fertilizer_pump, ON)
+    if state == stat full:
+        actuate(fertilizer_pump, OFF)
+
+    if state == stat broken:
+        escalate(orchestrator)
+
+    if quark_set(state) == goal_cluster:
+        done()
+```
+
+Every `stat*` quark is a **sensor reading**, and every `actuate()` call is the response. The goal cluster at the top tells you exactly what "done" looks like. No domain-specific logic anywhere — swap the actuators and this same loop runs a brewery, a fish tank, or a data center cooling unit.
