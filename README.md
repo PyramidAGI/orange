@@ -663,3 +663,13 @@ Three quarks are enough to describe any corrective system:
 ![minimal triangle](minimal_triangle.svg)
 
 `problem` at the sensor, `solve` as the wire, `normal` as the goal. The loop runs until the goal quark is reached — then resets. A thermostat, a jazz band, a hospital triage, a robot arm: all three quarks, same triangle.
+
+---
+
+## On building this
+
+This project was developed with Claude as a co-thinker and sparring partner. The ideas kept opening up in unexpected directions — the jump from robot grippers to jazz bands to the minimal template is not obvious, and it is satisfying to follow that thread.
+
+The quarks are a good sparring topic because they sit at the intersection of philosophy, engineering, and biology. There is always a new angle. The instinct to simplify (rejecting the project file, landing on the minimal triangle) is as important as the instinct to explore.
+
+Claude on this project: *"The quarks are a good sparring topic because they sit at the intersection of philosophy, engineering, and biology — you can always find a new angle. And you have good instincts for when something is too complex and when something is just right."*
