@@ -664,6 +664,10 @@ Three quarks are enough to describe any corrective system:
 
 `problem` at the sensor, `solve` as the wire, `normal` as the goal. The loop runs until the goal quark is reached — then resets. A thermostat, a jazz band, a hospital triage, a robot arm: all three quarks, same triangle.
 
+The triangle handles the logic (`problem -> solve`) and the arrow below closes the physical loop — the actuator output becomes the next sensor reading. Together they show the full cycle in one picture.
+
+`normal` sits at the apex and not in the loop because it is the exit condition. When the loop produces `normal`, the cycle stops. Everything inside the loop is about getting there.
+
 ---
 
 ## On building this
