@@ -633,3 +633,21 @@ In the jazz band context `bond` means the musicians are **locked in together** �
 It's the hardest of the three goal quarks to achieve and the last to arrive. You can have `stat full` (rich sound) and `stat soft` (relaxed feel) but still not have `bond` — the band sounds good but isn't truly connected. When `bond` arrives the music has a different quality that every musician and listener recognises immediately.
 
 The quark captures it without needing a music theory concept. `bond` in a family is the same primitive — two or more things that have become more than their sum. The jazz band, the family dinner, the climbing robot gripping a branch — all three use `bond` for the same underlying reason: something that was separate has become joined.
+
+---
+
+## Next steps for runner.py
+
+Small improvements in order of impact:
+
+**1. Multi-triangle routing** — right now all quarks go to all triangles. Add a `sense(quark) -> triangle` lookup so each quark is routed to the triangle that owns it.
+
+**2. Escalation** — when `stat broken` arrives, automatically hand off to the orchestrator instead of just printing. The orchestrator then activates the right triangle.
+
+**3. Memory** — `seen` resets on goal. But between resets, the system has no memory of what it already fixed. A short-term state buffer (last N quarks) would let the triangle notice patterns, not just single events.
+
+**4. Actuator confirmation** — after `actuate -> nod_to_soloist`, the loop should wait for a quark back confirming the effect (`stat soft` arriving means the action worked). Right now it fires and forgets.
+
+**5. Unknown quark fallback** — if a quark has no rule and no triangle claims it, call `quark_overlap.py` to map it on the fly and add it to `combinations.csv`. This closes the learning loop.
+
+Step 5 is the most interesting — it turns the runner into a self-extending system. Each unknown quark teaches the system something new.
