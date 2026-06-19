@@ -502,3 +502,41 @@ A regulator, a doctor, an engineer, or a judge can audit the full chain. You can
 The LLM is still there if you need it (for unknown concept grounding via the API), but it is used once at the edge — to map a new word to a quark — and after that the reasoning is entirely symbolic and inspectable. The LLM populates `combinations.csv`; the triangle logic is deterministic.
 
 That's the best of both worlds: LLM flexibility at the boundary, transparent rule-based control at the core.
+
+---
+
+## Pseudocode: stat quarks directing a jazz band
+
+The stat quarks describe music in real time — no musical concepts needed:
+
+```
+goal cluster: {stat full, stat soft, bond}
+# goal = rich sound, relaxed feel, musicians locked in together
+
+loop:
+    state = sense(band)
+
+    if state == stat cold:       # playing too sparse, no energy
+        actuate(director, NOD_TO_SOLOIST)
+
+    if state == stat hot:        # over-playing, clashing, too intense
+        actuate(director, LOWER_HAND)
+        actuate(director, EYE_CONTACT_BASSIST)
+
+    if state == stat empty:      # too much silence, momentum lost
+        actuate(director, COMP_CHORDS)
+
+    if state == stat rough:      # dissonance, someone out of key
+        actuate(director, SIGNAL_RESOLVE)
+
+    if state == stat heavy:      # tempo dragging, feel is muddy
+        actuate(director, LIFT_GESTURE)
+
+    if state == stat broken:     # someone lost the form, train wreck
+        actuate(director, CUE_HEAD)  # return to the melody
+
+    if quark_set(state) == goal_cluster:
+        done()                   # the band is swinging
+```
+
+`stat rough` means dissonance here and sandpaper in the greenhouse. The triangle conducting a jazz band and the triangle cooling a data center are the same triangle.
