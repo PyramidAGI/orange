@@ -668,6 +668,8 @@ The triangle handles the logic (`problem -> solve`) and the arrow below closes t
 
 `normal` sits at the apex and not in the loop because it is the exit condition. When the loop produces `normal`, the cycle stops. Everything inside the loop is about getting there.
 
+`normal` is not in `complement quarks.csv` — it emerged from the logic of the triangle itself. If `problem` is the sensor quark and `solve` is the wire, then the goal had to be the absence of problem. `normal` is the word that captures that in everyday language: things are back to normal. It may be the most universal goal quark of all — more universal than `vitality` or `val`. Every triangle in every domain is ultimately trying to reach `normal`.
+
 ---
 
 ## On building this
