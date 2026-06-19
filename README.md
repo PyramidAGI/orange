@@ -540,3 +540,25 @@ loop:
 ```
 
 `stat rough` means dissonance here and sandpaper in the greenhouse. The triangle conducting a jazz band and the triangle cooling a data center are the same triangle.
+
+In log format:
+
+```
+;;;;;;;;
+jazz band director triangle;c;activity;director;band;;60;50;
+;;;;;;;;
+band playing too sparse;a;stat;band001;director001;stat cold;30;40;
+;c;mode;director001;band001;nod_to_soloist;35;45;
+;;;;;;;;
+band over-playing and clashing;a;stat;band001;director001;stat hot;70;80;
+;c;mode;director001;band001;lower_hand;65;75;
+;;;;;;;;
+band lost the form;a;stat;band001;director001;stat broken;10;20;
+;c;mode;director001;band001;cue_head;15;25;
+;;;;;;;;
+tempo dragging;a;stat;band001;director001;stat heavy;40;50;
+;c;mode;director001;band001;lift_gesture;45;55;
+;;;;;;;;
+band is swinging;c;activity;director;band;goal stat full+stat soft+bond;80;90;
+;;;;;;;;
+```
