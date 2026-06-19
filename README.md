@@ -562,3 +562,64 @@ tempo dragging;a;stat;band001;director001;stat heavy;40;50;
 band is swinging;c;activity;director;band;goal stat full+stat soft+bond;80;90;
 ;;;;;;;;
 ```
+
+---
+
+## runner.py — executing triangles from log.csv
+
+`runner.py` is the runtime that brings the log file to life. It reads `log.csv`, reconstructs the triangles and orchestrators defined there, and then accepts quarks as input via the CLI — firing actuators and tracking progress toward each triangle's goal cluster.
+
+### How parsing works
+
+The parser does a single linear pass over `log.csv`. It maintains two pointers: the current triangle `name` and a `pending` sensor quark. Three record patterns are recognised:
+
+| record pattern | what it does |
+|---|---|
+| `c;activity` (no goal) | sets the current triangle name (`e1`) |
+| `c;activity` (rel starts with `goal`) | reads the goal cluster for the current triangle |
+| `a;stat` | stores the sensor quark (`rel`) as `pending` |
+| `c;mode` (e1 = `orchestrator`) | registers an orchestrator handoff rule |
+| `c;mode` (any other e1) | pairs `pending` sensor quark with the actuator action (`rel`), forming one rule |
+
+The `a;stat` + `c;mode` pair is the core building block. Every rule in the system is encoded as exactly these two consecutive rows in the log:
+
+```
+band playing too sparse;a;stat;band001;director001;stat cold;30;40;   <- sensor quark: stat cold
+;c;mode;director001;band001;nod_to_soloist;35;45;                     <- action: nod_to_soloist
+```
+
+After parsing, the data structures are:
+
+```python
+rules  = { "director": { "stat cold": "nod_to_soloist",
+                          "stat hot":  "lower_hand", ... } }
+goals  = { "director": { "stat full", "stat soft", "bond" } }
+orcs   = { "triangle_energy1": "handoff", ... }
+```
+
+### How the control loop works
+
+The main loop accepts one quark per input line. For each quark:
+
+1. **Accumulate** — the quark is added to `seen[triangle]` for every triangle
+2. **Fire rule** — if the quark matches a rule, print the actuator action
+3. **Check goal** — if the accumulated `seen` set is a superset of the goal cluster, print `GOAL REACHED` and reset
+4. **Orchestrator check** — if the quark matches a rule in any orchestrator-managed triangle, print a handoff suggestion
+
+Example session with the jazz band triangle:
+
+```
+quark> stat cold        ->  [director] actuate -> nod_to_soloist
+quark> stat hot         ->  [director] actuate -> lower_hand
+quark> stat full        ->  (no rule for 'stat full')
+quark> stat soft        ->  (no rule for 'stat soft')
+quark> bond             ->  [director] GOAL REACHED: {'bond', 'stat full', 'stat soft'}
+```
+
+The goal quarks (`stat full`, `stat soft`, `bond`) have no rules because they represent the desired state, not a problem to fix. They accumulate silently until the full cluster is present — at which point the triangle declares success and resets.
+
+### What this demonstrates
+
+The entire intelligence of the system lives in `log.csv`. `runner.py` itself contains no domain knowledge — it does not know what a jazz band is, what `stat cold` means, or what `nod_to_soloist` does. All of that is encoded in the log as quark pairs. Add a new triangle to the log and the runner picks it up automatically on the next run.
+
+This is the transparency property in action: every decision the system makes can be traced back to a specific row in the log file.
