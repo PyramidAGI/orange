@@ -60,7 +60,7 @@ lines.append(
 
 # Loop arrow at base
 lines.append(
-    f'<path d="M {bl_x + 20} {base_y + 8} Q {cx} {base_y + 60} {br_x - 20} {base_y + 8}" '
+    f'<path d="M {br_x - 20} {base_y + 8} Q {cx} {base_y + 60} {bl_x + 20} {base_y + 8}" '
     f'fill="none" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="4,3" '
     f'marker-end="url(#arr)"/>'
 )
