@@ -383,3 +383,28 @@ This gives you three things traditional architectures can't easily offer:
 **3. The system can describe itself.** Because everything maps to the same 39 primitives, the orchestrator, the triangles, the sensors, and the actuators all speak the same language. There is no translation layer. That's what makes the Darwin-like machine possible — it can bootstrap in an unknown environment because its genome (the quarks) is universal.
 
 Old-fashioned IT is a **map of a specific territory**. The quarks are the **coordinate system** — valid for any territory.
+
+---
+
+## The complement quarks as a standalone system
+
+The complement quarks (`complement quarks.csv`, #40–#65) split naturally into two powerful subsets:
+
+**The stat\* cluster** (`stat low/high/fast/slow/full/empty/broken/hot/cold/dry/heavy/soft/rough/liquid/vapor/sound/size`) is essentially a **complete physical sensor vocabulary**. Temperature, pressure, moisture, integrity, speed, fill level, texture — you can describe the state of almost any physical system with just these 18 words. A robot's entire perception layer could run on this subset alone.
+
+**The relational cluster** (`bond`, `kinship`, `emo`, `vitality`, `fork`, `mode`, `transducer`, `plant`, `machine`) covers how things connect and transition. `mode` + `fork` alone give you a state machine. `transducer` gives you the boundary between domains (electrical↔mechanical, digital↔physical). `bond` + `kinship` give you graph edges.
+
+What's striking is that the complement quarks feel like they were *discovered* rather than designed — they emerged from concepts that the base 39 couldn't express cleanly. That's exactly how a good primitive set should grow: you hit a wall, you add the minimum to get past it, and you stop.
+
+A working robot controller could be built using only the complement quarks as a triangle goal vocabulary: the stat\* set handles sensing, `mode`/`fork` handle control flow, `transducer` handles actuation, `vitality` handles health monitoring.
+
+## Body and mind
+
+This points to a deeper split. The complement quarks are the more **grounded** half of the system — physical and operational. The base 39 are more abstract, better suited for social and conceptual domains.
+
+- **complement quarks** → the body (sensors, actuators, physical state, control flow)
+- **base 39 quarks** → the mind (goals, values, relationships, patterns)
+
+The triangle sits at the boundary between them — the sensor reads complement quarks (`stat low`, `stat broken`), the goal cluster is expressed in base quarks (`energy`, `problem`), and the actuator translates back.
+
+That's a cleaner split than "base vs. complement" suggests. Worth renaming them at some point.
