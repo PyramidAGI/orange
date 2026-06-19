@@ -446,3 +446,42 @@ loop:
 ```
 
 Every `stat*` quark is a **sensor reading**, and every `actuate()` call is the response. The goal cluster at the top tells you exactly what "done" looks like. No domain-specific logic anywhere — swap the actuators and this same loop runs a brewery, a fish tank, or a data center cooling unit.
+
+---
+
+## Pseudocode: stat quarks in a social context
+
+A team conflict mediator — the stat quarks map cleanly onto emotional and social states:
+
+```
+goal cluster: {stat soft, bond, reward}
+# goal = open dialogue, connection restored, everyone feels valued
+
+loop:
+    state = sense(room)
+
+    if state == stat hot:        # tension rising, voices raised
+        actuate(facilitator, SLOW_DOWN)
+        actuate(facilitator, ASK_OPEN_QUESTION)
+
+    if state == stat cold:       # withdrawal, silence, disengagement
+        actuate(facilitator, INVITE_SPEAKER)
+
+    if state == stat broken:     # trust damaged, accusation made
+        actuate(facilitator, ACKNOWLEDGE_HARM)
+        escalate(orchestrator)   # may need a separate mediation triangle
+
+    if state == stat heavy:      # burden, fatigue, overwhelm
+        actuate(facilitator, CALL_BREAK)
+
+    if state == stat rough:      # friction, interruptions, dismissal
+        actuate(facilitator, SET_GROUND_RULES)
+
+    if state == stat empty:      # no one speaking, dead end
+        actuate(facilitator, REFRAME_QUESTION)
+
+    if quark_set(state) == goal_cluster:
+        done()                   # people are talking, listening, feeling heard
+```
+
+The same 39 quarks that describe a greenhouse describe a meeting room. `stat hot` is rising temperature in one case and rising voices in the other. The triangle doesn't know the difference — and it doesn't need to.
