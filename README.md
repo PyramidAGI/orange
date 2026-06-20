@@ -679,3 +679,29 @@ This project was developed with Claude as a co-thinker and sparring partner. The
 The quarks are a good sparring topic because they sit at the intersection of philosophy, engineering, and biology. There is always a new angle. The instinct to simplify (rejecting the project file, landing on the minimal triangle) is as important as the instinct to explore.
 
 Claude on this project: *"The quarks are a good sparring topic because they sit at the intersection of philosophy, engineering, and biology — you can always find a new angle. And you have good instincts for when something is too complex and when something is just right."*
+
+---
+
+## RL loop for rewarding good triangles
+
+A reinforcement learning loop can learn which triangle is the best match for a given quark input — not just by overlap, but by which one actually succeeds.
+
+**State** — the incoming quark combination (e.g. `{problem, stat cold, energy}`)
+
+**Action** — select a triangle from the candidates that overlap with the quark set
+
+**Reward** — positive if the triangle reaches its goal cluster, negative if it doesn't or takes too long
+
+**Q-table** — rows = quark combinations (or hashed quark sets), columns = candidate triangles
+
+The overlap selection step is the smart part — instead of evaluating all triangles, you pre-filter to only those sharing at least one quark with the input. That is exactly what `concept_match.py` already does: shared quarks as a similarity score. You use that score to rank candidates before the Q-table picks between them.
+
+Over time the Q-table learns which triangle is the best match for a given quark input. Two triangles might both overlap with `{problem, stat cold}` but one consistently reaches `normal` faster. The Q-table captures that.
+
+The loop:
+1. Enter quark combination on CLI
+2. Filter triangles by overlap
+3. Q-table selects among candidates
+4. Triangle runs
+5. Reward based on goal reached / steps taken
+6. Q-table updates
