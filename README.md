@@ -775,3 +775,5 @@ quarks> problem, stat rough      (repeated)
 ```
 
 After a few repetitions the system has learned that `triangle_obstacle1` is the better handler for `{problem, stat rough}` — it fires both rules while `triangle_grip1` only fires one.
+
+![rl_matcher flow](rl_matcher.svg)
