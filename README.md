@@ -721,3 +721,57 @@ Five triangles for a tree climbing robot, stored in `triangles/`, each in log fo
 | `triangle_obstacle1.csv` | `loc + normal` | `stat rough`, `problem`, `stat heavy` |
 
 Note the overlaps — `stat broken` appears in both grip and nav, `stat rough` in both grip and obstacle, `problem` in both grip and obstacle. That is what makes the matching interesting: the Q-table learns which triangle handles each quark combination best. Two triangles may both overlap with `{problem, stat rough}` but one consistently reaches its goal cluster faster. The Q-table captures that distinction over time.
+
+---
+
+## rl_matcher.py — how it works
+
+`rl_matcher.py` loads the triangle library from `triangles/` and uses a Q-table to learn which triangle is the best match for a given quark input over repeated interactions.
+
+### Step 1 — overlap filter
+
+When you enter a quark combination (comma-separated), the matcher pre-filters to only triangles that share at least one quark with the input. This avoids evaluating irrelevant triangles entirely. For example `problem, stat rough` immediately narrows to `triangle_grip1` and `triangle_obstacle1` — the only two with rules for those quarks.
+
+### Step 2 — epsilon-greedy selection
+
+Among the candidates the matcher uses epsilon-greedy policy (30% explore, 70% exploit). Early on it explores randomly so every candidate gets a chance. As Q-values accumulate it increasingly picks the triangle with the highest learned score for that quark combination.
+
+### Step 3 — reward
+
+The reward has two components:
+
+- **Coverage** — what fraction of the input quarks the chosen triangle has rules for. A triangle that handles 2 of 2 input quarks scores higher than one that handles 1 of 2.
+- **Goal bonus** — +5 if any input quark overlaps with the triangle's goal cluster, meaning the input is already pointing toward the desired state.
+
+### Step 4 — Q-update
+
+The Q-table maps `(quark set, triangle)` → score. After each interaction it updates using:
+
+```
+Q = Q + alpha * (reward - Q)
+```
+
+The bar chart printed after each turn shows the Q-values for all candidates growing in real time as the system learns.
+
+### Example session
+
+```
+quarks> problem, stat rough
+  candidates: ['triangle_grip1', 'triangle_obstacle1']
+  [explore]  -> triangle_obstacle1
+  reward: +9
+    problem -> find_alternate_path
+    stat rough -> retract_limb
+  Q-table:
+    triangle_grip1                 +0.000
+    triangle_obstacle1             +0.900  ==
+
+quarks> problem, stat rough      (repeated)
+  [exploit]  -> triangle_obstacle1
+  reward: +9
+  Q-table:
+    triangle_grip1                 +0.000
+    triangle_obstacle1             +3.095  =========
+```
+
+After a few repetitions the system has learned that `triangle_obstacle1` is the better handler for `{problem, stat rough}` — it fires both rules while `triangle_grip1` only fires one.
