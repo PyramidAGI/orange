@@ -1,0 +1,14 @@
+;;;;;;;;
+balance triangle — maintain stable posture on branch;c;activity;robot;branch;;60;50;
+;;;;;;;;
+weight shifted, centre of mass off;a;stat;robot001;branch001;stat heavy;40;50;
+;c;mode;robot001;branch001;redistribute_weight;45;55;
+;;;;;;;;
+force imbalance detected;a;stat;robot001;branch001;force;30;40;
+;c;mode;robot001;branch001;adjust_stance;35;45;
+;;;;;;;;
+branch unstable, risk of snap;a;stat;robot001;branch001;stat broken;10;20;
+;c;mode;robot001;branch001;abort_branch;15;25;
+;;;;;;;;
+posture stable, weight supported;c;activity;robot;branch;goal normal+support;80;90;
+;;;;;;;;

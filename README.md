@@ -705,3 +705,19 @@ The loop:
 4. Triangle runs
 5. Reward based on goal reached / steps taken
 6. Q-table updates
+
+---
+
+## Tree climbing robot — triangle library
+
+Five triangles for a tree climbing robot, stored in `triangles/`, each in log format and ready for quark matching:
+
+| file | goal cluster | key sensor quarks |
+|---|---|---|
+| `triangle_grip1.csv` | `bond + force` | `problem`, `stat soft`, `stat rough` |
+| `triangle_nav1.csv` | `loc + sequence` | `stat empty`, `pattern`, `stat broken` |
+| `triangle_energy1.csv` | `energy + stat full` | `stat low`, `stat empty`, `stat hot` |
+| `triangle_balance1.csv` | `normal + support` | `stat heavy`, `force`, `stat broken` |
+| `triangle_obstacle1.csv` | `loc + normal` | `stat rough`, `problem`, `stat heavy` |
+
+Note the overlaps — `stat broken` appears in both grip and nav, `stat rough` in both grip and obstacle, `problem` in both grip and obstacle. That is what makes the matching interesting: the Q-table learns which triangle handles each quark combination best. Two triangles may both overlap with `{problem, stat rough}` but one consistently reaches its goal cluster faster. The Q-table captures that distinction over time.

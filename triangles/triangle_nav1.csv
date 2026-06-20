@@ -1,0 +1,14 @@
+;;;;;;;;
+navigation triangle — follow branch sequence to target;c;activity;robot;tree;;60;50;
+;;;;;;;;
+no branch ahead, path empty;a;stat;robot001;tree001;stat empty;20;30;
+;c;mode;robot001;tree001;extend_sensor_arm;25;35;
+;;;;;;;;
+branch pattern detected;a;stat;robot001;tree001;pattern;50;60;
+;c;mode;robot001;tree001;follow_branch;55;65;
+;;;;;;;;
+dead end, branch broken;a;stat;robot001;tree001;stat broken;10;20;
+;c;mode;robot001;tree001;backtrack;15;25;
+;;;;;;;;
+robot at target location on branch sequence;c;activity;robot;tree;goal loc+sequence;80;90;
+;;;;;;;;

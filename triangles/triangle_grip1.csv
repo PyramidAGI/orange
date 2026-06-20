@@ -1,0 +1,14 @@
+;;;;;;;;
+grip triangle — bond grasper to branch;c;activity;grasper;branch;;60;50;
+;;;;;;;;
+grip failure detected;a;stat;grasper001;branch001;problem;20;30;
+;c;mode;grasper001;branch001;engage_suction;25;35;
+;;;;;;;;
+surface too smooth to grip;a;stat;grasper001;branch001;stat soft;30;40;
+;c;mode;grasper001;branch001;switch_to_claw;35;45;
+;;;;;;;;
+surface rough, increase pressure;a;stat;grasper001;branch001;stat rough;50;60;
+;c;mode;grasper001;branch001;increase_grip_pressure;55;65;
+;;;;;;;;
+grasper bonded to branch;c;activity;grasper;branch;goal bond+force;80;90;
+;;;;;;;;

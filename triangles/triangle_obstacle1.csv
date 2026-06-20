@@ -1,0 +1,14 @@
+;;;;;;;;
+obstacle triangle — clear path through obstructions;c;activity;robot;tree;;60;50;
+;;;;;;;;
+thorn or spike detected;a;stat;robot001;tree001;stat rough;30;40;
+;c;mode;robot001;tree001;retract_limb;35;45;
+;;;;;;;;
+path blocked, no way through;a;stat;robot001;tree001;problem;20;30;
+;c;mode;robot001;tree001;find_alternate_path;25;35;
+;;;;;;;;
+dense foliage blocking sensors;a;stat;robot001;tree001;stat heavy;40;50;
+;c;mode;robot001;tree001;push_through;45;55;
+;;;;;;;;
+obstacle cleared, position restored;c;activity;robot;tree;goal loc+normal;80;90;
+;;;;;;;;

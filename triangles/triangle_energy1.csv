@@ -1,0 +1,14 @@
+;;;;;;;;
+energy triangle — maintain sufficient battery level;c;activity;robot;battery;;60;50;
+;;;;;;;;
+battery running low;a;stat;robot001;battery001;stat low;30;40;
+;c;mode;robot001;battery001;reduce_speed;35;45;
+;;;;;;;;
+battery critical;a;stat;robot001;battery001;stat empty;10;20;
+;c;mode;robot001;battery001;enter_sleep_mode;15;25;
+;;;;;;;;
+motor overheating;a;stat;robot001;motor001;stat hot;40;50;
+;c;mode;robot001;motor001;cool_motor;45;55;
+;;;;;;;;
+battery sufficient, energy stable;c;activity;robot;battery;goal energy+stat full;80;90;
+;;;;;;;;
