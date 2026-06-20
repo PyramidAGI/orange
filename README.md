@@ -810,3 +810,19 @@ Three options to get exclusive action selection:
 Option 1 is the cleanest and fits the existing architecture — keep each quark in the triangle that owns it most naturally, and let the RL matcher route between triangles.
 
 > **TODO (future):** choose one of these three approaches and implement it in `rl_matcher.py` and the triangle files.
+
+---
+
+## Randomness as a feature
+
+Splitting quarks manually across triangles risks removing robot autonomy — you encode the context distinction yourself instead of letting the robot discover it. But there is a simpler answer: **leave the randomness in**.
+
+This is already how biological systems work. A reflex isn't always the same. Sometimes you retract, sometimes you find another path. The variation is useful: it prevents the robot from getting stuck in a fixed response loop, and it means the environment sees slightly different behaviour each time, generating more diverse training data.
+
+In the current architecture this is already free — epsilon controls it. At 30% exploration the robot randomly picks between candidates even when it has a preferred choice. `stat rough` will sometimes route to `triangle_grip1` and sometimes to `triangle_obstacle1` indefinitely. The Q-table learns a preference but never fully commits.
+
+You could go further and make epsilon a property of the situation rather than a fixed global:
+- **high epsilon** in familiar situations — allow variation, keep exploring
+- **low epsilon** in danger (`stat broken`, `stat empty`) — commit to the best known action fast
+
+So the answer may be: **don't change anything**. The randomness is already there. That's the right behaviour for a physical robot in a variable environment.
