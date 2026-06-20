@@ -792,3 +792,21 @@ After 100 random iterations the Q-table has converged to clear preferences:
 | `stat heavy, force` | `triangle_balance1` | +3.69 | `triangle_obstacle1` | +0.00 |
 
 The interesting case is `stat empty` — it appears in both the energy and nav triangles. When paired with `stat low` the system picks energy; when paired with `pattern` it picks nav. The Q-table has learned the context distinction without being told about it.
+
+---
+
+## Simultaneous vs. chosen actions
+
+In the current implementation, when `problem, stat rough` is entered, **both rules fire at the same time** — `find_alternate_path` and `retract_limb` are executed simultaneously. This may not always be what you want. Sometimes the robot should pick one action based on context: `retract_limb` when a thorn is at close range, `find_alternate_path` when the path is blocked at a higher level.
+
+Three options to get exclusive action selection:
+
+**1. Split the quarks across triangles** — `stat rough` stays in `triangle_grip1` (physical contact → retract limb) and `problem` stays in `triangle_obstacle1` (path blocked → find alternate path). The RL matcher then chooses between triangles, which is already what it does. Single-quark inputs route correctly without any code change.
+
+**2. Add priority or depth to the rule** — a `stat rough` at close range fires `retract_limb`, but after three retries it escalates to `find_alternate_path`. The triangle would need a step counter.
+
+**3. Per-triangle Q-table** — instead of firing all matching rules simultaneously, treat each rule as a separate action and let a Q-table inside the triangle learn which one works best for the current context.
+
+Option 1 is the cleanest and fits the existing architecture — keep each quark in the triangle that owns it most naturally, and let the RL matcher route between triangles.
+
+> **TODO (future):** choose one of these three approaches and implement it in `rl_matcher.py` and the triangle files.
