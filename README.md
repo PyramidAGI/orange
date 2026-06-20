@@ -777,3 +777,5 @@ quarks> problem, stat rough      (repeated)
 After a few repetitions the system has learned that `triangle_obstacle1` is the better handler for `{problem, stat rough}` — it fires both rules while `triangle_grip1` only fires one.
 
 ![rl_matcher flow](rl_matcher.svg)
+
+The top row is the forward path: a quark combination enters from the CLI, the overlap filter narrows it to candidate triangles, and the ε-greedy selector picks one. The bottom row is the learning path: the chosen triangle runs, a reward is calculated, and the Q-table is updated. The dashed feedback arrow from the Q-table back to ε-greedy is the key — it is what turns a simple matcher into a learner. The triangle library at the bottom shows all five triangles with their goal clusters, loaded once at startup and consulted on every overlap check.
