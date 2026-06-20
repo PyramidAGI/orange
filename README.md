@@ -826,3 +826,27 @@ You could go further and make epsilon a property of the situation rather than a 
 - **low epsilon** in danger (`stat broken`, `stat empty`) — commit to the best known action fast
 
 So the answer may be: **don't change anything**. The randomness is already there. That's the right behaviour for a physical robot in a variable environment.
+
+---
+
+## Triangle + Q-table vs. classic programs
+
+**Classic programs** are explicit and deterministic. You write `if stat rough: retract_limb`. The programmer decides every response in advance. When the environment changes or a new situation appears, you rewrite the code. The system is as smart as the programmer who wrote it.
+
+**The triangle approach with Q-tables** is implicit and adaptive. You define:
+- what the robot can sense (sensor quarks)
+- what it can do (actuator actions)
+- what done looks like (goal cluster)
+
+The Q-table then learns — through experience — which triangle to activate for which quark combination. No programmer decides that `stat rough + problem` should go to `triangle_obstacle1` over `triangle_grip1`. The robot figures that out by trying both and comparing outcomes.
+
+| | classic program | triangle + Q-table |
+|---|---|---|
+| logic | written by programmer | learned from experience |
+| new situation | breaks or needs update | explores, adapts |
+| goal | implicit in code | explicit at apex |
+| transparency | code is readable | log + Q-table are readable |
+| randomness | none | built in via epsilon |
+| same code, new domain | no — rewrite needed | yes — swap triangle files |
+
+The deepest difference: a classic program is a **solved problem written down**. The triangle system is a **problem-solving process** that keeps running. It doesn't need to know the answer in advance — it finds it.
