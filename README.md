@@ -779,3 +779,16 @@ After a few repetitions the system has learned that `triangle_obstacle1` is the 
 ![rl_matcher flow](rl_matcher.svg)
 
 The top row is the forward path: a quark combination enters from the CLI, the overlap filter narrows it to candidate triangles, and the ε-greedy selector picks one. The bottom row is the learning path: the chosen triangle runs, a reward is calculated, and the Q-table is updated. The dashed feedback arrow from the Q-table back to ε-greedy is the key — it is what turns a simple matcher into a learner. The triangle library at the bottom shows all five triangles with their goal clusters, loaded once at startup and consulted on every overlap check.
+
+### After 100 iterations
+
+After 100 random iterations the Q-table has converged to clear preferences:
+
+| quark input | winner | score | runner-up | score |
+|---|---|---|---|---|
+| `stat broken` | `triangle_balance1` | +7.78 | `triangle_nav1` | +3.10 |
+| `stat low, stat empty` | `triangle_energy1` | +7.78 | `triangle_nav1` | +1.38 |
+| `stat empty, pattern` | `triangle_nav1` | +5.51 | `triangle_energy1` | +0.76 |
+| `stat heavy, force` | `triangle_balance1` | +3.69 | `triangle_obstacle1` | +0.00 |
+
+The interesting case is `stat empty` — it appears in both the energy and nav triangles. When paired with `stat low` the system picks energy; when paired with `pattern` it picks nav. The Q-table has learned the context distinction without being told about it.
