@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cluster Maker</title>
+  <style>
+    :root {
+      --ink: #17211d;
+      --muted: #65716b;
+      --line: #d7ded9;
+      --soft: #f4f7f5;
+      --green: #13795b;
+      --green-soft: #e5f4ed;
+      --blue: #176b87;
+      --blue-soft: #e4f2f7;
+      --amber: #9a6700;
+      --amber-soft: #fff3cf;
+      --danger: #a23b35;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fff;
+      font: 14px/1.4 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      min-height: 58px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .brand { font-size: 17px; font-weight: 750; margin-right: 8px; }
+    .cluster-name {
+      min-width: 260px;
+      flex: 1;
+      max-width: 520px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 9px 11px;
+      font-weight: 650;
+    }
+    .button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 11px;
+      border-radius: 6px;
+      font-weight: 650;
+    }
+    .button.primary { background: var(--green); border-color: var(--green); color: #fff; }
+    .button.icon { width: 36px; padding: 8px; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 230px minmax(620px, 1fr) 285px;
+      min-height: calc(100vh - 58px);
+    }
+    .sidebar, .preview { padding: 16px; background: var(--soft); }
+    .sidebar { border-right: 1px solid var(--line); }
+    .preview { border-left: 1px solid var(--line); }
+    .workspace { padding: 18px; min-width: 0; }
+    .section-title {
+      margin: 0 0 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 750;
+    }
+    .search {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      margin-bottom: 14px;
+      background: #fff;
+    }
+    .group { margin-bottom: 16px; }
+    .group-label { color: var(--muted); font-size: 12px; font-weight: 700; margin-bottom: 7px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      border: 1px solid #bfc9c2;
+      background: #fff;
+      border-radius: 5px;
+      padding: 5px 8px;
+      cursor: grab;
+      user-select: none;
+    }
+    .chip.observable { background: var(--blue-soft); border-color: #a9cfdd; }
+    .chip.action { background: var(--amber-soft); border-color: #e5cf83; }
+    .chip.social { background: var(--green-soft); border-color: #a9d5c4; }
+
+    .cluster-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .cluster-head h1 { font-size: 20px; margin: 0 0 2px; }
+    .cluster-head p { margin: 0; color: var(--muted); }
+    .records { display: grid; gap: 10px; }
+    .record {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+      box-shadow: 0 1px 2px rgba(23, 33, 29, .05);
+    }
+    .record-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 9px;
+    }
+    .record-number { font-weight: 750; }
+    .inherit { font-size: 12px; color: var(--muted); }
+    .delete { border: 0; background: transparent; color: var(--danger); font-size: 17px; padding: 2px 6px; }
+    .record-grid {
+      display: grid;
+      grid-template-columns: 58px 112px minmax(120px, 1fr) 24px minmax(120px, 1fr) 126px 105px 105px;
+      gap: 8px;
+      align-items: end;
+    }
+    label { display: block; font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+    select, .number, .dropzone {
+      width: 100%;
+      min-height: 39px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      padding: 8px;
+    }
+    .dropzone {
+      border-style: dashed;
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+    }
+    .dropzone.filled { border-style: solid; color: var(--ink); font-weight: 700; background: var(--blue-soft); }
+    .dropzone.over { outline: 2px solid var(--green); background: var(--green-soft); }
+    .arrow { align-self: center; text-align: center; color: var(--muted); font-size: 17px; padding-top: 16px; }
+    .number { padding: 7px; }
+    .meter { height: 4px; border-radius: 2px; background: var(--line); margin-top: 4px; overflow: hidden; }
+    .meter > span { display: block; height: 100%; background: var(--blue); }
+    .threshold > span { background: var(--amber); }
+    .add-row { width: 100%; margin-top: 12px; border-style: dashed; color: var(--green); }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #17211d;
+      color: #e9f1ec;
+      border-radius: 7px;
+      padding: 12px;
+      min-height: 178px;
+      font: 12px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    .legend { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .legend-row { display: grid; grid-template-columns: 36px 1fr; gap: 8px; margin: 8px 0; }
+    .legend-row strong { color: var(--green); }
+    .note { color: var(--muted); font-size: 12px; margin-top: 10px; }
+
+    @media (max-width: 1050px) {
+      .app { grid-template-columns: 210px 1fr; }
+      .preview { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); }
+      .record-grid { grid-template-columns: 58px 112px 1fr 24px 1fr; }
+      .record-grid .quark, .record-grid .value, .record-grid .threshold-wrap { grid-column: span 1; }
+    }
+    @media (max-width: 720px) {
+      .topbar { flex-wrap: wrap; }
+      .cluster-name { order: 3; min-width: 100%; }
+      .app { display: block; }
+      .sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
+      .record-grid { grid-template-columns: 1fr 1fr; }
+      .arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Cluster Maker</div>
+    <input id="clusterName" class="cluster-name" value="gripping the stem" aria-label="Cluster description">
+    <button class="button icon" title="Undo" aria-label="Undo">↶</button>
+    <button id="export" class="button primary">Export CSV</button>
+  </header>
+
+  <main class="app">
+    <aside class="sidebar">
+      <h2 class="section-title">Ontology elements</h2>
+      <input id="search" class="search" placeholder="Search elements...">
+      <div id="palette"></div>
+      <p class="note">Drag an element into an e2 or e3 field. Click an element to place it in the next empty field.</p>
+    </aside>
+
+    <section class="workspace">
+      <div class="cluster-head">
+        <div>
+          <h1 id="clusterHeading">gripping the stem</h1>
+          <p>Records below inherit this cluster description.</p>
+        </div>
+        <button id="addRowTop" class="button">+ Record</button>
+      </div>
+      <div id="records" class="records"></div>
+      <button id="addRow" class="button add-row">+ Add record to this cluster</button>
+    </section>
+
+    <aside class="preview">
+      <h2 class="section-title">Live CSV</h2>
+      <pre id="csvPreview"></pre>
+      <button id="copy" class="button" style="margin-top:10px;width:100%">Copy CSV</button>
+      <div class="legend">
+        <h2 class="section-title">Record fields</h2>
+        <div class="legend-row"><strong>e2</strong><span>Ontology element: source</span></div>
+        <div class="legend-row"><strong>e3</strong><span>Ontology element: target</span></div>
+        <div class="legend-row"><strong>e4</strong><span>Quark</span></div>
+        <div class="legend-row"><strong>e5</strong><span>Value, 0–100</span></div>
+        <div class="legend-row"><strong>e6</strong><span>Threshold, 0–100</span></div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const groups = {
+      Observable: ['force', 'energy', 'time', 'location', 'event', 'pattern', 'stat', 'activity'],
+      Action: ['grip', 'drive', 'transport', 'waitfor', 'increase', 'sequence', 'solve'],
+      Structure: ['container', 'shield', 'channel', 'support', 'tool'],
+      Social: ['group', 'conflict', 'reward', 'organization', 'contract']
+    };
+    const allQuarks = Object.values(groups).flat();
+    let nextDrop = null;
+    let rows = [
+      { e0: 'c', e1: 'transform', e2: 'force', e3: 'grip', e4: 'support', e5: 74, e6: 62 },
+      { e0: 'q', e1: 'sensor', e2: 'force', e3: 'stat', e4: 'force', e5: 71, e6: 60 },
+      { e0: 'c', e1: 'control', e2: 'grip', e3: 'increase', e4: 'drive', e5: 66, e6: 58 }
+    ];
+
+    function palette(filter = '') {
+      const root = document.querySelector('#palette');
+      root.innerHTML = '';
+      for (const [name, items] of Object.entries(groups)) {
+        const visible = items.filter(x => x.includes(filter.toLowerCase()));
+        if (!visible.length) continue;
+        const section = document.createElement('div');
+        section.className = 'group';
+        section.innerHTML = `<div class="group-label">${name}</div><div class="chips"></div>`;
+        visible.forEach(item => {
+          const chip = document.createElement('div');
+          chip.className = `chip ${name.toLowerCase()}`;
+          chip.textContent = item;
+          chip.draggable = true;
+          chip.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', item));
+          chip.addEventListener('click', () => placeNext(item));
+          section.querySelector('.chips').appendChild(chip);
+        });
+        root.appendChild(section);
+      }
+    }
+
+    function placeNext(item) {
+      if (!nextDrop) {
+        const index = rows.findIndex(r => !r.e2 || !r.e3);
+        nextDrop = index >= 0 ? { index, field: rows[index].e2 ? 'e3' : 'e2' } : { index: rows.length - 1, field: 'e3' };
+      }
+      rows[nextDrop.index][nextDrop.field] = item;
+      nextDrop = null;
+      render();
+    }
+
+    function rowTemplate(row, index) {
+      const options = allQuarks.map(q => `<option ${q === row.e4 ? 'selected' : ''}>${q}</option>`).join('');
+      return `<article class="record">
+        <div class="record-top">
+          <div><span class="record-number">Record ${index + 1}</span> <span class="inherit">${index ? 'cluster inherited' : 'cluster written here'}</span></div>
+          <button class="delete" data-delete="${index}" title="Delete record" aria-label="Delete record">×</button>
+        </div>
+        <div class="record-grid">
+          <div><label>e0</label><select data-i="${index}" data-f="e0"><option ${row.e0 === 'c' ? 'selected' : ''}>c</option><option ${row.e0 === 'q' ? 'selected' : ''}>q</option><option ${row.e0 === 'a' ? 'selected' : ''}>a</option></select></div>
+          <div><label>e1 · type</label><select data-i="${index}" data-f="e1">${['transform','sensor','actuator','control','plan','nav','criterion'].map(x => `<option ${x === row.e1 ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
+          <div><label>e2 · source</label><div class="dropzone ${row.e2 ? 'filled' : ''}" tabindex="0" data-drop="e2" data-i="${index}">${row.e2 || 'Drop element'}</div></div>
+          <div class="arrow">→</div>
+          <div><label>e3 · target</label><div class="dropzone ${row.e3 ? 'filled' : ''}" tabindex="0" data-drop="e3" data-i="${index}">${row.e3 || 'Drop element'}</div></div>
+          <div class="quark"><label>e4 · quark</label><select data-i="${index}" data-f="e4">${options}</select></div>
+          <div class="value"><label>e5 · value</label><input class="number" type="number" min="0" max="100" value="${row.e5}" data-i="${index}" data-f="e5"><div class="meter"><span style="width:${row.e5}%"></span></div></div>
+          <div class="threshold-wrap"><label>e6 · threshold</label><input class="number" type="number" min="0" max="100" value="${row.e6}" data-i="${index}" data-f="e6"><div class="meter threshold"><span style="width:${row.e6}%"></span></div></div>
+        </div>
+      </article>`;
+    }
+
+    function csv() {
+      const cluster = document.querySelector('#clusterName').value.trim();
+      return rows.map((r, i) => [i ? '' : cluster, r.e0, r.e1, r.e2, r.e3, r.e4, r.e5, r.e6].join(';')).join('\n');
+    }
+
+    function render() {
+      document.querySelector('#records').innerHTML = rows.map(rowTemplate).join('');
+      document.querySelector('#csvPreview').textContent = csv();
+      bindRows();
+    }
+
+    function bindRows() {
+      document.querySelectorAll('[data-f]').forEach(el => el.addEventListener('input', e => {
+        const value = ['e5', 'e6'].includes(e.target.dataset.f) ? Math.max(0, Math.min(100, Number(e.target.value))) : e.target.value;
+        rows[Number(e.target.dataset.i)][e.target.dataset.f] = value;
+        render();
+      }));
+      document.querySelectorAll('[data-delete]').forEach(el => el.addEventListener('click', () => {
+        if (rows.length > 1) rows.splice(Number(el.dataset.delete), 1);
+        render();
+      }));
+      document.querySelectorAll('[data-drop]').forEach(zone => {
+        zone.addEventListener('click', () => { nextDrop = { index: Number(zone.dataset.i), field: zone.dataset.drop }; zone.classList.add('over'); });
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+        zone.addEventListener('drop', e => {
+          e.preventDefault();
+          rows[Number(zone.dataset.i)][zone.dataset.drop] = e.dataTransfer.getData('text/plain');
+          render();
+        });
+      });
+    }
+
+    function addRow() {
+      rows.push({ e0: 'c', e1: 'transform', e2: '', e3: '', e4: 'force', e5: 50, e6: 50 });
+      render();
+    }
+
+    document.querySelector('#search').addEventListener('input', e => palette(e.target.value));
+    document.querySelector('#clusterName').addEventListener('input', e => {
+      document.querySelector('#clusterHeading').textContent = e.target.value || 'Untitled cluster';
+      document.querySelector('#csvPreview').textContent = csv();
+    });
+    document.querySelector('#addRow').addEventListener('click', addRow);
+    document.querySelector('#addRowTop').addEventListener('click', addRow);
+    document.querySelector('#copy').addEventListener('click', async () => navigator.clipboard.writeText(csv()));
+    document.querySelector('#export').addEventListener('click', () => {
+      const blob = new Blob([csv() + '\n'], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'cluster.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    palette();
+    render();
+  </script>
+</body>
+</html>
