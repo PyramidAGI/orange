@@ -64,9 +64,14 @@
 
     .app {
       display: grid;
-      grid-template-columns: 230px minmax(620px, 1fr) 285px;
+      grid-template-columns: 360px minmax(400px, 1fr) 285px;
       min-height: calc(100vh - 58px);
+      transition: grid-template-columns .2s;
     }
+    .app.preview-hidden {
+      grid-template-columns: 480px 1fr;
+    }
+    .app.preview-hidden .preview { display: none; }
     .sidebar, .preview { padding: 16px; background: var(--soft); }
     .sidebar { border-right: 1px solid var(--line); }
     .preview { border-left: 1px solid var(--line); }
@@ -155,7 +160,7 @@
     .delete { border: 0; background: transparent; color: var(--danger); font-size: 17px; padding: 2px 6px; }
     .record-grid {
       display: grid;
-      grid-template-columns: 58px 112px minmax(120px, 1fr) 24px minmax(120px, 1fr) 126px 105px 105px;
+      grid-template-columns: 58px 112px minmax(20px, 0.16fr) 24px minmax(20px, 0.16fr) 126px 105px 105px;
       gap: 8px;
       align-items: end;
     }
@@ -220,12 +225,18 @@
     <div class="brand">Cluster Maker</div>
     <input id="clusterName" class="cluster-name" value="climbing the tree" aria-label="Cluster description">
     <button class="button icon" title="Undo" aria-label="Undo">↶</button>
+    <button id="togglePreview" class="button icon" title="Toggle preview" aria-label="Toggle preview">▶</button>
     <button id="export" class="button primary">Export CSV</button>
   </header>
 
   <main class="app">
     <aside class="sidebar">
       <h2 class="section-title">Ontology elements</h2>
+      <label class="button" style="display:block;text-align:center;margin-bottom:10px;cursor:pointer">
+        Load quark files
+        <input type="file" accept=".csv" multiple id="quarkInput" style="display:none">
+      </label>
+      <p id="quarkStatus" class="note" style="margin-top:-6px;margin-bottom:10px"></p>
       <input id="search" class="search" placeholder="Search elements...">
       <div id="palette"></div>
       <p class="note">Drag an element into an e2 or e3 field. Click an element to place it in the next empty field.</p>
@@ -261,14 +272,8 @@
   </main>
 
   <script>
-    const groups = {
-      Observable: ['force', 'energy', 'time', 'location', 'event', 'pattern', 'stat', 'activity'],
-      Action: ['grip', 'drive', 'transport', 'waitfor', 'increase', 'sequence', 'solve'],
-      Structure: ['container', 'shield', 'channel', 'support', 'tool'],
-      Social: ['group', 'conflict', 'reward', 'organization', 'contract'],
-      Complement: ['bond', 'transducer', 'emo', 'fork', 'mode', 'kinship', 'vitality', 'plant', 'machine', 'stat size', 'stat sound', 'stat liquid', 'stat vapor', 'stat cold', 'stat soft', 'stat rough', 'stat low', 'stat high', 'stat fast', 'stat slow', 'stat full', 'stat empty', 'stat broken', 'stat hot', 'stat dry', 'stat heavy']
-    };
-    const allQuarks = Object.values(groups).flat();
+    let groups = {};
+    let allQuarks = [];
     let nextDrop = null;
     let rows = [
       { e0: 'c', e1: 'transform', e2: 'force', e3: 'grip', e4: 'support', e5: 74, e6: 62 },
@@ -389,6 +394,40 @@
       rows.push({ e0: 'c', e1: 'transform', e2: '', e3: '', e4: 'force', e5: 50, e6: 50 });
       render();
     }
+
+    document.getElementById('quarkInput').addEventListener('change', async e => {
+      const files = Array.from(e.target.files);
+      const quarks = [];
+      for (const file of files) {
+        const text = await file.text();
+        text.split('\n').forEach(line => {
+          const parts = line.trim().split(';');
+          if (parts.length >= 2) {
+            const id = parseInt(parts[0]);
+            const name = parts[1].trim();
+            if (!isNaN(id) && name) quarks.push({ id, name });
+          }
+        });
+      }
+      quarks.sort((a, b) => a.id - b.id);
+      const numbered = quarks.filter(q => q.id < 40).map(q => q.name);
+      const comp = quarks.filter(q => q.id >= 40).map(q => q.name);
+      const compSorted = [...comp.filter(n => !n.startsWith('stat ')), ...comp.filter(n => n.startsWith('stat '))];
+      groups = {};
+      if (numbered.length) groups['Quarks'] = numbered;
+      if (compSorted.length) groups['Complement'] = compSorted;
+      allQuarks = Object.values(groups).flat();
+      document.getElementById('quarkStatus').textContent = `${quarks.length} quarks loaded`;
+      palette();
+      render();
+      e.target.value = '';
+    });
+
+    document.getElementById('togglePreview').addEventListener('click', () => {
+      const app = document.querySelector('.app');
+      const hidden = app.classList.toggle('preview-hidden');
+      document.getElementById('togglePreview').textContent = hidden ? '◀' : '▶';
+    });
 
     document.querySelector('#search').addEventListener('input', e => palette(e.target.value));
     document.querySelector('#clusterName').addEventListener('input', e => {
