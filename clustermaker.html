@@ -100,6 +100,33 @@
     .chip.observable { background: var(--blue-soft); border-color: #a9cfdd; }
     .chip.action { background: var(--amber-soft); border-color: #e5cf83; }
     .chip.social { background: var(--green-soft); border-color: #a9d5c4; }
+    .chip.complement { background: #f3eeff; border-color: #c9b8f0; }
+    .chip-wrap { position: relative; display: inline-block; }
+    .chip-submenu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      padding-top: 4px;
+      left: 0;
+      z-index: 100;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(23,33,29,.12);
+      padding: 4px;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      min-width: 180px;
+    }
+    .chip-wrap.open .chip-submenu { display: grid; }
+    .chip-submenu-item {
+      padding: 5px 8px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .chip-submenu-item:hover { background: var(--soft); }
 
     .cluster-head {
       display: flex;
@@ -191,7 +218,7 @@
 <body>
   <header class="topbar">
     <div class="brand">Cluster Maker</div>
-    <input id="clusterName" class="cluster-name" value="gripping the stem" aria-label="Cluster description">
+    <input id="clusterName" class="cluster-name" value="climbing the tree" aria-label="Cluster description">
     <button class="button icon" title="Undo" aria-label="Undo">↶</button>
     <button id="export" class="button primary">Export CSV</button>
   </header>
@@ -207,9 +234,11 @@
     <section class="workspace">
       <div class="cluster-head">
         <div>
-          <h1 id="clusterHeading">gripping the stem</h1>
+          <h1 id="clusterHeading">climbing the tree</h1>
           <p>Records below inherit this cluster description.</p>
         </div>
+        <button id="randomAll" class="button">Random selection</button>
+        <button id="clearAll" class="button" style="color:var(--danger)">Clear all</button>
         <button id="addRowTop" class="button">+ Record</button>
       </div>
       <div id="records" class="records"></div>
@@ -236,7 +265,8 @@
       Observable: ['force', 'energy', 'time', 'location', 'event', 'pattern', 'stat', 'activity'],
       Action: ['grip', 'drive', 'transport', 'waitfor', 'increase', 'sequence', 'solve'],
       Structure: ['container', 'shield', 'channel', 'support', 'tool'],
-      Social: ['group', 'conflict', 'reward', 'organization', 'contract']
+      Social: ['group', 'conflict', 'reward', 'organization', 'contract'],
+      Complement: ['bond', 'transducer', 'emo', 'fork', 'mode', 'kinship', 'vitality', 'plant', 'machine', 'stat size', 'stat sound', 'stat liquid', 'stat vapor', 'stat cold', 'stat soft', 'stat rough', 'stat low', 'stat high', 'stat fast', 'stat slow', 'stat full', 'stat empty', 'stat broken', 'stat hot', 'stat dry', 'stat heavy']
     };
     const allQuarks = Object.values(groups).flat();
     let nextDrop = null;
@@ -262,7 +292,31 @@
           chip.draggable = true;
           chip.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', item));
           chip.addEventListener('click', () => placeNext(item));
-          section.querySelector('.chips').appendChild(chip);
+
+          if (item === 'stat') {
+            const wrap = document.createElement('div');
+            wrap.className = 'chip-wrap';
+            let isDragging = false;
+            wrap.addEventListener('mouseenter', () => wrap.classList.add('open'));
+            wrap.addEventListener('mouseleave', () => { if (!isDragging) wrap.classList.remove('open'); });
+            const submenu = document.createElement('div');
+            submenu.className = 'chip-submenu';
+            Object.values(groups).flat().filter(q => /^stat /.test(q)).forEach(variant => {
+              const si = document.createElement('div');
+              si.className = 'chip-submenu-item';
+              si.textContent = variant.slice(5);
+              si.draggable = true;
+              si.addEventListener('dragstart', e => { e.stopPropagation(); e.dataTransfer.setData('text/plain', variant); isDragging = true; });
+              si.addEventListener('dragend', () => { isDragging = false; wrap.classList.remove('open'); });
+              si.addEventListener('click', e => { e.stopPropagation(); placeNext(variant); });
+              submenu.appendChild(si);
+            });
+            wrap.appendChild(chip);
+            wrap.appendChild(submenu);
+            section.querySelector('.chips').appendChild(wrap);
+          } else {
+            section.querySelector('.chips').appendChild(chip);
+          }
         });
         root.appendChild(section);
       }
@@ -341,6 +395,12 @@
       document.querySelector('#clusterHeading').textContent = e.target.value || 'Untitled cluster';
       document.querySelector('#csvPreview').textContent = csv();
     });
+    const e0opts = ['c', 'q', 'a'];
+    const e1opts = ['transform','sensor','actuator','control','plan','nav','criterion'];
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+    const randomRow = () => ({ e0: pick(e0opts), e1: pick(e1opts), e2: pick(allQuarks), e3: pick(allQuarks), e4: pick(allQuarks), e5: Math.floor(Math.random()*101), e6: Math.floor(Math.random()*101) });
+    document.querySelector('#randomAll').addEventListener('click', () => { rows = rows.map(randomRow); render(); });
+    document.querySelector('#clearAll').addEventListener('click', () => { rows = [{ e0: 'c', e1: 'transform', e2: '', e3: '', e4: 'force', e5: 50, e6: 50 }]; render(); });
     document.querySelector('#addRow').addEventListener('click', addRow);
     document.querySelector('#addRowTop').addEventListener('click', addRow);
     document.querySelector('#copy').addEventListener('click', async () => navigator.clipboard.writeText(csv()));
