@@ -226,6 +226,7 @@
     <input id="clusterName" class="cluster-name" value="climbing the tree" aria-label="Cluster description">
     <button class="button icon" title="Undo" aria-label="Undo">↶</button>
     <button id="togglePreview" class="button icon" title="Toggle preview" aria-label="Toggle preview">▶</button>
+    <label class="button" style="cursor:pointer">Load <input type="file" accept=".csv" id="loadInput" style="display:none"></label>
     <button id="export" class="button primary">Export CSV</button>
   </header>
 
@@ -420,6 +421,32 @@
       document.getElementById('quarkStatus').textContent = `${quarks.length} quarks loaded`;
       palette();
       render();
+      e.target.value = '';
+    });
+
+    document.getElementById('loadInput').addEventListener('change', async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const text = await file.text();
+      const lines = text.split('\n').map(l => l.trimEnd()).filter(l => l.trim());
+      const parsed = [];
+      let clusterName = '';
+      lines.forEach(line => {
+        const cols = line.split(';');
+        const label = cols[0].trim();
+        const e0 = cols[1]?.trim();
+        if (!e0) return;
+        if (!clusterName && label) clusterName = label;
+        parsed.push({ e0, e1: cols[2]?.trim() || 'transform', e2: cols[3]?.trim() || '', e3: cols[4]?.trim() || '', e4: cols[5]?.trim() || (allQuarks[0] || ''), e5: Number(cols[6]) || 50, e6: Number(cols[7]) || 50 });
+      });
+      if (parsed.length) {
+        rows = parsed;
+        if (clusterName) {
+          document.querySelector('#clusterName').value = clusterName;
+          document.querySelector('#clusterHeading').textContent = clusterName;
+        }
+        render();
+      }
       e.target.value = '';
     });
 
