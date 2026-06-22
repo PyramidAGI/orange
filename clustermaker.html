@@ -404,11 +404,28 @@
     document.querySelector('#addRow').addEventListener('click', addRow);
     document.querySelector('#addRowTop').addEventListener('click', addRow);
     document.querySelector('#copy').addEventListener('click', async () => navigator.clipboard.writeText(csv()));
-    document.querySelector('#export').addEventListener('click', () => {
-      const blob = new Blob([csv() + '\n'], { type: 'text/csv' });
+    document.querySelector('#export').addEventListener('click', async () => {
+      const name = document.querySelector('#clusterName').value.trim();
+      const safeName = 'triangle_' + name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') + '.csv';
+      const data = csv() + '\n';
+      if (window.showSaveFilePicker) {
+        try {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: safeName,
+            types: [{ description: 'CSV file', accept: { 'text/csv': ['.csv'] } }]
+          });
+          const writable = await handle.createWritable();
+          await writable.write(data);
+          await writable.close();
+          return;
+        } catch (e) {
+          if (e.name === 'AbortError') return;
+        }
+      }
+      const blob = new Blob([data], { type: 'text/csv' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'cluster.csv';
+      a.download = safeName;
       a.click();
       URL.revokeObjectURL(a.href);
     });

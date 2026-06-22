@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cluster Comparer</title>
+  <style>
+    :root {
+      --ink: #17211d;
+      --muted: #65716b;
+      --line: #d7ded9;
+      --soft: #f4f7f5;
+      --green: #13795b;
+      --green-soft: #e5f4ed;
+      --blue: #176b87;
+      --blue-soft: #e4f2f7;
+      --amber: #9a6700;
+      --amber-soft: #fff3cf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fff;
+      font: 14px/1.4 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    }
+    button, input, select { font: inherit; }
+
+    .topbar {
+      min-height: 58px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .brand { font-size: 17px; font-weight: 750; margin-right: 8px; }
+    .topbar label { font-size: 11px; font-weight: 700; color: var(--muted); margin: 0; }
+    .topbar select {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #fff;
+      min-width: 160px;
+    }
+    .sep { color: var(--line); font-size: 20px; }
+
+    .workspace { padding: 20px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(23,33,29,.06);
+      display: flex;
+      flex-direction: column;
+    }
+    .card-head {
+      padding: 12px 14px 10px;
+      background: var(--soft);
+      border-bottom: 1px solid var(--line);
+      border-radius: 10px 10px 0 0;
+    }
+    .card-title { font-weight: 750; font-size: 14px; margin: 0 0 2px; }
+    .card-desc { color: var(--muted); font-size: 12px; margin: 0; }
+
+    .use-row {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    .use-label { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+    .use-slider { flex: 1; accent-color: var(--green); cursor: pointer; }
+    .use-value { font-size: 13px; font-weight: 750; min-width: 36px; text-align: right; color: var(--green); }
+
+    .pairs { padding: 10px 14px; display: grid; gap: 8px; flex: 1; }
+
+    .pair {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      font-size: 12px;
+    }
+    .pair-label {
+      padding: 4px 8px;
+      background: var(--amber-soft);
+      color: var(--amber);
+      font-weight: 700;
+      font-size: 11px;
+    }
+    .pair-row {
+      padding: 5px 8px;
+      display: flex;
+      gap: 6px;
+      align-items: baseline;
+    }
+    .pair-row + .pair-row { border-top: 1px solid var(--line); }
+    .tag {
+      font-size: 10px;
+      font-weight: 750;
+      padding: 1px 5px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .tag-a { background: var(--amber-soft); color: var(--amber); }
+    .tag-c { background: var(--blue-soft); color: var(--blue); }
+    .pair-nodes { color: var(--muted); flex: 1; }
+    .pair-e4 { font-weight: 700; color: var(--ink); }
+
+    .card-goal {
+      padding: 8px 14px;
+      border-top: 1px solid var(--line);
+      background: var(--green-soft);
+      font-size: 12px;
+      color: var(--green);
+      font-weight: 700;
+      border-radius: 0 0 10px 10px;
+    }
+
+    .empty { color: var(--muted); padding: 40px 0; text-align: center; grid-column: 1/-1; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Cluster Comparer</div>
+    <label>Sector</label>
+    <select id="sectorSel"></select>
+    <span class="sep">/</span>
+    <label>Scenario</label>
+    <select id="scenarioSel"></select>
+  </header>
+
+  <main class="workspace">
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <script>
+    const triangles = {
+      balance1: {
+        name: 'balance triangle',
+        desc: 'maintain stable posture on branch',
+        pairs: [
+          { label: 'weight shifted, centre of mass off',
+            a: { e2:'robot001', e3:'branch001', e4:'stat heavy' },
+            c: { e2:'robot001', e3:'branch001', e4:'redistribute_weight' } },
+          { label: 'force imbalance detected',
+            a: { e2:'robot001', e3:'branch001', e4:'force' },
+            c: { e2:'robot001', e3:'branch001', e4:'adjust_stance' } },
+          { label: 'branch unstable, risk of snap',
+            a: { e2:'robot001', e3:'branch001', e4:'stat broken' },
+            c: { e2:'robot001', e3:'branch001', e4:'abort_branch' } },
+        ],
+        goal: 'goal normal + support'
+      },
+      energy1: {
+        name: 'energy triangle',
+        desc: 'maintain sufficient battery level',
+        pairs: [
+          { label: 'battery running low',
+            a: { e2:'robot001', e3:'battery001', e4:'stat low' },
+            c: { e2:'robot001', e3:'battery001', e4:'reduce_speed' } },
+          { label: 'battery critical',
+            a: { e2:'robot001', e3:'battery001', e4:'stat empty' },
+            c: { e2:'robot001', e3:'battery001', e4:'enter_sleep_mode' } },
+          { label: 'motor overheating',
+            a: { e2:'robot001', e3:'motor001', e4:'stat hot' },
+            c: { e2:'robot001', e3:'motor001', e4:'cool_motor' } },
+        ],
+        goal: 'goal energy + stat full'
+      },
+      grip1: {
+        name: 'grip triangle',
+        desc: 'bond grasper to branch',
+        pairs: [
+          { label: 'grip failure detected',
+            a: { e2:'grasper001', e3:'branch001', e4:'problem' },
+            c: { e2:'grasper001', e3:'branch001', e4:'engage_suction' } },
+          { label: 'surface too smooth to grip',
+            a: { e2:'grasper001', e3:'branch001', e4:'stat soft' },
+            c: { e2:'grasper001', e3:'branch001', e4:'switch_to_claw' } },
+          { label: 'surface rough, increase pressure',
+            a: { e2:'grasper001', e3:'branch001', e4:'stat rough' },
+            c: { e2:'grasper001', e3:'branch001', e4:'increase_grip_pressure' } },
+        ],
+        goal: 'goal bond + force'
+      },
+      nav1: {
+        name: 'navigation triangle',
+        desc: 'follow branch sequence to target',
+        pairs: [
+          { label: 'no branch ahead, path empty',
+            a: { e2:'robot001', e3:'tree001', e4:'stat empty' },
+            c: { e2:'robot001', e3:'tree001', e4:'extend_sensor_arm' } },
+          { label: 'branch pattern detected',
+            a: { e2:'robot001', e3:'tree001', e4:'pattern' },
+            c: { e2:'robot001', e3:'tree001', e4:'follow_branch' } },
+          { label: 'dead end, branch broken',
+            a: { e2:'robot001', e3:'tree001', e4:'stat broken' },
+            c: { e2:'robot001', e3:'tree001', e4:'backtrack' } },
+        ],
+        goal: 'goal loc + sequence'
+      },
+      obstacle1: {
+        name: 'obstacle triangle',
+        desc: 'clear path through obstructions',
+        pairs: [
+          { label: 'thorn or spike detected',
+            a: { e2:'robot001', e3:'tree001', e4:'stat rough' },
+            c: { e2:'robot001', e3:'tree001', e4:'retract_limb' } },
+          { label: 'path blocked, no way through',
+            a: { e2:'robot001', e3:'tree001', e4:'problem' },
+            c: { e2:'robot001', e3:'tree001', e4:'find_alternate_path' } },
+          { label: 'dense foliage blocking sensors',
+            a: { e2:'robot001', e3:'tree001', e4:'stat heavy' },
+            c: { e2:'robot001', e3:'tree001', e4:'push_through' } },
+        ],
+        goal: 'goal loc + normal'
+      }
+    };
+
+    const sectors = {
+      'All': {
+        'Full operation':    { balance1:80, energy1:70, grip1:90, nav1:85, obstacle1:60 }
+      },
+      'Locomotion': {
+        'Stable ascent':     { balance1:90, nav1:80 },
+        'Obstacle run':      { nav1:75, obstacle1:85, balance1:65 }
+      },
+      'Manipulation': {
+        'Branch grip':       { grip1:100 }
+      },
+      'Energy': {
+        'Power management':  { energy1:100 }
+      }
+    };
+
+    let usePercents = {};
+
+    function init() {
+      const sectorSel = document.getElementById('sectorSel');
+      const scenarioSel = document.getElementById('scenarioSel');
+
+      Object.keys(sectors).forEach(s => {
+        const o = document.createElement('option');
+        o.value = s; o.textContent = s;
+        sectorSel.appendChild(o);
+      });
+
+      sectorSel.addEventListener('change', () => { populateScenarios(); });
+      scenarioSel.addEventListener('change', () => renderGrid());
+
+      populateScenarios();
+    }
+
+    function populateScenarios() {
+      const sector = document.getElementById('sectorSel').value;
+      const scenarioSel = document.getElementById('scenarioSel');
+      scenarioSel.innerHTML = '';
+      Object.keys(sectors[sector]).forEach(sc => {
+        const o = document.createElement('option');
+        o.value = sc; o.textContent = sc;
+        scenarioSel.appendChild(o);
+      });
+      usePercents = {};
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const sector = document.getElementById('sectorSel').value;
+      const scenario = document.getElementById('scenarioSel').value;
+      const defaults = sectors[sector]?.[scenario] || {};
+
+      Object.entries(defaults).forEach(([id, val]) => {
+        if (usePercents[id] === undefined) usePercents[id] = val;
+      });
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = Object.keys(defaults).length
+        ? Object.keys(defaults).map(id => cardHTML(id)).join('')
+        : '<div class="empty">No triangles in this scenario.</div>';
+
+      grid.querySelectorAll('.use-slider').forEach(slider => {
+        slider.addEventListener('input', e => {
+          const id = e.target.dataset.id;
+          usePercents[id] = Number(e.target.value);
+          grid.querySelector(`.use-value[data-id="${id}"]`).textContent = usePercents[id] + '%';
+        });
+      });
+    }
+
+    function cardHTML(id) {
+      const t = triangles[id];
+      const pct = usePercents[id] ?? 50;
+      const pairsHTML = t.pairs.map(p => `
+        <div class="pair">
+          <div class="pair-label">${p.label}</div>
+          <div class="pair-row">
+            <span class="tag tag-a">a</span>
+            <span class="pair-nodes">${p.a.e2} → ${p.a.e3}</span>
+            <span class="pair-e4">${p.a.e4}</span>
+          </div>
+          <div class="pair-row">
+            <span class="tag tag-c">c</span>
+            <span class="pair-nodes">${p.c.e2} → ${p.c.e3}</span>
+            <span class="pair-e4">${p.c.e4}</span>
+          </div>
+        </div>`).join('');
+      return `
+        <div class="card">
+          <div class="card-head">
+            <p class="card-title">${t.name}</p>
+            <p class="card-desc">${t.desc}</p>
+          </div>
+          <div class="use-row">
+            <span class="use-label">USE %</span>
+            <input class="use-slider" type="range" min="0" max="100" value="${pct}" data-id="${id}">
+            <span class="use-value" data-id="${id}">${pct}%</span>
+          </div>
+          <div class="pairs">${pairsHTML}</div>
+          <div class="card-goal">&#8679; ${t.goal}</div>
+        </div>`;
+    }
+
+    init();
+  </script>
+</body>
+</html>
