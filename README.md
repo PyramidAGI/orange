@@ -985,3 +985,71 @@ The social triangles (`managing_the_social_atmosphere`, `reflection_pool`) have 
 - **outward:** actions → actuators (the execution problem)
 
 The triangle library itself is probably sufficient for a first prototype in either domain. The question is whether you want to tackle the grounding layer next, or keep building the triangle library first.
+
+---
+
+## The grounding layer — grounding.py
+
+The inward layer is now built. `grounding.py` closes the gap between raw sensor readings and the quark vocabulary that `runner.py` understands.
+
+```
+sensors -> grounding.py -> quarks -> runner.py -> actions
+```
+
+### How grounding rules are stored
+
+Rules live in `log.csv` alongside triangle definitions, using role `g` and typ `lt` (less than) or `gt` (greater than):
+
+```
+battery running low;g;lt;battery_%;%;stat low;30;75
+motor overheating;g;gt;motor_temp_c;C;stat hot;70;35
+branch oscillating;g;gt;branch_osc_hz;Hz;stat fast;2.0;0.5
+voices raised;g;gt;voice_pitch_hz;Hz;stat hot;280;200
+```
+
+Field layout (role at index 0):
+
+| index | field | example |
+|---|---|---|
+| 0 | role | `g` |
+| 1 | typ — operator | `lt` / `gt` |
+| 2 | sensor name | `battery_%` |
+| 3 | unit | `%` |
+| 4 | quark | `stat low` |
+| 5 | threshold | `30` |
+| 6 | default value | `75` |
+
+Indices 5 and 6 are always numeric. The operator lives in typ so the numeric fields stay clean. To add a new sensor or adjust a threshold, edit `log.csv` only — no code changes needed.
+
+### What is grounded
+
+Fifteen sensors across two domains:
+
+**Physical robot** — `battery_%`, `motor_temp_c`, `branch_osc_hz`, `grip_force_n`, `lateral_g`, `branch_integrity`, `path_density`, `grip_success`
+
+**Social room** — `voice_pitch_hz`, `speech_rate_wpm`, `interruption_min`, `silence_ratio`, `participant_count`, `trust_score`, `fatigue_score`
+
+The same quark fires from both domains where the underlying condition is the same — `stat hot` from raised voice pitch and from motor overheating are the same primitive in different contexts.
+
+### Usage
+
+```
+python grounding.py              interactive: set values, tick, see quarks
+python grounding.py --demo       six preset scenarios (robot + social)
+python grounding.py --pipe | python runner.py    full loop
+```
+
+In interactive mode:
+
+```
+sensor> battery_%=22
+  battery_% = 22.0 %  -> ['stat low']
+
+sensor> branch_osc_hz=2.8
+  branch_osc_hz = 2.8 Hz  -> ['stat fast']
+
+sensor> tick
+  active: ['pattern', 'stat fast', 'stat low', 'stat size']
+```
+
+Those quarks feed directly into `runner.py`, which routes them through the triangle rules and fires actuator actions. The architecture described in the gap analysis is now implemented for the inward side.
