@@ -11,3 +11,5 @@ Manipulation;Branch grip;grip1;100
 Energy;Power management;energy1;100
 Social;Atmosphere management;triangle_managing_the_social_atmosphere;100
 Cognition;Reflection;triangle_reflection_pool;100
+Timing;Window management;triangle_timing1;100
+Locomotion;Tree climb;triangle_timing1;70
