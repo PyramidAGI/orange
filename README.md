@@ -998,7 +998,7 @@ sensors -> grounding.py -> quarks -> runner.py -> actions
 
 ### How grounding rules are stored
 
-Rules live in `log.csv` alongside triangle definitions, using role `g` and typ `lt` (less than) or `gt` (greater than):
+Rules live in `log.csv` alongside triangle definitions, using role `i` (introduce) and typ `lt` (less than) or `gt` (greater than):
 
 ```
 battery running low;g;lt;battery_%;%;stat low;30;75
@@ -1011,7 +1011,7 @@ Field layout (role at index 0):
 
 | index | field | example |
 |---|---|---|
-| 0 | role | `g` |
+| 0 | role | `i` |
 | 1 | typ — operator | `lt` / `gt` |
 | 2 | sensor name | `battery_%` |
 | 3 | unit | `%` |

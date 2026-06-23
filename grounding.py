@@ -30,7 +30,7 @@ def load_sensors(path):
             continue
         p = (row + ";;;;;;;").split(";")
         role, typ, name, unit, quark = p[1], p[2], p[3], p[4], p[5]
-        if role != "g" or typ not in ("lt", "gt"):
+        if role != "i" or typ not in ("lt", "gt"):
             continue
         try:
             threshold = float(p[6])
