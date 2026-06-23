@@ -850,3 +850,36 @@ The Q-table then learns — through experience — which triangle to activate fo
 | same code, new domain | no — rewrite needed | yes — swap triangle files |
 
 The deepest difference: a classic program is a **solved problem written down**. The triangle system is a **problem-solving process** that keeps running. It doesn't need to know the answer in advance — it finds it.
+
+---
+
+## Cluster Maker and Cluster Comparer
+
+Two browser tools for building and comparing triangle clusters, stored as HTML files in the repo root.
+
+### Cluster Maker (`clustermaker.html`)
+
+A drag-and-drop editor for building cluster CSV records. Quarks are loaded from `numbered quarks.csv` and `complement quarks.csv` at runtime — no hardcoded vocabulary. The `stat` chip expands to a two-column submenu showing all stat variants. Finished clusters export as `triangle_name.csv` via a native save dialog that remembers the `triangles/` folder.
+
+### Cluster Comparer (`clustercomparer.html`)
+
+A read-only overview tool for comparing triangles side by side with use percentages. Two file loads:
+
+1. **Load triangles** — select one or more CSVs from `triangles/`. The parser handles both the structured triangle format (with `c;activity` headers and `a`/`c` pairs) and the flat clustermaker export format automatically.
+2. **Load scenarios** — select `scenarios.csv` to define which triangles appear in which sectors and scenarios.
+
+### scenarios.csv
+
+A plain CSV with four columns — `sector`, `scenario`, `file`, `use` — that maps triangle files to sectors and scenarios with a default use percentage:
+
+```
+sector;scenario;file;use
+Locomotion;Stable ascent;balance1;90
+Locomotion;Stable ascent;nav1;80
+Locomotion;Tree climb;triangle_climbing_the_tree;90
+Locomotion;Tree climb;grip1;85
+Social;Atmosphere management;triangle_managing_the_social_atmosphere;100
+Cognition;Reflection;triangle_reflection_pool;100
+```
+
+One triangle can appear in multiple scenarios at different use percentages — `balance1` appears in Stable ascent, Obstacle run, and Tree climb because balance matters differently in each. The file drives the comparer's sector and scenario dropdowns entirely; adding a new triangle to a scenario requires only a new row in `scenarios.csv`, no code changes.

@@ -161,6 +161,7 @@
     <div class="brand">Cluster Comparer</div>
     <button id="loadBtn" class="button primary">Load triangles</button>
     <input id="fileInput" type="file" accept=".csv" multiple style="display:none">
+    <label class="button" style="cursor:pointer">Load scenarios <input type="file" accept=".csv" id="scenarioInput" style="display:none"></label>
     <span id="folderName" class="folder-name"></span>
     <span class="sep">/</span>
     <label>Sector</label>
@@ -230,17 +231,45 @@
       return m ? m[1].charAt(0).toUpperCase() + m[1].slice(1) : 'Other';
     }
 
+    let scenarioRows = []; // [{sector, scenario, file, use}]
+
     function buildSectors(loaded) {
-      const byType = {};
-      for (const [id, t] of Object.entries(loaded)) {
-        const sec = sectorFromId(id);
-        if (!byType[sec]) byType[sec] = {};
-        byType[sec][t.name] = { [id]: 100 };
-      }
       const all = {};
       Object.keys(loaded).forEach(id => { all[id] = 100; });
-      return { 'All': { 'All triangles': all }, ...byType };
+
+      let result = {};
+
+      if (scenarioRows.length) {
+        for (const row of scenarioRows) {
+          if (!loaded[row.file]) continue;
+          if (!result[row.sector]) result[row.sector] = {};
+          if (!result[row.sector][row.scenario]) result[row.sector][row.scenario] = {};
+          result[row.sector][row.scenario][row.file] = row.use;
+        }
+      } else {
+        // fallback: auto-group by filename prefix
+        for (const [id, t] of Object.entries(loaded)) {
+          const sec = sectorFromId(id);
+          if (!result[sec]) result[sec] = {};
+          result[sec][t.name] = { [id]: 100 };
+        }
+      }
+
+      return { 'All': { 'All triangles': all }, ...result };
     }
+
+    document.getElementById('scenarioInput').addEventListener('change', async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const text = await file.text();
+      scenarioRows = text.split('\n').slice(1).map(l => {
+        const [sector, scenario, f, use] = l.split(';').map(s => s.trim());
+        return sector && scenario && f ? { sector, scenario, file: f, use: Number(use) || 100 } : null;
+      }).filter(Boolean);
+      sectors = buildSectors(triangles);
+      populateSelectors();
+      e.target.value = '';
+    });
 
     // --- UI ---
     function populateSelectors() {

@@ -1,0 +1,13 @@
+sector;scenario;file;use
+Locomotion;Stable ascent;balance1;90
+Locomotion;Stable ascent;nav1;80
+Locomotion;Obstacle run;nav1;75
+Locomotion;Obstacle run;obstacle1;85
+Locomotion;Obstacle run;balance1;65
+Locomotion;Tree climb;triangle_climbing_the_tree;90
+Locomotion;Tree climb;grip1;85
+Locomotion;Tree climb;balance1;75
+Manipulation;Branch grip;grip1;100
+Energy;Power management;energy1;100
+Social;Atmosphere management;triangle_managing_the_social_atmosphere;100
+Cognition;Reflection;triangle_reflection_pool;100
