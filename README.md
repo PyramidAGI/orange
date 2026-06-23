@@ -1027,6 +1027,8 @@ Reading a rule: `surface too smooth to grip;i;lt;grip_force_n;N;stat soft;40;20`
 - **40** — the default value (e5). At startup `grip_force_n` is initialised to 40 N — a normal grip on a medium-texture surface, no quark firing.
 - **20** — the threshold (e6). If grip force drops below 20 N, the quark `stat soft` is emitted and the triangle responds.
 
+The default value isn't a default in the boring sense — it's the environment speaking first. grounding.py is always in a dialogue with the environment, not waiting for instructions. Even at startup it already has a reading.
+
 ### What is grounded
 
 Fifteen sensors across two domains:
