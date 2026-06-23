@@ -960,3 +960,28 @@ goal: pattern + sequence
 What makes it orthogonal: a climbing robot needs balance, grip, and navigation — but it also needs to know *when* to act. Gripping a branch that is still swinging fails even if grip strength is perfect. The timing triangle is the only one that can block all other triangles from firing until conditions are right.
 
 This points to a general principle: a complete triangle library needs one triangle per independent dimension of the problem. When you can no longer find a triangle that is orthogonal to all existing ones, the library is complete for that domain.
+
+---
+
+## Honestly, not yet — but you're closer than it might seem
+
+Here's the gap clearly:
+
+**What the triangles give you:**
+- A vocabulary for describing what's wrong (sensor quarks) and what to do about it (actuator actions)
+- A goal state per triangle
+- A way to route quark inputs to the right triangle via the Q-table
+
+**What's missing for a real robot:**
+The triangles describe logic but not interface. `waitfor` and `execute_move` are labels — a real program needs to know what function to call, what motor to drive, what sensor to read. Right now the bridge between quark and hardware doesn't exist. You'd need a mapping layer: `stat fast → read_imu_oscillation_frequency()`, `execute_move → fire_motor_group(legs, forward)`.
+
+**What's missing for social measurement:**
+The social triangles (`managing_the_social_atmosphere`, `reflection_pool`) have the right quarks but no sensor grounding. `stat hot` in a room — how do you measure it? Voice pitch? Word frequency from a transcript? Heart rate from a wearable? The triangle tells you what to look for but not how to look for it. You'd need a sensing layer that maps observable signals to quarks.
+
+**The good news:**
+`runner.py` already has the right shape — it accepts quarks as input and fires actions as output. So the architecture is correct. What you need is two thin layers around it:
+
+- **inward:** sensors → quarks (the grounding problem)
+- **outward:** actions → actuators (the execution problem)
+
+The triangle library itself is probably sufficient for a first prototype in either domain. The question is whether you want to tackle the grounding layer next, or keep building the triangle library first.
