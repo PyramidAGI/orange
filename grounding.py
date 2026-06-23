@@ -33,8 +33,8 @@ def load_sensors(path):
         if role != "i" or typ not in ("lt", "gt"):
             continue
         try:
-            threshold = float(p[6])
-            default   = float(p[7])
+            default   = float(p[6])
+            threshold = float(p[7])
         except ValueError:
             continue
         op = "<" if typ == "lt" else ">"

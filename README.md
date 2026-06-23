@@ -1016,16 +1016,16 @@ Field layout (role at index 0):
 | 2 | sensor name | `battery_%` |
 | 3 | unit | `%` |
 | 4 | quark | `stat low` |
-| 5 | threshold | `30` |
-| 6 | default value | `75` |
+| 5 | default value | `75` |
+| 6 | threshold | `30` |
 
 Indices 5 and 6 are always numeric. The operator lives in typ so the numeric fields stay clean. To add a new sensor or adjust a threshold, edit `log.csv` only — no code changes needed.
 
-Reading a rule: `surface too smooth to grip;i;lt;grip_force_n;N;stat soft;20;40`
+Reading a rule: `surface too smooth to grip;i;lt;grip_force_n;N;stat soft;40;20`
 
 - **lt** — less than. The rule fires when `grip_force_n` is below the threshold.
-- **20** — the threshold. If grip force drops below 20 N, the quark `stat soft` is emitted.
-- **40** — the default value. At startup `grip_force_n` is initialised to 40 N — a normal grip on a medium-texture surface, no quark firing. Only when it falls below 20 does the system emit `stat soft` and the triangle responds.
+- **40** — the default value (e5). At startup `grip_force_n` is initialised to 40 N — a normal grip on a medium-texture surface, no quark firing.
+- **20** — the threshold (e6). If grip force drops below 20 N, the quark `stat soft` is emitted and the triangle responds.
 
 ### What is grounded
 
