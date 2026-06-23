@@ -903,3 +903,30 @@ When you export a new CSV from Cluster Maker, a small script adds a default row 
 The simplest option: every time the runner activates a triangle, increment a counter. Periodically normalise all counters to 0–100 and write them back as use%. No Q-table needed — pure frequency. The comparer then shows not "what you planned" but "what actually ran most."
 
 The deepest version combines 1 and 2: Q-values decide *which* triangle wins a given quark input, and outcome logs decide *whether* that triangle stays in the scenario at all. `scenarios.csv` becomes a living document rather than a config file.
+
+---
+
+## scenarios.csv and AGI
+
+The structure of `scenarios.csv` touches something real about AGI. Here is why it matters:
+
+**The file separates three things that most AI systems conflate:**
+- What exists (the triangles — fixed knowledge units)
+- How they relate (sectors and scenarios — context)
+- How much they matter right now (use% — salience)
+
+Most neural networks bake all three together into weights. You can't inspect them separately, and you can't update one without retraining the whole thing. `scenarios.csv` keeps them apart and editable.
+
+**The use% column is a primitive attention mechanism.** When the comparer loads a scenario, it's asking: given this context, which triangles are foregrounded? That's what attention does — it doesn't add new knowledge, it adjusts salience. The difference is that this version is transparent and human-editable; transformer attention is opaque and learned.
+
+**The sector/scenario hierarchy is a primitive working memory.** You don't load all triangles at once — you select a sector, then a scenario, and reason within that frame. It mirrors how intelligent systems manage context: not by holding everything simultaneously, but by selecting a frame and working within it.
+
+**Where the AGI connection gets interesting:** the sync strategies close the loop. If Q-values feed back into use%, and outcome logs retire failing triangles, then the system has:
+- persistent structured knowledge (triangles)
+- a context model (scenarios)
+- a salience mechanism (use%)
+- a learning signal (outcomes)
+
+Those are four of the five ingredients usually listed for AGI. The missing one is autonomous triangle *generation* — the system noticing a gap and building a new triangle without a human. That is exactly what `build_triangle(observation)` in the pseudocode section is sketching.
+
+The honest version: this is not AGI. But it is a legible architecture that makes the AGI problem concrete — you can point at exactly which piece is missing and describe what it would have to do.
