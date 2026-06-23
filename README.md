@@ -930,3 +930,33 @@ Most neural networks bake all three together into weights. You can't inspect the
 Those are four of the five ingredients usually listed for AGI. The missing one is autonomous triangle *generation* — the system noticing a gap and building a new triangle without a human. That is exactly what `build_triangle(observation)` in the pseudocode section is sketching.
 
 The honest version: this is not AGI. But it is a legible architecture that makes the AGI problem concrete — you can point at exactly which piece is missing and describe what it would have to do.
+
+---
+
+## The timing triangle — orthogonality in the library
+
+The nine triangles in `triangles/` can be grouped by what dimension they operate on:
+
+| dimension | triangles |
+|---|---|
+| physical stability | balance, grip |
+| spatial movement | nav, obstacle, climbing |
+| resources | energy |
+| social | managing atmosphere |
+| internal/cognitive | reflection pool |
+| **time** | **timing** |
+
+The timing triangle (`triangle_timing1.csv`) is the only one where the sensor quarks are about *rate and rhythm* rather than state or position. All other triangles assume time is continuous and act on current state — this one acts on temporal structure.
+
+```
+timing triangle — act within the right window
+————————————————————————————————————————————
+branch still oscillating   →  waitfor
+movement window too short  →  abort_branch
+rhythm established         →  execute_move
+goal: pattern + sequence
+```
+
+What makes it orthogonal: a climbing robot needs balance, grip, and navigation — but it also needs to know *when* to act. Gripping a branch that is still swinging fails even if grip strength is perfect. The timing triangle is the only one that can block all other triangles from firing until conditions are right.
+
+This points to a general principle: a complete triangle library needs one triangle per independent dimension of the problem. When you can no longer find a triangle that is orthogonal to all existing ones, the library is complete for that domain.
