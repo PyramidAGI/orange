@@ -1053,3 +1053,5 @@ sensor> tick
 ```
 
 Those quarks feed directly into `runner.py`, which routes them through the triangle rules and fires actuator actions. The architecture described in the gap analysis is now implemented for the inward side.
+
+**tick** — evaluate all current sensor values and emit the active quarks. Borrowed from clock terminology: one tick of the sensor loop. Set some values, then `tick` to sample everything at once and see what the current state produces.
