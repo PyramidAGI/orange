@@ -1021,6 +1021,12 @@ Field layout (role at index 0):
 
 Indices 5 and 6 are always numeric. The operator lives in typ so the numeric fields stay clean. To add a new sensor or adjust a threshold, edit `log.csv` only — no code changes needed.
 
+Reading a rule: `surface too smooth to grip;i;lt;grip_force_n;N;stat soft;20;40`
+
+- **lt** — less than. The rule fires when `grip_force_n` is below the threshold.
+- **20** — the threshold. If grip force drops below 20 N, the quark `stat soft` is emitted.
+- **40** — the default value. At startup `grip_force_n` is initialised to 40 N — a normal grip on a medium-texture surface, no quark firing. Only when it falls below 20 does the system emit `stat soft` and the triangle responds.
+
 ### What is grounded
 
 Fifteen sensors across two domains:
