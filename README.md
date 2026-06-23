@@ -883,3 +883,23 @@ Cognition;Reflection;triangle_reflection_pool;100
 ```
 
 One triangle can appear in multiple scenarios at different use percentages — `balance1` appears in Stable ascent, Obstacle run, and Tree climb because balance matters differently in each. The file drives the comparer's sector and scenario dropdowns entirely; adding a new triangle to a scenario requires only a new row in `scenarios.csv`, no code changes.
+
+---
+
+## Syncing scenarios.csv with real-life use
+
+`scenarios.csv` starts as a human-curated design file. Four approaches to keep it in sync with what actually happens at runtime:
+
+**1. Q-table → use%**
+`rl_matcher.py` already has Q-values per `(quark set, triangle)`. Export those as use percentages after each session — a triangle with a high Q-value for a given scenario gets a higher use%, one that rarely wins drops. `scenarios.csv` becomes a snapshot of what the system has learned, not just what you designed.
+
+**2. Outcome log → retire or promote**
+Add a `runs` and `goal_reached` column to `scenarios.csv`. Each time `runner.py` finishes a triangle, append to those counts. A triangle at 5% goal-reached rate is a candidate for removal or redesign; one at 90% is a candidate for higher use% or its own scenario. The file self-documents what's working.
+
+**3. New triangle → auto-row**
+When you export a new CSV from Cluster Maker, a small script adds a default row to `scenarios.csv` (sector inferred from the filename, use=50, scenario="Uncategorised"). The comparer picks it up immediately. You manually move it to the right sector later — but it never gets lost.
+
+**4. Activation frequency → use%**
+The simplest option: every time the runner activates a triangle, increment a counter. Periodically normalise all counters to 0–100 and write them back as use%. No Q-table needed — pure frequency. The comparer then shows not "what you planned" but "what actually ran most."
+
+The deepest version combines 1 and 2: Q-values decide *which* triangle wins a given quark input, and outcome logs decide *whether* that triangle stays in the scenario at all. `scenarios.csv` becomes a living document rather than a config file.
