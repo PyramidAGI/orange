@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 530" width="620" height="530">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#555"/>
+    </marker>
+    <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#13795b"/>
+    </marker>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#176b87"/>
+    </marker>
+  </defs>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- STAGE 1 — INTERVIEW                              -->
+  <!-- ══════════════════════════════════════════════════ -->
+
+  <!-- Terminal box -->
+  <rect x="50" y="28" width="520" height="158" rx="7" fill="#17211d"/>
+  <!-- Title bar -->
+  <rect x="50" y="28" width="520" height="24" rx="7" fill="#253028"/>
+  <rect x="50" y="40" width="520" height="12" fill="#253028"/>
+  <circle cx="70"  cy="40" r="5" fill="#a23b35"/>
+  <circle cx="88"  cy="40" r="5" fill="#9a6700"/>
+  <circle cx="106" cy="40" r="5" fill="#13795b"/>
+  <text x="310" y="44" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="10" fill="#65716b">scaffold.py — project interview</text>
+
+  <!-- Interview prompts -->
+  <g font-family="ui-monospace,Consolas,monospace" font-size="10.5">
+    <text x="68" y="76"  fill="#65716b">What is the goal?</text>
+    <text x="68" y="76"  fill="#65716b">What is the goal?</text>
+    <text x="248" y="76" fill="#e9f1ec">reach the target branch</text>
+
+    <text x="68" y="94"  fill="#65716b">What can be sensed?</text>
+    <text x="264" y="94" fill="#e9f1ec">grip_force, battery, branch_osc</text>
+
+    <text x="68" y="112" fill="#65716b">What actions does it take?</text>
+    <text x="288" y="112" fill="#e9f1ec">climb, grip, retreat, recharge</text>
+
+    <text x="68" y="130" fill="#65716b">What are the failure modes?</text>
+    <text x="296" y="130" fill="#e9f1ec">slip, low_battery, overheat</text>
+
+    <!-- blinking cursor suggestion -->
+    <text x="68" y="160" fill="#65716b">What entities exist?</text>
+    <rect x="248" y="149" width="7" height="13" fill="#13795b" opacity="0.8"/>
+  </g>
+
+  <!-- Stage label -->
+  <text x="310" y="20" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="11" font-weight="700" fill="#444">1 — interview</text>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- ARROW 1→2                                        -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <line x1="310" y1="189" x2="310" y2="213" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- STAGE 2 — QUARK MAPPING                          -->
+  <!-- ══════════════════════════════════════════════════ -->
+
+  <rect x="50" y="218" width="520" height="148" rx="6" fill="#f4f7f5" stroke="#d7ded9" stroke-width="1.5"/>
+
+  <!-- Stage label -->
+  <text x="310" y="213" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="11" font-weight="700" fill="#444">2 — quark mapping</text>
+
+  <!-- Left column: words -->
+  <text x="68" y="242"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="10" font-weight="700" fill="#65716b">interview answer</text>
+  <g font-family="ui-monospace,Consolas,monospace" font-size="10.5" fill="#17211d">
+    <text x="68" y="260">reach</text>
+    <text x="68" y="278">grip_force</text>
+    <text x="68" y="296">battery</text>
+    <text x="68" y="314">branch_osc</text>
+    <text x="68" y="332">slip</text>
+    <text x="68" y="350">low_battery</text>
+  </g>
+
+  <!-- Arrows word → quark -->
+  <g stroke="#bfc9c2" stroke-width="1" marker-end="url(#arr)" fill="none">
+    <line x1="160" y1="257" x2="230" y2="257"/>
+    <line x1="195" y1="275" x2="230" y2="275"/>
+    <line x1="182" y1="293" x2="230" y2="293"/>
+    <line x1="202" y1="311" x2="230" y2="311"/>
+    <line x1="148" y1="329" x2="230" y2="329"/>
+    <line x1="208" y1="347" x2="230" y2="347"/>
+  </g>
+
+  <!-- Right column: quarks -->
+  <text x="238" y="242"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="10" font-weight="700" fill="#65716b">quarks</text>
+  <g font-family="ui-monospace,Consolas,monospace" font-size="10.5" fill="#176b87">
+    <text x="238" y="260">loc</text>
+    <text x="238" y="278">force  stat</text>
+    <text x="238" y="296">energy  stat</text>
+    <text x="238" y="314">stat fast</text>
+    <text x="238" y="332">problem  stat broken</text>
+    <text x="238" y="350">energy  stat low</text>
+  </g>
+
+  <!-- Source label -->
+  <rect x="390" y="228" width="166" height="52" rx="5" fill="#e5f4ed" stroke="#13795b" stroke-width="1"/>
+  <text x="473" y="244" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9" font-weight="700" fill="#13795b">combinations.csv</text>
+  <text x="473" y="258" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="8.5" fill="#13795b">instant lookup</text>
+
+  <rect x="390" y="288" width="166" height="52" rx="5" fill="#e4f2f7" stroke="#176b87" stroke-width="1"/>
+  <text x="473" y="304" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9" font-weight="700" fill="#176b87">quark_overlap.py</text>
+  <text x="473" y="318" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="8.5" fill="#176b87">API fallback for unknowns</text>
+
+  <!-- Role sort labels -->
+  <g font-family="Inter,ui-sans-serif,system-ui,sans-serif" font-size="8.5">
+    <rect x="50" y="357" width="520" height="1" fill="#d7ded9"/>
+    <text x="68"  y="370" fill="#176b87" font-weight="700">O quarks</text>
+    <text x="68"  y="381" fill="#555">force  loc  energy  stat fast</text>
+    <text x="230" y="370" fill="#9a6700" font-weight="700">A quarks</text>
+    <text x="230" y="381" fill="#555">drive  animate  waitfor</text>
+    <text x="390" y="370" fill="#13795b" font-weight="700">T / S quarks</text>
+    <text x="390" y="381" fill="#555">container  val  conflict</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- ARROW 2→3                                        -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <line x1="310" y1="369" x2="310" y2="393" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- STAGE 3 — TRIANGLE SKELETON                      -->
+  <!-- ══════════════════════════════════════════════════ -->
+
+  <!-- log.csv output box -->
+  <rect x="50" y="398" width="520" height="118" rx="6" fill="#17211d"/>
+  <rect x="50" y="398" width="520" height="22" rx="6" fill="#253028"/>
+  <rect x="50" y="408" width="520" height="12" fill="#253028"/>
+  <text x="310" y="413" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="10" fill="#65716b">generated log.csv skeleton</text>
+
+  <g font-family="ui-monospace,Consolas,monospace" font-size="10">
+    <text x="68" y="435" fill="#65716b">;;;;;;;;;</text>
+    <text x="68" y="450" fill="#e5f4ed">reach the target branch</text>
+    <text x="68" y="450" fill="#e5f4ed">reach target branch</text>
+    <text x="290" y="450" fill="#9a6700">c</text>
+    <text x="68" y="450">
+      <tspan fill="#e5f4ed">reach target branch;</tspan><tspan fill="#9a6700">c</tspan><tspan fill="#e9f1ec">;activity;robot;branch;goal loc+force</tspan>
+    </text>
+    <text x="68" y="465">
+      <tspan fill="#65716b">;</tspan><tspan fill="#176b87">a</tspan><tspan fill="#e9f1ec">;stat;robot001;branch001;stat broken</tspan>
+    </text>
+    <text x="68" y="480">
+      <tspan fill="#65716b">;</tspan><tspan fill="#9a6700">c</tspan><tspan fill="#e9f1ec">;mode;robot001;branch001;engage_suction</tspan>
+    </text>
+    <text x="68" y="495">
+      <tspan fill="#65716b">;</tspan><tspan fill="#176b87">a</tspan><tspan fill="#e9f1ec">;stat;robot001;battery001;stat low</tspan>
+    </text>
+    <text x="68" y="510">
+      <tspan fill="#65716b">;</tspan><tspan fill="#9a6700">c</tspan><tspan fill="#e9f1ec">;mode;robot001;battery001;reduce_speed</tspan>
+    </text>
+  </g>
+
+  <!-- Stage label -->
+  <text x="310" y="393" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="11" font-weight="700" fill="#444">3 — triangle skeleton</text>
+
+</svg>
