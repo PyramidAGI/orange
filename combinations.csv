@@ -36,7 +36,6 @@ daughter;kinship
 artist;emo
 artist;pattern
 water;nature
-water;bond
 water;stat liquid
 computer;data
 computer;tool
@@ -45,6 +44,7 @@ health;activity
 health;vitality
 robot;transducer
 robot;tool
+robot;machine
 wristwatch;time
 wristwatch;sequence
 grandma;kinship
@@ -177,8 +177,6 @@ path;loc
 path;channel
 sick;vitality
 sick;problem
-lead;tool
-lead;stat size
 knife;tool
 knife;fork
 wheel;transport

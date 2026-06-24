@@ -164,7 +164,8 @@
         .map(l => l.trim())
         .filter(l => l && l.includes(';'))
         .map(l => { const [concept, quark] = l.split(';'); return [concept.trim(), quark.trim()]; });
-      document.getElementById('fileStatus').textContent = `${entries.length} rows loaded`;
+      const uniqueConcepts = new Set(entries.map(e => e[0])).size;
+      document.getElementById('fileStatus').textContent = `${entries.length} rows loaded · ${uniqueConcepts} unique concepts`;
       document.getElementById('btn').disabled = false;
       e.target.value = '';
     });
