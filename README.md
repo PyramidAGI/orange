@@ -988,6 +988,8 @@ The triangle library itself is probably sufficient for a first prototype in eith
 
 ---
 
+![Architecture: log ribbon, grounding triangle, executing triangles, orchestrator](architecture.svg)
+
 ## The grounding layer — grounding.py
 
 The inward layer is now built. `grounding.py` closes the gap between raw sensor readings and the quark vocabulary that `runner.py` understands.
