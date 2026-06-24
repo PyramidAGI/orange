@@ -339,7 +339,7 @@
     }
 
     function rowTemplate(row, index) {
-      const options = allQuarks.map(q => `<option ${q === row.e4 ? 'selected' : ''}>${q}</option>`).join('');
+      const options = `<option value="" ${!row.e4 ? 'selected' : ''}></option>` + allQuarks.map(q => `<option ${q === row.e4 ? 'selected' : ''}>${q}</option>`).join('');
       return `<article class="record">
         <div class="record-top">
           <div><span class="record-number">Record ${index + 1}</span> <span class="inherit">${index ? 'cluster inherited' : 'cluster written here'}</span></div>
@@ -392,7 +392,7 @@
     }
 
     function addRow() {
-      rows.push({ e0: 'c', e1: 'transform', e2: '', e3: '', e4: 'force', e5: 50, e6: 50 });
+      rows.push({ e0: 'c', e1: 'transform', e2: '', e3: '', e4: '', e5: 50, e6: 50 });
       render();
     }
 
