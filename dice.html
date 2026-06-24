@@ -115,6 +115,20 @@
       color: var(--muted);
       margin-top: 4px;
     }
+    .related {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-align: center;
+      max-width: 480px;
+    }
+    .related-row { font-size: 13px; }
+    .via-quark {
+      font: 12px/1 ui-monospace, Consolas, monospace;
+      color: var(--green);
+    }
+    .via-concepts { color: var(--ink); }
   </style>
 </head>
 <body>
@@ -136,6 +150,7 @@
     <div class="concept" id="concept"></div>
     <div class="quark"   id="quark"></div>
     <div class="entry-num" id="enum"></div>
+    <div class="related" id="related"></div>
   </div>
 
   <script>
@@ -199,6 +214,19 @@
         document.getElementById('concept').textContent = concept;
         document.getElementById('quark').textContent   = quarks.join('  ·  ');
         document.getElementById('enum').textContent    = `entry ${idx + 1} of ${entries.length}`;
+
+        const related = quarks.map(q => {
+          const others = [...new Set(
+            entries.filter(e => e[1] === q && e[0] !== concept).map(e => e[0])
+          )];
+          return { quark: q, concepts: others };
+        }).filter(r => r.concepts.length > 0);
+
+        const relatedEl = document.getElementById('related');
+        relatedEl.innerHTML = related.map(r =>
+          `<div class="related-row"><span class="via-quark">via ${r.quark}:</span> <span class="via-concepts">${r.concepts.join('  ·  ')}</span></div>`
+        ).join('');
+
         result.classList.add('show');
       }, 350);
     }
