@@ -49,6 +49,7 @@ wristwatch;time
 wristwatch;sequence
 grandma;kinship
 grandma;bond
+grandma;animate
 road;transport
 road;loc
 fight;conflict
@@ -211,3 +212,5 @@ hot;energy
 dry;stat dry
 heavy;stat heavy
 heavy;force
+database;data
+database;container
