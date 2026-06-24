@@ -1,0 +1,235 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 555" width="740" height="555">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#555"/>
+    </marker>
+    <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#13795b"/>
+    </marker>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#176b87"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#9a6700"/>
+    </marker>
+    <clipPath id="rc">
+      <rect x="28" y="48" width="94" height="350"/>
+    </clipPath>
+  </defs>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- LOG RIBBON                                        -->
+  <!-- ══════════════════════════════════════════════════ -->
+
+  <!-- Shadow -->
+  <rect x="31" y="51" width="94" height="350" rx="2" fill="#999" opacity="0.18"/>
+
+  <!-- Ribbon body -->
+  <rect x="28" y="48" width="94" height="350" rx="2" fill="#fdf9ee" stroke="#c4a862" stroke-width="1.5"/>
+
+  <!-- Left and right margin strips -->
+  <rect x="28" y="48" width="11" height="350" fill="#ede3c0" opacity="0.55"/>
+  <rect x="111" y="48" width="11" height="350" fill="#ede3c0" opacity="0.55"/>
+
+  <!-- Sprocket holes — left -->
+  <circle cx="33" cy="68"  r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="88"  r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="108" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="128" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="148" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="168" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="188" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="208" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="228" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="248" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="268" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="288" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="308" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="328" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="348" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="368" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="33" cy="388" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+
+  <!-- Sprocket holes — right -->
+  <circle cx="117" cy="68"  r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="88"  r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="108" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="128" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="148" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="168" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="188" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="208" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="228" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="248" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="268" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="288" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="308" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="328" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="348" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="368" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+  <circle cx="117" cy="388" r="3.5" fill="#fdf9ee" stroke="#c4a862" stroke-width="1"/>
+
+  <!-- Ribbon content (clipped) -->
+  <g clip-path="url(#rc)" font-family="ui-monospace,Consolas,monospace" font-size="6.5" fill="#5a4520">
+
+    <!-- grounding section header -->
+    <rect x="40" y="55" width="70" height="8" fill="#fff3cf" rx="1"/>
+    <text x="43" y="62" font-weight="700" fill="#9a6700">grounding rules</text>
+    <text x="43" y="73">i;lt;battery_%;stat low;75;30</text>
+    <text x="43" y="82">i;lt;battery_%;stat empty;75;10</text>
+    <text x="43" y="91">i;gt;battery_%;stat full;75;80</text>
+    <text x="43" y="100">i;gt;motor_temp;stat hot;35;70</text>
+    <text x="43" y="109">i;gt;branch_osc;stat fast;0.5;2</text>
+    <text x="43" y="118">i;lt;grip_force;stat soft;40;20</text>
+    <text x="43" y="127">i;gt;grip_force;stat rough;40;60</text>
+    <text x="43" y="136">i;gt;voice_pitch;stat hot;200;280</text>
+    <text x="43" y="145">i;lt;voice_pitch;stat cold;200;140</text>
+
+    <!-- separator -->
+    <text x="40" y="156" fill="#c4a862" font-size="7">;;;;;;;;;;;;;;;;;</text>
+
+    <!-- triangle section header -->
+    <rect x="40" y="160" width="70" height="8" fill="#e4f2f7" rx="1"/>
+    <text x="43" y="167" font-weight="700" fill="#176b87">triangle rules</text>
+    <text x="43" y="178">c;activity;grasper;branch</text>
+    <text x="43" y="187">a;stat;grasper;stat soft</text>
+    <text x="43" y="196">c;mode;grasper;switch_claw</text>
+    <text x="43" y="205">a;stat;grasper;stat rough</text>
+    <text x="43" y="214">c;mode;grasper;incr_grip</text>
+    <text x="43" y="223">c;activity;robot;battery</text>
+    <text x="43" y="232">a;stat;robot;stat low</text>
+    <text x="43" y="241">c;mode;robot;reduce_speed</text>
+    <text x="43" y="250">a;stat;robot;stat hot</text>
+    <text x="43" y="259">c;mode;robot;cool_motor</text>
+
+    <!-- separator -->
+    <text x="40" y="270" fill="#c4a862" font-size="7">;;;;;;;;;;;;;;;;;</text>
+
+    <!-- orchestrator section header -->
+    <rect x="40" y="274" width="70" height="8" fill="#fff3cf" rx="1"/>
+    <text x="43" y="281" font-weight="700" fill="#9a6700">orchestrator</text>
+    <text x="43" y="292">grip fail → tri_energy1</text>
+    <text x="43" y="301">nav dead end → tri_grip1</text>
+
+    <!-- separator -->
+    <text x="40" y="312" fill="#c4a862" font-size="7">;;;;;;;;;;;;;;;;;</text>
+
+    <!-- fading rows -->
+    <text x="43" y="323" opacity="0.5">c;activity;director;band</text>
+    <text x="43" y="332" opacity="0.35">a;stat;band001;stat cold</text>
+    <text x="43" y="341" opacity="0.22">c;mode;dir001;nod_to_sol</text>
+    <text x="43" y="350" opacity="0.13">a;stat;band001;stat hot</text>
+    <text x="43" y="359" opacity="0.07">c;mode;dir001;lower_hand</text>
+    <text x="43" y="368" opacity="0.04">;;;;;;;;;;;;;;;;;</text>
+  </g>
+
+  <!-- Ribbon label -->
+  <text x="75" y="39" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="11" font-weight="700" fill="#5a4520" letter-spacing="0.8">log.csv</text>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- ARROW: log → grounding (i rules)                 -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <line x1="75" y1="401" x2="75" y2="424" stroke="#13795b" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="80" y="416"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="8" fill="#13795b">i rules</text>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- GROUNDING TRIANGLE                               -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <polygon points="75,432 24,508 126,508" fill="#e5f4ed" stroke="#13795b" stroke-width="1.5"/>
+  <text x="75" y="477" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9" font-weight="700" fill="#13795b">grounding</text>
+  <text x="75" y="491" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#13795b">sensor → quark</text>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- ARROW: log → executing pair (c/a rules)          -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <line x1="125" y1="215" x2="303" y2="215" stroke="#176b87" stroke-width="1.5"
+    stroke-dasharray="5,3" marker-end="url(#arr-blue)"/>
+  <text x="213" y="209" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="8" fill="#176b87">c / a rules</text>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- ORCHESTRATOR PARALLELOGRAM                       -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <polygon points="298,32 630,32 610,86 278,86" fill="#fff8e0" stroke="#9a6700" stroke-width="1.5"/>
+  <text x="454" y="56" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="12" font-weight="700" fill="#9a6700">orchestrator</text>
+  <text x="454" y="73" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9" fill="#9a6700">routes between triangles</text>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- ARROWS: orchestrator → triangles                 -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <line x1="405" y1="87" x2="392" y2="128" stroke="#9a6700" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+  <line x1="510" y1="87" x2="524" y2="128" stroke="#9a6700" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- EXECUTING TRIANGLE 1  (grip)                     -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <polygon points="392,137 316,290 468,290" fill="#e4f2f7" stroke="#176b87" stroke-width="1.5"/>
+  <!-- apex dot = goal cluster -->
+  <circle cx="392" cy="137" r="5" fill="#176b87"/>
+  <!-- center spine -->
+  <line x1="392" y1="142" x2="392" y2="290" stroke="#176b87" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.35"/>
+  <!-- goal label near apex -->
+  <text x="392" y="163" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#176b87">goal: bond + force</text>
+  <!-- triangle name -->
+  <text x="392" y="196" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9" font-weight="700" fill="#176b87">triangle_grip1</text>
+  <!-- rules -->
+  <text x="392" y="213" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#176b87">stat soft → switch_claw</text>
+  <text x="392" y="225" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#176b87">stat rough → incr_grip</text>
+  <text x="392" y="237" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#176b87">problem → engage_suc</text>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- EXECUTING TRIANGLE 2  (energy)                   -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <polygon points="528,137 452,290 604,290" fill="#e4f2f7" stroke="#176b87" stroke-width="1.5"/>
+  <circle cx="528" cy="137" r="5" fill="#176b87"/>
+  <line x1="528" y1="142" x2="528" y2="290" stroke="#176b87" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.35"/>
+  <text x="528" y="163" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#176b87">goal: energy + stat full</text>
+  <text x="528" y="196" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9" font-weight="700" fill="#176b87">triangle_energy1</text>
+  <text x="528" y="213" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#176b87">stat low → reduce_spd</text>
+  <text x="528" y="225" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#176b87">stat empty → sleep_mode</text>
+  <text x="528" y="237" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="7.5" fill="#176b87">stat hot → cool_motor</text>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- QUARK FLOW: grounding → triangles                -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <path d="M 126,480 C 220,480 260,350 310,270" fill="none"
+    stroke="#13795b" stroke-width="1.2" stroke-dasharray="4,3"
+    marker-end="url(#arr-green)" opacity="0.7"/>
+  <text x="218" y="408"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="8" fill="#13795b" opacity="0.85">quarks</text>
+
+</svg>
