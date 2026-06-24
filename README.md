@@ -1029,6 +1029,24 @@ Reading a rule: `surface too smooth to grip;i;lt;grip_force_n;N;stat soft;40;20`
 
 The default value isn't a default in the boring sense — it's the environment speaking first. grounding.py is always in a dialogue with the environment, not waiting for instructions. Even at startup it already has a reading.
 
+---
+
+## What a complete runner does
+
+A complete runner in this project does five things in order:
+
+1. **Load from log.csv** — triangles (`c;activity`, `a;stat`, `c;mode`), goals, orchestrator handoffs, and grounding rules (`i;lt`, `i;gt`). One file, one parse, everything known.
+
+2. **Accept sensor readings** — the environment hands it values (`grip_force_n=12`, `battery_%=22`). This is the grounding step: sensor readings converted to active quarks via the `i` rules.
+
+3. **Tick** — evaluate all sensors at once, produce the current quark set.
+
+4. **Route quarks to triangles** — for each active quark, find which triangle owns a rule for it and fire the actuator action. Track progress toward each triangle's goal cluster.
+
+5. **Handle escalation** — if a goal is reached, reset that triangle. If `stat broken` arrives and no triangle resolves it, hand off to the orchestrator, which activates the right triangle.
+
+Right now these are split across two programs: `grounding.py` does steps 1–3 and `runner.py` does steps 4–5. A complete runner merges them — one program that takes sensor values in and fires actions out, with the tick as the heartbeat of the loop.
+
 ### What is grounded
 
 Fifteen sensors across two domains:
