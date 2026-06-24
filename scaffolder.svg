@@ -121,17 +121,6 @@
     font-family="Inter,ui-sans-serif,system-ui,sans-serif"
     font-size="8.5" fill="#176b87">API fallback for unknowns</text>
 
-  <!-- Role sort labels -->
-  <g font-family="Inter,ui-sans-serif,system-ui,sans-serif" font-size="8.5">
-    <rect x="50" y="357" width="520" height="1" fill="#d7ded9"/>
-    <text x="68"  y="370" fill="#176b87" font-weight="700">O quarks</text>
-    <text x="68"  y="381" fill="#555">force  loc  energy  stat fast</text>
-    <text x="230" y="370" fill="#9a6700" font-weight="700">A quarks</text>
-    <text x="230" y="381" fill="#555">drive  animate  waitfor</text>
-    <text x="390" y="370" fill="#13795b" font-weight="700">T / S quarks</text>
-    <text x="390" y="381" fill="#555">container  val  conflict</text>
-  </g>
-
   <!-- ══════════════════════════════════════════════════ -->
   <!-- ARROW 2→3                                        -->
   <!-- ══════════════════════════════════════════════════ -->
