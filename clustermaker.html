@@ -203,6 +203,18 @@
     .legend-row { display: grid; grid-template-columns: 36px 1fr; gap: 8px; margin: 8px 0; }
     .legend-row strong { color: var(--green); }
     .note { color: var(--muted); font-size: 12px; margin-top: 10px; }
+    .associated { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .assoc-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 0 8px;
+      margin: 7px 0;
+    }
+    .assoc-concept { font-size: 13px; font-weight: 650; }
+    .assoc-pct { font-size: 12px; font-weight: 700; color: var(--blue); text-align: right; }
+    .assoc-pct.full { color: var(--green); }
+    .assoc-via { grid-column: 1 / -1; font: 11px/1.4 ui-monospace, Consolas, monospace; color: var(--muted); }
 
     @media (max-width: 1050px) {
       .app { grid-template-columns: 210px 1fr; }
@@ -238,6 +250,11 @@
         <input type="file" accept=".csv" multiple id="quarkInput" style="display:none">
       </label>
       <p id="quarkStatus" class="note" style="margin-top:-6px;margin-bottom:10px"></p>
+      <label class="button" style="display:block;text-align:center;margin-bottom:10px;cursor:pointer">
+        Load combinations.csv
+        <input type="file" accept=".csv" id="combosInput" style="display:none">
+      </label>
+      <p id="combosStatus" class="note" style="margin-top:-6px;margin-bottom:10px"></p>
       <input id="search" class="search" placeholder="Search elements...">
       <div id="palette"></div>
       <p class="note">Drag an element into an e2 or e3 field. Click an element to place it in the next empty field.</p>
@@ -269,6 +286,10 @@
         <div class="legend-row"><strong>e5</strong><span>Value, 0–100</span></div>
         <div class="legend-row"><strong>e6</strong><span>Threshold, 0–100</span></div>
       </div>
+      <div class="associated" id="associated" style="display:none">
+        <h2 class="section-title">Possible associated concepts</h2>
+        <div id="assocList"></div>
+      </div>
     </aside>
   </main>
 
@@ -276,6 +297,7 @@
     let groups = {};
     let allQuarks = [];
     let nextDrop = null;
+    let combos = [];
     let rows = [
       { e0: 'c', e1: 'transform', e2: 'force', e3: 'grip', e4: 'support', e5: 74, e6: 62 },
       { e0: 'q', e1: 'sensor', e2: 'force', e3: 'stat', e4: 'force', e5: 71, e6: 60 },
@@ -363,10 +385,45 @@
       return rows.map((r, i) => [i ? '' : cluster, r.e0, r.e1, r.e2, r.e3, r.e4, r.e5, r.e6].join(';')).join('\n');
     }
 
+    function updateAssociated() {
+      const assocEl = document.getElementById('associated');
+      const listEl  = document.getElementById('assocList');
+      if (!combos.length) { assocEl.style.display = 'none'; return; }
+      const e2set = new Set(rows.map(r => r.e2).filter(Boolean));
+      if (!e2set.size) { assocEl.style.display = 'none'; return; }
+      const conceptTotals = new Map();
+      combos.forEach(([concept]) => conceptTotals.set(concept, (conceptTotals.get(concept) || 0) + 1));
+      const conceptMap = new Map();
+      combos.forEach(([concept, quark]) => {
+        if (e2set.has(quark)) {
+          if (!conceptMap.has(concept)) conceptMap.set(concept, []);
+          conceptMap.get(concept).push(quark);
+        }
+      });
+      if (!conceptMap.size) { assocEl.style.display = 'none'; return; }
+      const results = [...conceptMap.entries()]
+        .map(([concept, matched]) => {
+          const coverage  = matched.length / e2set.size;
+          const precision = matched.length / (conceptTotals.get(concept) || 1);
+          const pct = Math.round((coverage + precision) / 2 * 100);
+          return { concept, matched, pct };
+        })
+        .sort((a, b) => b.pct - a.pct || a.concept.localeCompare(b.concept));
+      assocEl.style.display = '';
+      listEl.innerHTML = results.map(r =>
+        `<div class="assoc-row">
+          <span class="assoc-concept">${r.concept}</span>
+          <span class="assoc-pct${r.pct === 100 ? ' full' : ''}">${r.pct}%</span>
+          <span class="assoc-via">via ${r.matched.join(' · ')}</span>
+        </div>`
+      ).join('');
+    }
+
     function render() {
       document.querySelector('#records').innerHTML = rows.map(rowTemplate).join('');
       document.querySelector('#csvPreview').textContent = csv();
       bindRows();
+      updateAssociated();
     }
 
     function bindRows() {
@@ -420,6 +477,19 @@
       allQuarks = Object.values(groups).flat();
       document.getElementById('quarkStatus').textContent = `${quarks.length} quarks loaded`;
       palette();
+      render();
+      e.target.value = '';
+    });
+
+    document.getElementById('combosInput').addEventListener('change', async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const text = await file.text();
+      combos = text.split('\n')
+        .map(l => l.trim())
+        .filter(l => l && l.includes(';'))
+        .map(l => { const [concept, quark] = l.split(';'); return [concept.trim(), quark.trim()]; });
+      document.getElementById('combosStatus').textContent = `${combos.length} combos loaded`;
       render();
       e.target.value = '';
     });

@@ -129,6 +129,42 @@
       color: var(--green);
     }
     .via-concepts { color: var(--ink); }
+
+    /* ── search ── */
+    .search-bar {
+      position: relative;
+      width: 260px;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      font: 15px/1.5 Inter, ui-sans-serif, system-ui, sans-serif;
+      outline: none;
+      color: var(--ink);
+    }
+    .search-bar input:focus { border-color: var(--green); }
+    .search-bar input:disabled { opacity: .35; }
+    .suggestions {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(23,33,29,.1);
+      overflow: hidden;
+      z-index: 10;
+    }
+    .suggestions.open { display: block; }
+    .suggestion-item {
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .suggestion-item:hover { background: var(--green-soft); color: var(--green); }
   </style>
 </head>
 <body>
@@ -145,6 +181,11 @@
   </div>
 
   <button id="btn" disabled>Roll</button>
+
+  <div class="search-bar">
+    <input id="searchInput" placeholder="Search concept..." disabled autocomplete="off">
+    <div class="suggestions" id="suggestions"></div>
+  </div>
 
   <div class="result" id="result">
     <div class="concept" id="concept"></div>
@@ -167,6 +208,7 @@
       const uniqueConcepts = new Set(entries.map(e => e[0])).size;
       document.getElementById('fileStatus').textContent = `${entries.length} rows loaded · ${uniqueConcepts} unique concepts`;
       document.getElementById('btn').disabled = false;
+      document.getElementById('searchInput').disabled = false;
       e.target.value = '';
     });
 
@@ -186,21 +228,33 @@
       ).join('');
     }
 
+    function showConcept(concept, idx) {
+      const quarks = entries.filter(e => e[0] === concept).map(e => e[1]);
+      const i = idx !== undefined ? idx : entries.findIndex(e => e[0] === concept);
+      document.getElementById('concept').textContent = concept;
+      document.getElementById('quark').textContent   = quarks.join('  ·  ');
+      document.getElementById('enum').textContent    = `entry ${i + 1} of ${entries.length}`;
+      const related = quarks.map(q => ({
+        quark: q,
+        concepts: [...new Set(entries.filter(e => e[1] === q && e[0] !== concept).map(e => e[0]))]
+      })).filter(r => r.concepts.length > 0);
+      document.getElementById('related').innerHTML = related.map(r =>
+        `<div class="related-row"><span class="via-quark">via ${r.quark}:</span> <span class="via-concepts">${r.concepts.join('  ·  ')}</span></div>`
+      ).join('');
+      document.getElementById('result').classList.add('show');
+    }
+
     function roll() {
       const d1 = Math.ceil(Math.random() * 6);
       const d2 = Math.ceil(Math.random() * 6);
       const d3 = Math.ceil(Math.random() * 6);
-
       const die1 = document.getElementById('d1');
       const die2 = document.getElementById('d2');
       const die3 = document.getElementById('d3');
-      const result = document.getElementById('result');
-
-      result.classList.remove('show');
+      document.getElementById('result').classList.remove('show');
       die1.classList.add('rolling');
       die2.classList.add('rolling');
       die3.classList.add('rolling');
-
       setTimeout(() => {
         renderDie(die1, d1);
         renderDie(die2, d2);
@@ -208,29 +262,34 @@
         die1.classList.remove('rolling');
         die2.classList.remove('rolling');
         die3.classList.remove('rolling');
-
-        const idx     = ((d1 - 1) * 36 + (d2 - 1) * 6 + (d3 - 1)) % entries.length;
-        const concept = entries[idx][0];
-        const quarks  = entries.filter(e => e[0] === concept).map(e => e[1]);
-        document.getElementById('concept').textContent = concept;
-        document.getElementById('quark').textContent   = quarks.join('  ·  ');
-        document.getElementById('enum').textContent    = `entry ${idx + 1} of ${entries.length}`;
-
-        const related = quarks.map(q => {
-          const others = [...new Set(
-            entries.filter(e => e[1] === q && e[0] !== concept).map(e => e[0])
-          )];
-          return { quark: q, concepts: others };
-        }).filter(r => r.concepts.length > 0);
-
-        const relatedEl = document.getElementById('related');
-        relatedEl.innerHTML = related.map(r =>
-          `<div class="related-row"><span class="via-quark">via ${r.quark}:</span> <span class="via-concepts">${r.concepts.join('  ·  ')}</span></div>`
-        ).join('');
-
-        result.classList.add('show');
+        const idx = ((d1 - 1) * 36 + (d2 - 1) * 6 + (d3 - 1)) % entries.length;
+        showConcept(entries[idx][0], idx);
       }, 350);
     }
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      const sugEl = document.getElementById('suggestions');
+      if (!q) { sugEl.classList.remove('open'); return; }
+      const concepts = [...new Set(entries.map(e => e[0]))];
+      const matches = concepts.filter(c => c.toLowerCase().includes(q));
+      if (!matches.length) { sugEl.classList.remove('open'); return; }
+      sugEl.innerHTML = matches.slice(0, 7).map(c =>
+        `<div class="suggestion-item">${c}</div>`
+      ).join('');
+      sugEl.classList.add('open');
+      sugEl.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', () => {
+          showConcept(item.textContent);
+          e.target.value = item.textContent;
+          sugEl.classList.remove('open');
+        });
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.search-bar')) document.getElementById('suggestions').classList.remove('open');
+    });
 
     // initialise dice faces
     renderDie(document.getElementById('d1'), 1);
