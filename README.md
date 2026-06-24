@@ -1001,10 +1001,10 @@ sensors -> grounding.py -> quarks -> runner.py -> actions
 Rules live in `log.csv` alongside triangle definitions, using role `i` (introduce) and typ `lt` (less than) or `gt` (greater than):
 
 ```
-battery running low;g;lt;battery_%;%;stat low;30;75
-motor overheating;g;gt;motor_temp_c;C;stat hot;70;35
-branch oscillating;g;gt;branch_osc_hz;Hz;stat fast;2.0;0.5
-voices raised;g;gt;voice_pitch_hz;Hz;stat hot;280;200
+battery running low;i;lt;battery_%;%;stat low;75;30
+motor overheating;i;gt;motor_temp_c;C;stat hot;35;70
+branch oscillating;i;gt;branch_osc_hz;Hz;stat fast;0.5;2.0
+voices raised;i;gt;voice_pitch_hz;Hz;stat hot;200;280
 ```
 
 Field layout (role at index 0):
@@ -1016,7 +1016,7 @@ Field layout (role at index 0):
 | 2 | sensor name | `battery_%` |
 | 3 | unit | `%` |
 | 4 | quark | `stat low` |
-| 5 | default value | `75` |
+| 5 | value (default) | `75` |
 | 6 | threshold | `30` |
 
 Indices 5 and 6 are always numeric. The operator lives in typ so the numeric fields stay clean. To add a new sensor or adjust a threshold, edit `log.csv` only — no code changes needed.
@@ -1024,10 +1024,10 @@ Indices 5 and 6 are always numeric. The operator lives in typ so the numeric fie
 Reading a rule: `surface too smooth to grip;i;lt;grip_force_n;N;stat soft;40;20`
 
 - **lt** — less than. The rule fires when `grip_force_n` is below the threshold.
-- **40** — the default value (e5). At startup `grip_force_n` is initialised to 40 N — a normal grip on a medium-texture surface, no quark firing.
+- **40** — the value (e5). The environment's current reading — a normal grip on a medium-texture surface, no quark firing.
 - **20** — the threshold (e6). If grip force drops below 20 N, the quark `stat soft` is emitted and the triangle responds.
 
-The default value isn't a default in the boring sense — it's the environment speaking first. grounding.py is always in a dialogue with the environment, not waiting for instructions. Even at startup it already has a reading.
+The value isn't a default in the boring sense — it's the environment speaking first. grounding.py is always in a dialogue with the environment, not waiting for instructions. Even at startup it already has a reading.
 
 ---
 
