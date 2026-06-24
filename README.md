@@ -141,6 +141,8 @@ The sensor side already has candidates: `battery`, `servo`, `grasper` all have t
 
 ## CLI project scaffolder — concept
 
+![CLI project scaffolder: interview, quark mapping, triangle skeleton](scaffolder.svg)
+
 A general-purpose CLI tool that interviews you about any project, maps it to quarks, and generates a Python skeleton. Quarks make this project-agnostic: the same tool works for a tree climbing robot, a repair café, or a greenhouse.
 
 ### Stage 1: Interview
