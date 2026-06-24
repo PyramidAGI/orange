@@ -154,7 +154,7 @@
     stroke-dasharray="5,3" marker-end="url(#arr-blue)"/>
   <text x="213" y="209" text-anchor="middle"
     font-family="Inter,ui-sans-serif,system-ui,sans-serif"
-    font-size="8" fill="#176b87">c / a rules</text>
+    font-size="8" fill="#176b87">q / c / a rules</text>
 
   <!-- ══════════════════════════════════════════════════ -->
   <!-- ORCHESTRATOR PARALLELOGRAM                       -->
