@@ -96,18 +96,22 @@
     }
     .dot-sep { color: var(--muted); padding: 0 1px; font-size: 11px; }
 
-    .rule {
+    .row {
       display: flex;
-      align-items: center;
+      align-items: baseline;
       gap: 8px;
-      margin: 7px 0;
+      margin: 6px 0;
       font-size: 13px;
     }
-    .arrow { color: var(--line); font-size: 15px; }
-    .action {
-      font-family: ui-monospace, Consolas, monospace;
-      font-size: 12px;
+    .row-tag {
+      font: 10px/1 ui-monospace, Consolas, monospace;
+      color: var(--line);
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+    .row-desc {
       color: var(--muted);
+      font-size: 12px;
     }
 
     .chip {
@@ -202,12 +206,9 @@
       e.target.value = '';
     });
 
-    const SENSOR_TYPES = new Set(['stat', 'sensor', 'criterion']);
-    const ACTION_TYPES = new Set(['mode', 'transform', 'control']);
-
     function parse(text, filename) {
       let name = filename.replace(/\.csv$/i, '');
-      let goal = [], rules = [], pending = null;
+      let goal = [], rows = [];
       for (const raw of text.split('\n').map(l => l.trimEnd()).filter(l => l.trim())) {
         if (raw === ';;;;;;;;') continue;
         const p = (raw + ';;;;;;').split(';');
@@ -218,14 +219,11 @@
           } else {
             name = desc || e1 || name;
           }
-        } else if ((role === 'a' || role === 'q') && SENSOR_TYPES.has(typ)) {
-          pending = rel;
-        } else if (role === 'c' && ACTION_TYPES.has(typ) && pending) {
-          rules.push({ sensor: pending, action: rel });
-          pending = null;
+        } else if (role) {
+          rows.push({ desc, role, typ, rel });
         }
       }
-      return { name, goal, rules };
+      return { name, goal, rows };
     }
 
     function chipClass(q) {
@@ -248,18 +246,18 @@
         <div class="card">
           <div class="card-header">
             <strong>${t.name}</strong>
-            <span>${t.rules.length} rule${t.rules.length !== 1 ? 's' : ''}</span>
+            <span>${t.rows.length} row${t.rows.length !== 1 ? 's' : ''}</span>
           </div>
           <div class="card-body">
             ${t.goal.length ? `<div class="goal-line">
               <span class="goal-label">goal</span>
               ${t.goal.map(chip).join('<span class="dot-sep">·</span>')}
             </div>` : ''}
-            ${t.rules.map(r => `
-              <div class="rule">
-                ${chip(r.sensor)}
-                <span class="arrow">→</span>
-                <span class="action">${r.action}</span>
+            ${t.rows.map(r => `
+              <div class="row">
+                <span class="row-tag">${r.role}·${r.typ}</span>
+                ${r.rel ? chip(r.rel) : ''}
+                ${r.desc ? `<span class="row-desc">${r.desc}</span>` : ''}
               </div>`).join('')}
           </div>
         </div>`).join('');
