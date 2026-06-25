@@ -1,5 +1,7 @@
 # PRD — Quark-driven robot on Raspberry Pi
 
+![Pi robot system diagram](pi_robot.svg)
+
 ## Goal
 
 A tree climbing robot that senses its environment, maps readings to quarks, and fires actuator actions — running entirely on a Raspberry Pi with no cloud dependency except optional concept grounding.

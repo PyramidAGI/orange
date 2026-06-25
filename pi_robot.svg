@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 420" width="740" height="420">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#555"/>
+    </marker>
+    <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#13795b"/>
+    </marker>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#176b87"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#9a6700"/>
+    </marker>
+  </defs>
+
+  <!-- ══ Tree ══ -->
+  <rect x="634" y="30" width="68" height="360" rx="6" fill="#2d5a27" stroke="#1a3d19" stroke-width="1.5"/>
+  <text x="668" y="22" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="12" font-weight="700" fill="#444">tree</text>
+
+  <!-- ══ Raspberry Pi board ══ -->
+  <rect x="18" y="68" width="448" height="296" rx="10" fill="#b5121b" stroke="#8b0e15" stroke-width="1.5"/>
+  <!-- title bar -->
+  <rect x="18" y="68" width="448" height="26" rx="10" fill="#8b0e15"/>
+  <rect x="18" y="82" width="448" height="12" fill="#8b0e15"/>
+  <text x="242" y="86" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="11" font-weight="700" fill="#fff" opacity="0.9">Raspberry Pi</text>
+  <!-- GPIO header pins -->
+  <g fill="#e8c84a">
+    <rect x="460" y="136" width="6" height="9" rx="1"/>
+    <rect x="460" y="152" width="6" height="9" rx="1"/>
+    <rect x="460" y="168" width="6" height="9" rx="1"/>
+    <rect x="460" y="184" width="6" height="9" rx="1"/>
+    <rect x="460" y="200" width="6" height="9" rx="1"/>
+    <rect x="460" y="216" width="6" height="9" rx="1"/>
+    <rect x="460" y="232" width="6" height="9" rx="1"/>
+    <rect x="460" y="248" width="6" height="9" rx="1"/>
+    <rect x="460" y="264" width="6" height="9" rx="1"/>
+    <rect x="460" y="280" width="6" height="9" rx="1"/>
+  </g>
+  <!-- inner white area -->
+  <rect x="36" y="104" width="418" height="244" rx="7" fill="#fffaf8" stroke="#e8d0d0" stroke-width="1"/>
+
+  <!-- ══ log.csv (dark terminal box) ══ -->
+  <rect x="52" y="242" width="120" height="48" rx="5" fill="#17211d" stroke="#253028" stroke-width="1"/>
+  <text x="112" y="262" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="11" fill="#65716b">log.csv</text>
+  <text x="112" y="279" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9" fill="#9dbfb0">rules + grounding</text>
+
+  <!-- ══ grounding.py ══ -->
+  <rect x="52" y="124" width="150" height="66" rx="6" fill="#e5f4ed" stroke="#13795b" stroke-width="1.5"/>
+  <text x="127" y="150" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="12" font-weight="700" fill="#13795b">grounding.py</text>
+  <text x="127" y="167" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9.5" fill="#65716b">sensor readings → quarks</text>
+
+  <!-- ══ runner.py ══ -->
+  <rect x="272" y="124" width="150" height="66" rx="6" fill="#e4f2f7" stroke="#176b87" stroke-width="1.5"/>
+  <text x="347" y="150" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="12" font-weight="700" fill="#176b87">runner.py</text>
+  <text x="347" y="167" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9.5" fill="#65716b">quarks → actions</text>
+
+  <!-- ══ triangles/ (stacked) ══ -->
+  <rect x="278" y="244" width="138" height="54" rx="5" fill="#fff3cf" stroke="#9a6700" stroke-width="1"/>
+  <rect x="274" y="240" width="138" height="54" rx="5" fill="#fff3cf" stroke="#9a6700" stroke-width="1"/>
+  <rect x="270" y="236" width="138" height="54" rx="5" fill="#fff8e0" stroke="#9a6700" stroke-width="1.5"/>
+  <text x="339" y="258" text-anchor="middle"
+    font-family="ui-monospace,Consolas,monospace"
+    font-size="12" font-weight="700" fill="#9a6700">triangles/</text>
+  <text x="339" y="275" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9.5" fill="#65716b">10 triangle CSVs</text>
+
+  <!-- ══ Sensor ══ -->
+  <rect x="506" y="140" width="92" height="58" rx="5" fill="#f3eeff" stroke="#c9b8f0" stroke-width="1.5"/>
+  <text x="552" y="164" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="12" font-weight="700" fill="#5b3fa6">sensor</text>
+  <text x="552" y="181" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9.5" fill="#65716b">grip · IMU · branch</text>
+
+  <!-- ══ Arrow: log.csv → grounding.py ══ -->
+  <line x1="112" y1="242" x2="112" y2="192" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ══ Arrow: log.csv → runner.py ══ -->
+  <line x1="172" y1="266" x2="270" y2="266" stroke="#555" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+
+  <!-- ══ Arrow: grounding.py → runner.py (quarks) ══ -->
+  <line x1="202" y1="157" x2="270" y2="157" stroke="#13795b" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="236" y="150" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9.5" font-weight="700" fill="#13795b">quarks</text>
+
+  <!-- ══ Arrow: triangles/ → runner.py ══ -->
+  <line x1="339" y1="234" x2="339" y2="192" stroke="#9a6700" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+
+  <!-- ══ Arrow: tree → sensor (sense, dashed) ══ -->
+  <line x1="634" y1="169" x2="598" y2="169" stroke="#5b3fa6" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="617" y="162" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9" fill="#65716b">sense</text>
+
+  <!-- ══ Arrow: sensor → GPIO → grounding.py ══ -->
+  <line x1="506" y1="169" x2="468" y2="169" stroke="#5b3fa6" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M460,169 C420,60 240,60 202,157" stroke="#5b3fa6" stroke-width="1.5" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-green)"/>
+  <text x="335" y="52" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9.5" font-weight="700" fill="#5b3fa6">sensor reading</text>
+
+  <!-- ══ Arrow: runner.py → GPIO → tree (actuate) ══ -->
+  <line x1="422" y1="185" x2="460" y2="185" stroke="#176b87" stroke-width="1.5"/>
+  <line x1="466" y1="185" x2="466" y2="290" stroke="#176b87" stroke-width="1.5"/>
+  <line x1="466" y1="290" x2="632" y2="290" stroke="#176b87" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text x="554" y="308" text-anchor="middle"
+    font-family="Inter,ui-sans-serif,system-ui,sans-serif"
+    font-size="9.5" font-weight="700" fill="#176b87">actuate</text>
+
+</svg>
