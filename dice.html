@@ -262,7 +262,7 @@
         die1.classList.remove('rolling');
         die2.classList.remove('rolling');
         die3.classList.remove('rolling');
-        const idx = ((d1 - 1) * 36 + (d2 - 1) * 6 + (d3 - 1)) % entries.length;
+        const idx = Math.floor(Math.random() * entries.length);
         showConcept(entries[idx][0], idx);
       }, 350);
     }
