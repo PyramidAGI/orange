@@ -1123,6 +1123,8 @@ quark> nature, support, machine, tool
 
 Goal: `bond + support` — the robot is anchored. A branch, a root, a rock ledge: same quarks, same triangle, same response.
 
+Source: `triangles/triangle_natural_anchor1.csv`
+
 ```
 ;;;;;;;;
 natural anchor triangle — use load-bearing natural structures;c;activity;robot;tree;;60;50;
