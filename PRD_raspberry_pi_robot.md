@@ -97,6 +97,45 @@ sensor> tick
 
 ---
 
+## Required enhancements to runner.py
+
+`runner.py` currently prints actuator action labels to stdout. For Pi control it needs five additions:
+
+**1. Hardware driver catalog**
+A dict mapping action labels to GPIO calls. Currently `engage_suction` is a string; on the Pi it must call `gpio.output(PUMP_PIN, HIGH)`. The catalog is the only hardware-specific layer — all triangle logic stays unchanged.
+
+```python
+DRIVERS = {
+    "engage_suction":        lambda: gpio.output(PUMP_PIN, HIGH),
+    "increase_grip_pressure": lambda: servo.set_duty(GRIP_SERVO, duty + 5),
+    "position_gripper":      lambda: servo.move(ARM_SERVO, 90),
+    "engage_anchor":         lambda: gpio.output(ANCHOR_PIN, HIGH),
+    ...
+}
+```
+
+**2. Timed tick loop**
+Currently runner.py waits for manual input. On the Pi it must run a continuous loop — read quarks from `grounding.py --pipe`, process them, fire actuators, repeat every N ms. The pipe already exists; the loop replaces the `input()` call.
+
+**3. Triangle switching**
+When a triangle reaches its goal or `stat broken` arrives unresolved, runner.py must load a different triangle from `triangles/` and make it the active set. Currently all triangles are always active. An `active_triangles` set controlled by the orchestrator rules gives the robot focused behaviour per situation.
+
+**4. Actuator confirmation**
+After firing an action, runner.py should wait for a confirming quark back from grounding.py before declaring success (e.g. fire `engage_suction` → wait for `stat rough` to appear, confirming grip). Timeout without confirmation → escalate. Currently runner fires and forgets.
+
+**5. Escalation to orchestrator**
+When `stat broken` arrives and no active triangle resolves it within N ticks, runner.py must activate the orchestrator rules from `log.csv` and hand off to the correct triangle. The orchestrator records are already parsed — the missing piece is the trigger condition and the triangle swap.
+
+| enhancement | effort | blocks |
+|---|---|---|
+| Driver catalog | low | any real actuation |
+| Timed tick loop | low | autonomous operation |
+| Triangle switching | medium | focused behaviour |
+| Actuator confirmation | medium | reliable grip/anchor |
+| Escalation | medium | fault recovery |
+
+---
+
 ## Definition of done
 
 - Robot climbs three metres on a test tree without falling
