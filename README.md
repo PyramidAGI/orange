@@ -721,6 +721,7 @@ Five triangles for a tree climbing robot, stored in `triangles/`, each in log fo
 | `triangle_energy1.csv` | `energy + stat full` | `stat low`, `stat empty`, `stat hot` |
 | `triangle_balance1.csv` | `normal + support` | `stat heavy`, `force`, `stat broken` |
 | `triangle_obstacle1.csv` | `loc + normal` | `stat rough`, `problem`, `stat heavy` |
+| `triangle_natural_anchor1.csv` | `bond + support` | `nature`, `support`, `machine`, `tool` |
 
 Note the overlaps — `stat broken` appears in both grip and nav, `stat rough` in both grip and obstacle, `problem` in both grip and obstacle. That is what makes the matching interesting: the Q-table learns which triangle handles each quark combination best. Two triangles may both overlap with `{problem, stat rough}` but one consistently reaches its goal cluster faster. The Q-table captures that distinction over time.
 
@@ -1108,3 +1109,16 @@ The pyramid never sees the word "branch." It sees `nature · support · machine 
 This is what makes pyramid282 reusable across domains. A rock ledge, a table edge, a bone — all share `nature · support` to varying degrees. The same pyramid handles all of them. The robot does not need to recognise objects; it needs to recognise functional quark signatures.
 
 The robot never needs to know the word "branch." It measures, grounds, and matches.
+
+`triangle_natural_anchor1.csv` is built for exactly this signature. It has rules for all four quarks and fires them in sequence:
+
+```
+quark> nature, support, machine, tool
+  tick: ['machine', 'nature', 'support', 'tool']
+  [natural anchor triangle] nature   -> scan_surface
+  [natural anchor triangle] support  -> test_grip_point
+  [natural anchor triangle] machine  -> position_gripper
+  [natural anchor triangle] tool     -> engage_anchor
+```
+
+Goal: `bond + support` — the robot is anchored. A rock ledge, a table edge, a bone: same quarks, same triangle, same response.

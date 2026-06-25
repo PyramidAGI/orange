@@ -35,29 +35,56 @@ seen = defaultdict(set)
 
 print("triangles :", list(rules))
 print("goals     :", {k: v for k, v in goals.items()})
-print("enter a quark to drive the system. 'quit' to exit.\n")
+print("enter a quark, or a comma-separated quark set (tick output). 'quit' to exit.\n")
 
 while True:
     try:
-        q = input("quark> ").strip()
+        raw = input("quark> ").strip()
     except (EOFError, KeyboardInterrupt):
         break
-    if q in {"q", "quit", "exit"}:
+    if raw in {"q", "quit", "exit"}:
         break
 
-    hit = False
-    for name, r in rules.items():
-        seen[name].add(q)
-        if q in r:
-            print(f"  [{name}] actuate -> {r[q]}")
-            hit = True
-        if goals.get(name, set()).issubset(seen[name]):
-            print(f"  [{name}] GOAL REACHED: {goals[name]}")
-            seen[name].clear()
+    quarks = [q.strip() for q in raw.split(",") if q.strip()]
+    if not quarks:
+        continue
 
-    if not hit:
-        print(f"  (no rule for '{q}')")
+    if len(quarks) == 1:
+        # single-quark: original behaviour
+        q = quarks[0]
+        hit = False
+        for name, r in rules.items():
+            seen[name].add(q)
+            if q in r:
+                print(f"  [{name}] actuate -> {r[q]}")
+                hit = True
+            if goals.get(name, set()).issubset(seen[name]):
+                print(f"  [{name}] GOAL REACHED: {goals[name]}")
+                seen[name].clear()
+        if not hit:
+            print(f"  (no rule for '{q}')")
+        targets = [t for t in orcs if q in rules.get(t, {})]
+        if targets:
+            print(f"  [orchestrator] handoff -> {targets}")
 
-    targets = [t for t in orcs if q in rules.get(t, {})]
-    if targets:
-        print(f"  [orchestrator] handoff -> {targets}")
+    else:
+        # quark set (tick output): score triangles by overlap, fire best matches first
+        qset = set(quarks)
+        print(f"  tick: {sorted(qset)}")
+        scored = sorted(
+            ((len(qset & r.keys()), name, qset & r.keys()) for name, r in rules.items() if qset & r.keys()),
+            reverse=True
+        )
+        if not scored:
+            print("  (no triangle matches this quark set)")
+        else:
+            for _, name, overlap in scored:
+                for q in sorted(overlap):
+                    seen[name].add(q)
+                    print(f"  [{name}] {q} -> {rules[name][q]}")
+                if goals.get(name, set()).issubset(seen[name]):
+                    print(f"  [{name}] GOAL REACHED: {goals[name]}")
+                    seen[name].clear()
+        targets = [t for t in orcs if qset & rules.get(t, {}).keys()]
+        if targets:
+            print(f"  [orchestrator] handoff -> {targets}")
