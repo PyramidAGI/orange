@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Triangle Reader</title>
+  <style>
+    :root {
+      --ink: #17211d;
+      --muted: #65716b;
+      --line: #d7ded9;
+      --soft: #f4f7f5;
+      --green: #13795b;
+      --green-soft: #e5f4ed;
+      --comp: #f3eeff;
+      --comp-ink: #5b3fa6;
+      --comp-border: #c9b8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font: 14px/1.5 Inter, ui-sans-serif, system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--soft);
+      padding: 24px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .brand { font-size: 17px; font-weight: 750; margin-right: 4px; }
+    .load-btn {
+      cursor: pointer;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .status { font-size: 12px; color: var(--muted); }
+    .legend {
+      display: flex;
+      gap: 12px;
+      margin-left: auto;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(23,33,29,.06);
+    }
+    .card-header {
+      background: #17211d;
+      padding: 12px 16px;
+    }
+    .card-header strong {
+      display: block;
+      font-size: 13px;
+      font-family: ui-monospace, Consolas, monospace;
+      color: #e9f1ec;
+      margin-bottom: 2px;
+    }
+    .card-header span {
+      font-size: 11px;
+      color: #65716b;
+    }
+    .card-body { padding: 14px 16px; }
+
+    .goal-line {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 13px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .goal-label {
+      font-size: 10px;
+      font-weight: 750;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-right: 2px;
+    }
+    .dot-sep { color: var(--muted); padding: 0 1px; font-size: 11px; }
+
+    .rule {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 7px 0;
+      font-size: 13px;
+    }
+    .arrow { color: var(--line); font-size: 15px; }
+    .action {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font: 12px/1.4 ui-monospace, Consolas, monospace;
+      white-space: nowrap;
+    }
+    .chip.base {
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid #a9d5c4;
+    }
+    .chip.comp {
+      background: var(--comp);
+      color: var(--comp-ink);
+      border: 1px solid var(--comp-border);
+    }
+    .chip.unknown {
+      background: var(--soft);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .empty {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 60px 0;
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">Triangle Reader</div>
+    <label class="load-btn">Load quark files
+      <input type="file" accept=".csv" multiple id="quarkInput" style="display:none">
+    </label>
+    <span id="quarkStatus" class="status"></span>
+    <label class="load-btn">Load triangles
+      <input type="file" accept=".csv" multiple id="triInput" style="display:none">
+    </label>
+    <span id="triStatus" class="status"></span>
+    <div class="legend">
+      <span class="chip base">base quark</span>
+      <span class="chip comp">complement</span>
+    </div>
+  </div>
+
+  <div class="cards" id="cards">
+    <div class="empty">Load quark files and triangle CSVs to begin.</div>
+  </div>
+
+  <script>
+    let baseQuarks = new Set();
+    let compQuarks = new Set();
+    let triangles  = [];
+
+    document.getElementById('quarkInput').addEventListener('change', async e => {
+      baseQuarks = new Set();
+      compQuarks = new Set();
+      for (const file of Array.from(e.target.files)) {
+        const text = await file.text();
+        text.split('\n').forEach(line => {
+          const p = line.trim().split(';');
+          const id = parseInt(p[0]);
+          const name = p[1]?.trim();
+          if (!isNaN(id) && name) {
+            if (id < 40) baseQuarks.add(name);
+            else compQuarks.add(name);
+          }
+        });
+      }
+      document.getElementById('quarkStatus').textContent =
+        `${baseQuarks.size} base · ${compQuarks.size} complement`;
+      render();
+      e.target.value = '';
+    });
+
+    document.getElementById('triInput').addEventListener('change', async e => {
+      triangles = [];
+      for (const file of Array.from(e.target.files)) {
+        const tri = parse(await file.text(), file.name);
+        if (tri) triangles.push(tri);
+      }
+      triangles.sort((a, b) => a.name.localeCompare(b.name));
+      document.getElementById('triStatus').textContent =
+        `${triangles.length} triangle${triangles.length !== 1 ? 's' : ''} loaded`;
+      render();
+      e.target.value = '';
+    });
+
+    function parse(text, filename) {
+      let name = filename.replace(/\.csv$/i, '');
+      let goal = [], rules = [], pending = null;
+      for (const raw of text.split('\n').map(l => l.trimEnd()).filter(l => l.trim())) {
+        if (raw === ';;;;;;;;') continue;
+        const p = (raw + ';;;;;;').split(';');
+        const [desc, role, typ, e1, , rel] = p.map(x => x.trim());
+        if (role === 'c' && typ === 'activity') {
+          if (rel.startsWith('goal')) {
+            goal = rel.slice(4).split('+').map(q => q.trim()).filter(Boolean);
+          } else {
+            name = desc || e1 || name;
+          }
+        } else if (role === 'a' && typ === 'stat') {
+          pending = rel;
+        } else if (role === 'c' && typ === 'mode' && pending) {
+          rules.push({ sensor: pending, action: rel });
+          pending = null;
+        }
+      }
+      return { name, goal, rules };
+    }
+
+    function chipClass(q) {
+      if (baseQuarks.has(q)) return 'base';
+      if (compQuarks.has(q)) return 'comp';
+      return 'unknown';
+    }
+
+    function chip(q) {
+      return `<span class="chip ${chipClass(q)}">${q}</span>`;
+    }
+
+    function render() {
+      const el = document.getElementById('cards');
+      if (!triangles.length) {
+        el.innerHTML = '<div class="empty">Load quark files and triangle CSVs to begin.</div>';
+        return;
+      }
+      el.innerHTML = triangles.map(t => `
+        <div class="card">
+          <div class="card-header">
+            <strong>${t.name}</strong>
+            <span>${t.rules.length} rule${t.rules.length !== 1 ? 's' : ''}</span>
+          </div>
+          <div class="card-body">
+            ${t.goal.length ? `<div class="goal-line">
+              <span class="goal-label">goal</span>
+              ${t.goal.map(chip).join('<span class="dot-sep">·</span>')}
+            </div>` : ''}
+            ${t.rules.map(r => `
+              <div class="rule">
+                ${chip(r.sensor)}
+                <span class="arrow">→</span>
+                <span class="action">${r.action}</span>
+              </div>`).join('')}
+          </div>
+        </div>`).join('');
+    }
+  </script>
+</body>
+</html>
