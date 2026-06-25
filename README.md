@@ -1110,6 +1110,14 @@ This is what makes pyramid282 reusable across domains. A branch, a root, a rock 
 
 The robot never needs to know the word "branch." It measures, grounds, and matches.
 
+## Compression as a sign of intelligence
+
+The entire behaviour of a tree climbing robot encountering a branch — sensing, evaluating, deciding, acting — compresses to four quarks and eight lines in a CSV. No classes, no callbacks, no configuration files.
+
+The compression comes from the fact that the quarks are genuinely primitive: you cannot describe `support` in terms of other quarks, you can only recognise it in the world. That is what separates a good primitive set from a short variable name. `support` carries meaning that transfers without explanation — a branch, a ledge, a colleague holding a ladder. Same word, same triangle, same response.
+
+High compression and high transfer at the same time is probably the best operational definition of intelligence we have. A system that needs a thousand rules to handle a thousand situations is not intelligent — it is just a lookup table. A system that handles a thousand situations with thirty-nine words is doing something else.
+
 `triangle_natural_anchor1.csv` is built for exactly this signature. It has rules for all four quarks and fires them in sequence:
 
 ```
