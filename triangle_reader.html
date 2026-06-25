@@ -202,6 +202,9 @@
       e.target.value = '';
     });
 
+    const SENSOR_TYPES = new Set(['stat', 'sensor', 'criterion']);
+    const ACTION_TYPES = new Set(['mode', 'transform', 'control']);
+
     function parse(text, filename) {
       let name = filename.replace(/\.csv$/i, '');
       let goal = [], rules = [], pending = null;
@@ -215,9 +218,9 @@
           } else {
             name = desc || e1 || name;
           }
-        } else if (role === 'a' && typ === 'stat') {
+        } else if ((role === 'a' || role === 'q') && SENSOR_TYPES.has(typ)) {
           pending = rel;
-        } else if (role === 'c' && typ === 'mode' && pending) {
+        } else if (role === 'c' && ACTION_TYPES.has(typ) && pending) {
           rules.push({ sensor: pending, action: rel });
           pending = null;
         }
