@@ -1,3 +1,9 @@
+;;;;;;;;
+climbing the tree;c;activity;robot;tree;;74;62;
+;;;;;;;;
 climbing the tree;c;transform;force;grip;support;74;62
 ;q;sensor;force;stat;force;71;60
 ;c;control;grip;increase;drive;66;58
+;;;;;;;;
+robot supported, drive sustained;c;activity;robot;tree;goal support+drive;80;90;
+;;;;;;;;

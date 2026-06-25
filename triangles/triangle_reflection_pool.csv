@@ -1,3 +1,9 @@
+;;;;;;;;
+reflection pool;c;activity;agent;self;;50;60;
+;;;;;;;;
 reflection pool;q;criterion;fork;conflict;vitality;18;60
 ;q;transform;emo;vitality;machine;0;64
 ;c;transform;stat vapor;stat broken;fix;98;52
+;;;;;;;;
+reflection complete, vitality restored;c;activity;agent;self;goal fix+vitality;80;90;
+;;;;;;;;
