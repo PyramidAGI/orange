@@ -107,12 +107,23 @@ sensor> tick
 A dict mapping action labels to GPIO calls. Currently `engage_suction` is a string; on the Pi it must call `gpio.output(PUMP_PIN, HIGH)`. The catalog is the only hardware-specific layer — all triangle logic stays unchanged.
 
 ```python
+def engage_suction():
+    gpio.output(PUMP_PIN, HIGH)
+
+def increase_grip_pressure():
+    servo.set_duty(GRIP_SERVO, duty + 5)
+
+def position_gripper():
+    servo.move(ARM_SERVO, 90)
+
+def engage_anchor():
+    gpio.output(ANCHOR_PIN, HIGH)
+
 DRIVERS = {
-    "engage_suction":        lambda: gpio.output(PUMP_PIN, HIGH),
-    "increase_grip_pressure": lambda: servo.set_duty(GRIP_SERVO, duty + 5),
-    "position_gripper":      lambda: servo.move(ARM_SERVO, 90),
-    "engage_anchor":         lambda: gpio.output(ANCHOR_PIN, HIGH),
-    ...
+    "engage_suction":         engage_suction,
+    "increase_grip_pressure": increase_grip_pressure,
+    "position_gripper":       position_gripper,
+    "engage_anchor":          engage_anchor,
 }
 ```
 
