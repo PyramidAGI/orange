@@ -79,11 +79,11 @@ bottle;container
 bottle;stat liquid
 insecurity;emo
 insecurity;problem
+insecurity;conflict
 earth;nature
 earth;loc
 heat;energy
 heat;radiation
-cold;nature
 cold;energy
 cold;stat cold
 obstacle;problem
@@ -137,7 +137,7 @@ leg;support
 leg;animate
 leg;force
 sad;emo
-sad;val
+sad;stat low
 battery;energy
 battery;transducer
 city;loc
@@ -212,3 +212,8 @@ heavy;stat heavy
 heavy;force
 database;data
 database;container
+gold;val
+gold;nature
+circumvent;solve
+circumvent;problem
+circumvent;activity
