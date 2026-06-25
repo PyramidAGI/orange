@@ -1106,7 +1106,7 @@ tick emits: {nature, support, machine, tool}
 
 The pyramid never sees the word "branch." It sees `nature · support · machine · tool` — a functional description of what the branch *is*: a load-bearing natural structure the robot is using as part of its machine context. That is enough information to fire the right response.
 
-This is what makes pyramid282 reusable across domains. A rock ledge, a table edge, a bone — all share `nature · support` to varying degrees. The same pyramid handles all of them. The robot does not need to recognise objects; it needs to recognise functional quark signatures.
+This is what makes pyramid282 reusable across domains. A branch, a root, a rock ledge — all share `nature · support` to varying degrees. The same pyramid handles all of them. The robot does not need to recognise objects; it needs to recognise functional quark signatures.
 
 The robot never needs to know the word "branch." It measures, grounds, and matches.
 
@@ -1121,4 +1121,4 @@ quark> nature, support, machine, tool
   [natural anchor triangle] tool     -> engage_anchor
 ```
 
-Goal: `bond + support` — the robot is anchored. A rock ledge, a table edge, a bone: same quarks, same triangle, same response.
+Goal: `bond + support` — the robot is anchored. A branch, a root, a rock ledge: same quarks, same triangle, same response.
