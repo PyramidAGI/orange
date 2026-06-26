@@ -883,6 +883,23 @@ One triangle can appear in multiple scenarios at different use percentages — `
 
 ---
 
+## Walker (walker.html)
+
+A browser tool that simulates the core selection loop: the environment emits a quark set, the system finds which triangles match best.
+
+**How it works:**
+1. Load all triangle CSVs — Walker collects every quark from every goal cluster into a pool
+2. Press **Walk** — picks 3 at random from that pool
+3. Scores each triangle by how many of the 3 quarks appear anywhere in it (goal cluster + sensor rows)
+4. Shows the top 3 matching triangles as cards, with matched goal quarks highlighted and a `X / 3` score badge
+
+**Why this is practical:**
+This is a simulation of an AI that starts to act and picks the best matching pyramid for its current quark state. The random walk stress-tests the triangle library before any hardware is involved. If you walk a thousand times and one triangle never gets selected, its goal cluster quarks don't co-occur enough with the rest of the vocabulary — a coverage gap worth knowing about before deploying on a robot.
+
+The goal pool across the ten triangles in the current library gives 13 unique quarks: `bond`, `force`, `loc`, `sequence`, `energy`, `stat full`, `normal`, `support`, `pattern`, `drive`, `emo`, `fix`, `vitality`. Every Walk picks 3 of these and finds the best fit — which is exactly what the runner does on each tick, with real sensor quarks instead of random ones.
+
+---
+
 ## Syncing scenarios.csv with real-life use
 
 `scenarios.csv` starts as a human-curated design file. Four approaches to keep it in sync with what actually happens at runtime:
