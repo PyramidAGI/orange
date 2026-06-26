@@ -278,7 +278,7 @@
           resultsEl.innerHTML = scored.map(t => `
             <div class="card">
               <div class="card-header">
-                <strong>${t.name}</strong>
+                <strong title="${t.name}">${t.name.length > 20 ? t.name.slice(0, 20) + '…' : t.name}</strong>
                 <span class="score-badge ${t.score === picked.length ? 'full' : ''}">${t.score} / ${picked.length}</span>
               </div>
               <div class="card-body">
