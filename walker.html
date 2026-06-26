@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Walker</title>
+  <style>
+    :root {
+      --ink: #17211d;
+      --muted: #65716b;
+      --line: #d7ded9;
+      --soft: #f4f7f5;
+      --green: #13795b;
+      --green-soft: #e5f4ed;
+      --comp: #f3eeff;
+      --comp-ink: #5b3fa6;
+      --comp-border: #c9b8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font: 14px/1.5 Inter, ui-sans-serif, system-ui, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 24px 60px;
+      gap: 0;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 48px;
+      align-self: stretch;
+    }
+    .brand { font-size: 17px; font-weight: 750; }
+    .load-btn {
+      cursor: pointer;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .status { font-size: 12px; color: var(--muted); }
+
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .picked {
+      display: flex;
+      gap: 10px;
+      min-height: 34px;
+      align-items: center;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .picked.show { opacity: 1; }
+
+    button {
+      font: inherit;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 12px 36px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      letter-spacing: .3px;
+    }
+    button:disabled { opacity: .35; cursor: default; }
+    button:not(:disabled):active { transform: translateY(1px); }
+
+    .chip {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 5px;
+      font: 13px/1.4 ui-monospace, Consolas, monospace;
+      white-space: nowrap;
+    }
+    .chip.green {
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid #a9d5c4;
+    }
+    .chip.muted {
+      background: var(--soft);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      align-self: stretch;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .results.show { opacity: 1; }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(23,33,29,.06);
+    }
+    .card-header {
+      background: #17211d;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-header strong {
+      font-size: 13px;
+      font-family: ui-monospace, Consolas, monospace;
+      color: #e9f1ec;
+    }
+    .score-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: #9dbfb0;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .score-badge.full { color: #4ade80; }
+
+    .card-body { padding: 14px 16px; }
+    .goal-line {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    .goal-label {
+      font-size: 10px;
+      font-weight: 750;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-right: 2px;
+    }
+    .dot-sep { color: var(--line); padding: 0 1px; font-size: 11px; }
+
+    .chip.goal-match {
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid #a9d5c4;
+    }
+    .chip.goal-dim {
+      background: var(--soft);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      padding: 3px 8px;
+    }
+
+    .match-quarks {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .match-quarks span {
+      font-family: ui-monospace, Consolas, monospace;
+      color: var(--green);
+    }
+
+    .no-results {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      padding: 40px 0;
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">Walker</div>
+    <label class="load-btn">Load triangles
+      <input type="file" accept=".csv" multiple id="triInput" style="display:none">
+    </label>
+    <span id="status" class="status">— no triangles loaded</span>
+  </div>
+
+  <div class="stage">
+    <div class="picked" id="picked"></div>
+    <button id="walkBtn" disabled>Walk</button>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <script>
+    let triangles = [];
+
+    document.getElementById('triInput').addEventListener('change', async e => {
+      triangles = [];
+      for (const file of Array.from(e.target.files)) {
+        const t = parse(await file.text(), file.name);
+        if (t.goal.length) triangles.push(t);
+      }
+      const pool = goalPool();
+      document.getElementById('status').textContent =
+        `${triangles.length} triangles · ${pool.length} goal quarks`;
+      document.getElementById('walkBtn').disabled = pool.length < 1;
+      document.getElementById('picked').classList.remove('show');
+      document.getElementById('results').classList.remove('show');
+      e.target.value = '';
+    });
+
+    function parse(text, filename) {
+      let name = filename.replace(/\.csv$/i, '');
+      let goal = [];
+      let allQuarks = new Set();
+      for (const raw of text.split('\n').map(l => l.trimEnd()).filter(l => l.trim())) {
+        if (raw === ';;;;;;;;') continue;
+        const p = (raw + ';;;;;;').split(';');
+        const [desc, role, typ, e1, , rel] = p.map(x => x.trim());
+        if (role === 'c' && typ === 'activity') {
+          if (rel.startsWith('goal')) {
+            goal = rel.slice(4).split('+').map(q => q.trim()).filter(Boolean);
+            goal.forEach(q => allQuarks.add(q));
+          }
+        } else if (role && rel) {
+          allQuarks.add(rel);
+        }
+      }
+      return { name, goal, allQuarks };
+    }
+
+    function goalPool() {
+      const pool = new Set();
+      triangles.forEach(t => t.goal.forEach(q => pool.add(q)));
+      return [...pool];
+    }
+
+    function walk() {
+      const pool = goalPool();
+      const shuffled = pool.sort(() => Math.random() - 0.5);
+      const picked = shuffled.slice(0, Math.min(3, pool.length));
+      const pickedSet = new Set(picked);
+
+      const pickedEl = document.getElementById('picked');
+      pickedEl.classList.remove('show');
+      setTimeout(() => {
+        pickedEl.innerHTML = picked.map(q =>
+          `<span class="chip green">${q}</span>`
+        ).join('');
+        pickedEl.classList.add('show');
+      }, 80);
+
+      const scored = triangles
+        .map(t => {
+          const matched = picked.filter(q => t.allQuarks.has(q));
+          return { ...t, matched, score: matched.length };
+        })
+        .filter(t => t.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+
+      const resultsEl = document.getElementById('results');
+      resultsEl.classList.remove('show');
+      setTimeout(() => {
+        if (!scored.length) {
+          resultsEl.innerHTML = '<div class="no-results">No triangles matched.</div>';
+        } else {
+          resultsEl.innerHTML = scored.map(t => `
+            <div class="card">
+              <div class="card-header">
+                <strong>${t.name}</strong>
+                <span class="score-badge ${t.score === picked.length ? 'full' : ''}">${t.score} / ${picked.length}</span>
+              </div>
+              <div class="card-body">
+                <div class="goal-line">
+                  <span class="goal-label">goal</span>
+                  ${t.goal.map(q =>
+                    `<span class="chip ${pickedSet.has(q) ? 'goal-match' : 'goal-dim'}">${q}</span>`
+                  ).join('<span class="dot-sep">·</span>')}
+                </div>
+                <div class="match-quarks">
+                  matched: ${t.matched.map(q => `<span>${q}</span>`).join(', ')}
+                </div>
+              </div>
+            </div>`).join('');
+        }
+        resultsEl.classList.add('show');
+      }, 160);
+    }
+
+    document.getElementById('walkBtn').addEventListener('click', walk);
+  </script>
+</body>
+</html>
