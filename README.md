@@ -883,6 +883,35 @@ One triangle can appear in multiple scenarios at different use percentages — `
 
 ---
 
+## The generic AI pipeline
+
+Any domain. Any input. Same four steps:
+
+```
+1. observe    person or camera recognition system identifies a new project or situation
+                → collect the relevant words
+
+2. ground     run the words through quark_overlap.py
+                → each word maps to one or more of the 39 quarks
+                → unknown words extend combinations.csv
+
+3. build      make triangles from the quarks
+                → sensor quarks become the IF conditions
+                → actuator labels become the THEN actions
+                → a goal cluster defines when the triangle is satisfied
+
+4. validate   run walker.html on the triangle set
+                → random walks through the goal quark pool
+                → checks that every triangle gets selected under some combination
+                → coverage gaps show up as triangles that never win
+```
+
+This pipeline is domain-agnostic. The same four steps work for a tree climbing robot, a social atmosphere manager, a greenhouse controller, or a jazz band director. The quarks are the invariant — only the words going in and the actuators coming out change.
+
+`quark_overlap.py` is the grounding engine. `walker.html` is the validator. The triangle files are the knowledge. `runner.py` is the runtime. Together they form a closed loop from observation to action with no domain-specific code anywhere in the middle.
+
+---
+
 ## Walker (walker.html)
 
 A browser tool that simulates the core selection loop: the environment emits a quark set, the system finds which triangles match best.
