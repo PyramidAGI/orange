@@ -232,3 +232,28 @@ plan;organization
 plan;waitfor
 administrator;organization
 administrator;data
+food;food
+food;plant
+drink;stat liquid
+drink;container
+drink;food
+body;container
+body;animate
+body;support
+shovel;tool
+shovel;stat rough
+shovel;force
+cap;container
+cap;support
+cap;shield
+camera;tool
+camera;transducer
+roof;container
+roof;support
+roof;shield
+wall;container
+wall;shield
+wall;support
+window;container
+window;stat clear
+window;channel
